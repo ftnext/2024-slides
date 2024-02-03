@@ -29,3 +29,11 @@ language = 'ja'
 
 html_theme = 'alabaster'
 html_static_path = ['_static']
+
+# -- Options for Reveal.js output -------------------------------------------------
+
+revealjs_static_path = ["_static"]
+
+revealjs_css_files = [
+    "css/common.css",
+]
