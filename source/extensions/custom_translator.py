@@ -1,8 +1,13 @@
 from docutils.nodes import literal_block, section
+from sphinx_new_tab_link import NewTabLinkHTMLTranslator
 from sphinx_revealjs.writers import RevealjsSlideTranslator
 
 
-class TweakedRevealjsSlideTranslator(RevealjsSlideTranslator):
+class TweakedRevealjsSlideTranslator(
+    RevealjsSlideTranslator,
+    # To override starttag method to open link in new tab
+    NewTabLinkHTMLTranslator,
+):
     def visit_literal_block(self, node: literal_block):
         lang = node["language"]
         # add section id as data-id if it is exists
