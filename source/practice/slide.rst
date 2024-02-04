@@ -16,6 +16,8 @@ Code block
 ----------
 
 .. code-block:: python
+    :emphasize-lines: 2
+    :linenos:
 
     while True:
         print("Hello world!")
