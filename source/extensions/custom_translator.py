@@ -3,11 +3,7 @@ from sphinx_new_tab_link import NewTabLinkHTMLTranslator
 from sphinx_revealjs.writers import RevealjsSlideTranslator
 
 
-class TweakedRevealjsSlideTranslator(
-    RevealjsSlideTranslator,
-    # To override starttag method to open link in new tab
-    NewTabLinkHTMLTranslator,
-):
+class TweakedRevealjsSlideTranslator(RevealjsSlideTranslator):
     def visit_literal_block(self, node: literal_block):
         lang = node["language"]
         # add section id as data-id if it is exists
@@ -42,6 +38,9 @@ class TweakedRevealjsSlideTranslator(
             if "data-line-numbers" not in node:
                 self.body.append(" data-line-numbers")
         self.body.append(">")
+
+
+TweakedRevealjsSlideTranslator.starttag = NewTabLinkHTMLTranslator.starttag
 
 
 def setup(app):
