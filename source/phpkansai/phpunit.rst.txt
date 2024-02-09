@@ -1,0 +1,268 @@
+PHPUnitでテストを書こう
+============================================================================================================================================
+
+先のfizzbuzz関数のテストを書いてみましょう
+
+**PHPUnit**
+--------------------------------------------------
+
+* PHPでテストコードを書くためのライブラリ
+* https://phpunit.de/
+* デファクトスタンダードの存在があるんですね（Pythonには複数候補があります）
+
+インストール
+--------------------------------------------------
+
+* Composerでインストール
+
+  * :command:`composer require --dev phpunit/phpunit`
+
+* ドキュメントは `PHARをダウンロードして、tools下に置く方法推し <https://docs.phpunit.de/en/10.5/installation.html#manual-download-of-phar>`__
+
+PHPUnitで書くテストは **3** ステップ
+============================================================
+
+1. テストコードのファイルを作る
+2. クラスを書く
+3. テストケースとしてメソッドを書く
+
+Step1 ファイル作成
+--------------------------------------------------
+
+.. code-block:: txt
+
+    .
+    ├── src/
+    │   └── fizzbuzz.php
+    ├── tests/
+    │   └── fizzbuzzTest.php
+    └── vendor/
+
+PHPUnitは、指定されたディレクトリの :file:`*Test.php` を探す
+
+Step2 クラスを書く
+--------------------------------------------------
+
+* PHPUnitが提供する **TestCaseクラスを継承** したクラスを書く
+* **名前はTestで終わる**
+
+.. code-block:: php
+
+    use PHPUnit\Framework\TestCase;
+
+    class FizzbuzzTest extends TestCase
+    {
+    }
+
+Step3 テストケースとしてメソッドを書く (1/2)
+--------------------------------------------------
+
+**testで始まる** メソッド名
+
+.. code-block:: php
+
+    class FizzbuzzTest extends TestCase
+    {
+        public function test_3の倍数のときはFizzを返す(): void
+        {
+        }
+    }
+
+Step3 テストケースとしてメソッドを書く (2/2)
+--------------------------------------------------
+
+``fizzbuzz(3)`` と呼び出した返り値は、文字列 ``"Fizz"`` と型と値が同じ（と表明）
+
+.. code-block:: php
+
+    class FizzbuzzTest extends TestCase
+    {
+        public function test_3の倍数のときはFizzを返す(): void
+        {
+            $this->assertSame(fizzbuzz(3), "Fizz");
+        }
+    }
+
+テスト実行
+============================================================
+
+* :command:`vendor/bin/phpunit tests`
+* （PHARを配置した場合 :command:`tools/phpunit tests`）
+
+passしたとき
+--------------------------------------------------
+
+.. code-block:: txt
+
+    Runtime:       PHP 8.3.1
+
+    .                                                                   1 / 1 (100%)
+
+    Time: 00:00, Memory: 22.77 MB
+
+    OK (1 test, 1 assertion)
+
+failしたとき
+--------------------------------------------------
+
+.. code-block:: txt
+
+    Runtime:       PHP 8.3.1
+
+    F                                                                   1 / 1 (100%)
+
+    Time: 00:00.001, Memory: 22.77 MB
+
+    There was 1 failure:
+
+    1) fizzbuzz\FizzbuzzTest::test_3の倍数のときはFizzを返す
+    Failed asserting that two strings are identical.
+    --- Expected
+    +++ Actual
+    @@ @@
+    -'3'
+    +'Fizz'
+
+    /.../tests/fizzbuzzTest.php:16
+
+    FAILURES!
+    Tests: 1, Assertions: 1, Failures: 1.
+
+テストコードの構成要素
+============================================================
+
+.. code-block:: php
+
+    $this->assertSame(fizzbuzz(3), "Fizz");
+
+* 関数に **ある値を入力したときの出力** を検証した
+* *3A* という見方を導入
+
+3A
+--------------------------------------------------
+
+* Arrange 準備
+* Act 実行
+* Assert 検証
+
+https://xp123.com/articles/3a-arrange-act-assert/
+
+3Aで見るdoctest
+--------------------------------------------------
+
+1ステップ1行になるように書き直しています
+
+.. literalinclude:: ../../samplecode/phpunit-example/tests/fizzbuzzTest.php
+    :language: php
+    :lines: 8-17
+
+Arrange
+--------------------------------------------------
+
+テストの **準備** （データの用意など）
+
+.. literalinclude:: ../../samplecode/phpunit-example/tests/fizzbuzzTest.php
+    :language: php
+    :lines: 8-17
+    :emphasize-lines: 5
+
+Act
+--------------------------------------------------
+
+テスト対象の関数を **実行**
+
+.. literalinclude:: ../../samplecode/phpunit-example/tests/fizzbuzzTest.php
+    :language: php
+    :lines: 8-17
+    :emphasize-lines: 6
+
+Assert
+--------------------------------------------------
+
+実行結果が期待値と等しいかを **検証**
+
+.. literalinclude:: ../../samplecode/phpunit-example/tests/fizzbuzzTest.php
+    :language: php
+    :lines: 8-17
+    :emphasize-lines: 7-8
+
+第4のA：Annihilate 🏃‍♂️ (skip)
+--------------------------------------------------
+
+* クリーンアップ
+* 『`ロバストPython <https://www.oreilly.co.jp/books/9784814400171/>`__』第21章より
+
+tips✨ **パラメタ化** テスト
+============================================================
+
+.. code-block:: php
+    :caption: 題材
+
+    public function test_3の倍数のときはFizzを返す(): void
+    {
+    }
+
+3の倍数ならFizz
+--------------------------------------------------
+
+``$number`` の **取りうる値は複数**
+
+* 3
+* 6
+* 9
+
+個別にテストの関数を書く？
+--------------------------------------------------
+
+.. code-block:: php
+
+    public function test_3の倍数のときはFizzを返す_3の場合(): void
+    {
+    }
+
+    public function test_3の倍数のときはFizzを返す_6の場合(): void
+    {
+    }
+
+PHPUnitでは **Data Provider** を使おう
+--------------------------------------------------
+
+.. literalinclude:: ../../samplecode/phpunit-example/tests/parametrizedTest.php
+    :language: php
+    :lines: 6-7,10-22
+
+Data Provider
+--------------------------------------------------
+
+* https://docs.phpunit.de/en/10.5/writing-tests-for-phpunit.html#data-providers
+
+    | A data provider method must be public and static.
+    | It must return a value that is iterable, either an array or an object that implements the Traversable interface.
+
+Data Provider
+--------------------------------------------------
+
+.. literalinclude:: ../../samplecode/phpunit-example/tests/parametrizedTest.php
+    :language: php
+    :lines: 12-18
+
+* ``$number`` に、3、6と順次渡る
+* ドキュメントには1回あたり複数の変数を渡す例あり
+
+1つの関数、複数のテストケース
+--------------------------------------------------
+
+**個別に書いたのと同じ** 結果が得られる
+
+.. code-block:: txt
+
+    % tools/phpunit tests/parametrizedTest.php
+    PHPUnit 10.5.10 by Sebastian Bergmann and contributors.
+
+    Runtime:       PHP 8.3.1
+
+    ..                                                                  2 / 2 (100%)
+
+    Time: 00:00.001, Memory: 22.77 MB
+
+    OK (2 tests, 2 assertions)
