@@ -11,13 +11,13 @@
 例：FizzBuzz
 --------------------------------------------------
 
-.. literalinclude:: ../../samplecode/phpunit-example/fizzbuzz_old.php
+.. literalinclude:: ../../samplecode/phpunit-example/concept/fizzbuzz_old.php
     :language: php
 
 型を書く
 --------------------------------------------------
 
-.. literalinclude:: ../../samplecode/phpunit-example/fizzbuzz.php
+.. literalinclude:: ../../samplecode/phpunit-example/concept/fizzbuzz.php
     :language: php
 
 書き換えで振る舞いを変えていないだろうか？
