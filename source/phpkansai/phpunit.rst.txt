@@ -8,16 +8,60 @@ PHPUnitでテストを書こう
 
 * PHPでテストコードを書くためのライブラリ
 * https://phpunit.de/
-* デファクトスタンダードの存在があるんですね（Pythonには複数候補があります）
+* デファクトスタンダードの存在があるんですね（Pythonには複数候補があります。参考『Python実践レシピ』）
 
-インストール
+PHPUnitをインストール
+============================================================
+
+* Composer
+* PHAR
+
+どちらかをやればいいです
+
+Composerでインストール
 --------------------------------------------------
 
-* Composerでインストール
+* :command:`composer require --dev phpunit/phpunit`
+* ちょうぜつ本 など
 
-  * :command:`composer require --dev phpunit/phpunit`
+.. code-block:: txt
 
-* ドキュメントは `PHARをダウンロードして、tools下に置く方法推し <https://docs.phpunit.de/en/10.5/installation.html#manual-download-of-phar>`__
+    .
+    ├── composer.json
+    ├── composer.lock
+    └── vendor/
+        └── bin/
+            └── phpunit
+
+PHARでインストール
+--------------------------------------------------
+
+* PHPUnitのドキュメントで推している
+* https://docs.phpunit.de/en/10.5/installation.html#manual-download-of-phar
+
+.. code-block:: txt
+
+    .
+    └── tools/
+        └── phpunit
+
+Composerではautoload 🏃‍♂️ (skip)
+--------------------------------------------------
+
+.. TODO PSR-4
+
+phpunitコマンドの使い方
+--------------------------------------------------
+
+* :command:`vendor/bin/phpunit`
+* （PHARを配置した場合 :command:`tools/phpunit`）
+
+.. code-block:: txt
+
+    Usage:
+      phpunit [options] <directory|file> ...
+
+.. ディレクトリやファイルのパスを指定する
 
 PHPUnitで書くテストは **3** ステップ
 ============================================================
@@ -38,13 +82,21 @@ Step1 ファイル作成
     │   └── fizzbuzzTest.php
     └── vendor/
 
-PHPUnitは、指定されたディレクトリの :file:`*Test.php` を探す
+（Composerでインストールした場合で進めます。PHARでも動作確認しています）
+
+テストを書くファイル
+--------------------------------------------------
+
+* :file:`tests` ディレクトリに配置
+* ファイル名は :file:`*Test.php`
+
+  * ``phpunit`` コマンドにディレクトリのパスが指定されたときに探されるファイル
 
 Step2 クラスを書く
 --------------------------------------------------
 
 * PHPUnitが提供する **TestCaseクラスを継承** したクラスを書く
-* **名前はTestで終わる**
+* クラス名は **\*Test**
 
 .. code-block:: php
 
@@ -83,6 +135,50 @@ Step3 テストケースとしてメソッドを書く (2/2)
         }
     }
 
+今回はassertSameが適切。assertEqualsではない
+--------------------------------------------------
+
+.. code-block:: php
+
+    php > var_dump("1" === "1");  // assertSame
+    bool(true)
+    php > var_dump("1" == 1);  // assertEquals
+    bool(true)
+    php > var_dump("1" === 1);  // assertSameなら誤りに気づける
+    bool(false)
+
+``Test`` Attributeでもよい 🏃‍♂️ (skip)
+--------------------------------------------------
+
+https://docs.phpunit.de/en/10.5/attributes.html#appendixes-attributes-test
+
+.. code-block:: php
+
+    use PHPUnit\Framework\Attributes\Test;
+
+    class FizzbuzzTest extends TestCase
+    {
+        // 関数名は3で始められないので、_を付けています（他のやり方もあると思います）
+        #[Test]
+        public function _3の倍数のときはFizzを返す(): void
+        {
+        }
+    }
+
+日本語テストメソッド 🏃‍♂️ (skip)
+--------------------------------------------------
+
+* IMO：関数名は **日本語を使ってもよい** と思います
+* `実践！ユニットテスト入門（PHPカンファレンス2022） <https://speakerdeck.com/panda_program/unit-testing-for-beginners-at-php-conference-japan-2022?slide=41>`__
+* `現在時刻が関わるユニットテストから、テスト容易性設計を学ぶ <https://t-wada.hatenablog.jp/entry/design-for-testability#%E3%83%9D%E3%82%A4%E3%83%B3%E3%83%88-%E6%97%A5%E6%9C%AC%E8%AA%9E%E3%83%86%E3%82%B9%E3%83%88%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89>`__
+
+🥟PHPUnitで書くテストは3ステップ
+============================================================
+
+1. テストコードのファイルを作る（:file:`*Test.php`）
+2. クラスを書く（``*Test``）
+3. テストケースとしてメソッドを書く（``test*``）
+
 テスト実行
 ============================================================
 
@@ -94,7 +190,7 @@ passしたとき
 
 .. code-block:: txt
 
-    Runtime:       PHP 8.3.1
+    Runtime:       PHP 8.3.2
 
     .                                                                   1 / 1 (100%)
 
@@ -102,12 +198,12 @@ passしたとき
 
     OK (1 test, 1 assertion)
 
-failしたとき
+failしたとき（わざと落とした）
 --------------------------------------------------
 
 .. code-block:: txt
 
-    Runtime:       PHP 8.3.1
+    Runtime:       PHP 8.3.2
 
     F                                                                   1 / 1 (100%)
 
@@ -147,7 +243,7 @@ failしたとき
 
 https://xp123.com/articles/3a-arrange-act-assert/
 
-3Aで見るdoctest
+3Aで見るPHPUnit
 --------------------------------------------------
 
 1ステップ1行になるように書き直しています
@@ -169,7 +265,7 @@ Arrange
 Act
 --------------------------------------------------
 
-テスト対象の関数を **実行**
+テスト対象を **実行** （呼び出す）
 
 .. literalinclude:: ../../samplecode/phpunit-example/tests/fizzbuzzTest.php
     :language: php
@@ -186,11 +282,20 @@ Assert
     :lines: 8-17
     :emphasize-lines: 7-8
 
+.. 意図を伝えるアサーションを選ぼう
+
 第4のA：Annihilate 🏃‍♂️ (skip)
 --------------------------------------------------
 
 * クリーンアップ
 * 『`ロバストPython <https://www.oreilly.co.jp/books/9784814400171/>`__』第21章より
+
+🥟テストコードの構成要素：3A
+============================================================
+
+* Arrange テストの **準備**
+* Act テスト対象の **実行**
+* Assert 実行結果と期待値の **検証**
 
 tips✨ **パラメタ化** テスト
 ============================================================
@@ -224,12 +329,26 @@ tips✨ **パラメタ化** テスト
     {
     }
 
-PHPUnitでは **Data Provider** を使おう
+**テストメソッドに引数** （パラメタ）を渡したい
+--------------------------------------------------
+
+.. code-block:: php
+
+    class FizzbuzzTest extends TestCase
+    {
+        // $numberに3や6を渡せたら
+        public function test_3の倍数のときはFizzを返す($number): void
+        {
+            $this->assertSame(fizzbuzz($number), "Fizz");
+        }
+    }
+
+PHPUnitでは **Data Provider** でできます！
 --------------------------------------------------
 
 .. literalinclude:: ../../samplecode/phpunit-example/tests/parametrizedTest.php
     :language: php
-    :lines: 6-7,10-22
+    :lines: 5,7,10-22
 
 Data Provider
 --------------------------------------------------
@@ -239,7 +358,7 @@ Data Provider
     | A data provider method must be public and static.
     | It must return a value that is iterable, either an array or an object that implements the Traversable interface.
 
-Data Provider
+Data Providerの例
 --------------------------------------------------
 
 .. literalinclude:: ../../samplecode/phpunit-example/tests/parametrizedTest.php
@@ -259,7 +378,7 @@ Data Provider
     % tools/phpunit tests/parametrizedTest.php
     PHPUnit 10.5.10 by Sebastian Bergmann and contributors.
 
-    Runtime:       PHP 8.3.1
+    Runtime:       PHP 8.3.2
 
     ..                                                                  2 / 2 (100%)
 
