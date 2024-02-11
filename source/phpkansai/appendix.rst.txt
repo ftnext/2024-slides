@@ -1,0 +1,66 @@
+参考資料
+============================================================================================================================================
+
+参考書籍
+--------------------------------------------------
+
+* 『`ちょうぜつソフトウェア設計入門 <https://gihyo.jp/book/2022/978-4-297-13234-7>`__』（第6章）
+* 『`テスト駆動開発 <https://www.ohmsha.co.jp/book/9784274217883/>`__』（Kent Beck）
+
+    テストは不安を退屈に変える賢者の石だ。（第25章）
+
+PyConで話した内容のPHP版でした
+--------------------------------------------------
+
+.. raw:: html
+
+    <iframe width="800" height="480" src="https://ftnext.github.io/2023-slides/pyconapac/practice-test-code.html#/1"
+        title="好きとか嫌いとかはいい、練習してテストを書けるようになるんだ"></iframe>
+
+PHPカンファレンスのアーカイブより
+--------------------------------------------------
+
+* PHPカンファレンス沖縄2023「`素朴で考慮漏れのある PHP コードをテストコードとともに補強していく <https://fortee.jp/phpcon-okinawa-2023/proposal/0512a121-2983-4c60-90f3-651c7e7f79fd>`__」
+* PHPカンファレンス2022 `実践！ユニットテスト入門 <https://fortee.jp/phpcon-2022/proposal/41cd9cd5-7d1f-4659-b31f-d31545d286aa>`__
+* PHPerKaigi 2019 `「質」の良いユニットテストを書くためのプラクティス <https://fortee.jp/phperkaigi-2019/proposal/46cab64f-35c7-483d-9ca0-bb04204f8f54>`__
+
+t-wadaさん関連🦁
+--------------------------------------------------
+
+* 開発者のためのテスト https://gihyo.jp/dev/serial/01/tdd/0003
+
+  * `［動画で解説］和田卓人の“テスト駆動開発”講座 <https://gihyo.jp/dev/serial/01/tdd>`__
+
+* `品質をあげるのはプログラミング <https://speakerdeck.com/twada/working-with-legacy-code-the-true-record?slide=69>`__
+
+  * `『健全なビジネスの継続的成長のためには健全なコードが必要だ』対談 （６） <https://twop.agile.esm.co.jp/what-do-we-need-for-growth-of-future-65c43b5a8fe2>`__
+
+テスト駆動開発のはじめ方参考🔰
+--------------------------------------------------
+
+* `「1人アジャイル」から始める、アジャイル開発導入のススメ <https://agilejourney.uzabase.com/entry/2022/06/16/101000>`__
+* `テスト駆動開発のはじめの一歩｜t_wadaさんに聞く1人で始める自動テストのコツと考え方 <https://agilejourney.uzabase.com/entry/2023/11/30/103000>`__
+* `えっ、まだユニットテスト書いてない現場があるんですか？ <https://speakerdeck.com/ikikko/why-dont-you-write-unit-tests>`__
+
+自分のエントリより ちょうぜつ本読書ログ
+--------------------------------------------------
+
+* 第6章前半 https://nikkie-ftnext.hatenablog.com/entry/the-transcendent-book-chapter6-first-half-prepare-learning-tdd
+* 6.5 https://nikkie-ftnext.hatenablog.com/entry/the-transcendent-book-chapter6-test-first-example-is-bdd
+* 6.6 https://nikkie-ftnext.hatenablog.com/entry/the-transcendent-book-chapter6-tdd-as-design-method
+
+自分のエントリより 登壇準備中のアウトプット
+--------------------------------------------------
+
+* `PHPUnitのドキュメントを機にxUnit Test Patternsのサイトを確認し、Test Double・Stub・Mockを整理 〜広義のモックと狭義のモック〜 <https://nikkie-ftnext.hatenablog.com/entry/phpunit-docs-test-doubles-refer-xunit-test-patterns>`__
+* `#phpcon2022 のトーク「実践！ユニットテスト入門」がとってもよかったです👏 テストを書き始められる5つの知識✨ <https://nikkie-ftnext.hatenablog.com/entry/phpcon-2022-unit-testing-for-beginners-log>`__
+
+自分のエントリより PHP環境構築
+--------------------------------------------------
+
+* `macOSでPHPUnitが流れる環境を作る <https://nikkie-ftnext.hatenablog.com/entry/macos-homebrew-php-composer-dev-require-phpunit>`__
+* `Composerでautoloadを設定したつもりが、PHPUnitを流すと「Error: Class "..." not found」となって苦しみました（写経し損ねたnamespace） <https://nikkie-ftnext.hatenablog.com/entry/phpunit-composer-autoload-error-class-not-found-no-declare-namespace>`__
+* `そうか、シンボリックリンクを使えばコマンドのバージョンを切り替えられるのか！（phpunitを例に） <https://nikkie-ftnext.hatenablog.com/entry/symbolic-links-enable-to-switch-command-versions>`__
+
+EOF
+============================================================
