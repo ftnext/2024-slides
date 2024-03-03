@@ -41,7 +41,7 @@ sphinx==7.2.6
     #   sphinx-revealjs
 sphinx-design==0.5.0
     # via -r requirements.in
-sphinx-new-tab-link==0.2.2
+sphinx-new-tab-link==0.3.0
     # via -r requirements.in
 sphinx-revealjs==2.9.3
     # via -r requirements.in
