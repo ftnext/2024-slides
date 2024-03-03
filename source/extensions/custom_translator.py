@@ -1,5 +1,4 @@
 from docutils.nodes import literal_block, section
-from sphinx_new_tab_link import NewTabLinkHTMLTranslator
 from sphinx_revealjs.writers import RevealjsSlideTranslator
 
 
@@ -38,9 +37,6 @@ class TweakedRevealjsSlideTranslator(RevealjsSlideTranslator):
             if "data-line-numbers" not in node:
                 self.body.append(" data-line-numbers")
         self.body.append(">")
-
-
-TweakedRevealjsSlideTranslator.starttag = NewTabLinkHTMLTranslator.starttag
 
 
 def setup(app):

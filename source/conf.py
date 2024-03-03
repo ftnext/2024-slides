@@ -22,6 +22,7 @@ extensions = [
     'sphinx_revealjs',
     'sphinx_design',
     "custom_translator",
+    "sphinx_new_tab_link",
 ]
 
 templates_path = ['_templates']
