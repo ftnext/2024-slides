@@ -37,11 +37,11 @@ snowballstemmer==2.2.0
 sphinx==7.2.6
     # via
     #   sphinx-design
-    #   sphinx-new-tab-link
     #   sphinx-revealjs
+    #   sphinxcontrib-extdevhelper-kasane
 sphinx-design==0.5.0
     # via -r requirements.in
-sphinx-new-tab-link==0.3.0
+sphinx-new-tab-link==0.4.0
     # via -r requirements.in
 sphinx-revealjs==2.9.3
     # via -r requirements.in
@@ -49,6 +49,8 @@ sphinxcontrib-applehelp==1.0.8
     # via sphinx
 sphinxcontrib-devhelp==1.0.6
     # via sphinx
+sphinxcontrib-extdevhelper-kasane==0.2.0
+    # via sphinx-new-tab-link
 sphinxcontrib-htmlhelp==2.0.5
     # via sphinx
 sphinxcontrib-jsmath==1.0.1
