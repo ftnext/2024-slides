@@ -1,8 +1,10 @@
 from docutils.nodes import literal_block, section
-from sphinx_revealjs.writers import RevealjsSlideTranslator
+from sphinxcontrib.kasane import TranslatorSetUp
+from sphinxcontrib.kasane.conditions import BuilderNameCondition
+from sphinxcontrib.kasane.inheritance import MixinDynamicInheritance
 
 
-class TweakedRevealjsSlideTranslator(RevealjsSlideTranslator):
+class ExtendedLiteralRevealjsSlideTranslatorMixin:
     def visit_literal_block(self, node: literal_block):
         lang = node["language"]
         # add section id as data-id if it is exists
@@ -40,4 +42,9 @@ class TweakedRevealjsSlideTranslator(RevealjsSlideTranslator):
 
 
 def setup(app):
-    app.set_translator("revealjs", TweakedRevealjsSlideTranslator)
+    condition = BuilderNameCondition("revealjs")
+    inheritance = MixinDynamicInheritance(
+        ExtendedLiteralRevealjsSlideTranslatorMixin,
+        "ExtendedLiteralRevealjsSlideTranslator",
+    )
+    app.connect("builder-inited", TranslatorSetUp(inheritance, condition))
