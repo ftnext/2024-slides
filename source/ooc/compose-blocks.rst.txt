@@ -69,8 +69,7 @@ SOLIDのSについて
 
 `コード例の全容 <https://github.com/ftnext/transcendent-book-py/blob/4c2b8c0064aa67be6d98e239cfdb1430f1e59cc7/chapter5/database_drivers.py>`__
 
-入出力と計算を分ける
-======================================================================
+.. include:: blocks/io-and-calculation.rst.txt
 
 作ると使うを分ける
 ======================================================================

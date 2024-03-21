@@ -1,0 +1,110 @@
+入出力と計算を分ける
+======================================================================
+
+分けて小さく、再利用しやすく
+
+計算結果を書き込む処理（悪しき例）
+--------------------------------------------------
+
+.. code-block:: python
+
+    def save_result(data, file_path):
+        # 渡されたデータ data を計算して加工。resultができる（具体例としてはfor文？）
+        # resultをファイルに保存する
+
+少し後になって
+--------------------------------------------------
+
+* 「今から実装する処理、前に作った ``save_result()`` と **同じ計算** が出てくる。その計算結果をさらに計算するのか」
+* 「 ``save_result()`` 使えば最初の計算はできるな。あれ、これなんでファイルに保存までするの？ 余計〜」
+
+実はテストも書きづらかった
+--------------------------------------------------
+
+.. TODO ここ、自作の関数を呼んだらモックでよくなる。ラップしてない処理をもっとベタ書きにする
+
+.. code-block:: python
+
+    @patch("......write")
+    @patch("......calculate")
+    def test_save_result(calculate, write):  # モックにする
+        # dataを用意（縦に長くなる）
+        # 計算結果の期待値を用意（ここも縦に長くなる）
+        calculate.return_value = expected_result
+
+        save_result(data, file_path)
+
+        calculate.assert_called_once_with(data)
+        write.assert_called_once_with(expected_result)
+
+計算して保存する関数を書いていた私
+--------------------------------------------------
+
+* **計算部分だけ再利用できない** （保存が余計）
+* テストコードはデータとその計算結果を含むので、縦に長くなる
+
+入出力と計算判断を分ける
+--------------------------------------------------
+
+.. raw:: html
+
+    <iframe class="speakerdeck-iframe" style="border: 0px; background: rgba(0, 0, 0, 0.1) padding-box; margin: 0px; padding: 0px; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 40px; width: 100%; height: auto; aspect-ratio: 560 / 315;" frameborder="0" src="https://speakerdeck.com/player/d663c3f2afec45379371126260431048?slide=12" title="これだけは知っておきたいクラス設計の基礎知識" allowfullscreen="true" data-ratio="1.7777777777777777"></iframe>
+
+計算結果を書き込む処理
+--------------------------------------------------
+
+.. code-block:: python
+
+    def calculate(data):
+        # データを受け取ってデータを返す（）
+        return result
+
+    def write(data, file_path):
+        # ファイルに保存する処理
+
+    # calculateしてwriteするとして、先のsave_resultを実現
+
+入出力と計算判断を分けた実装
+--------------------------------------------------
+
+* **計算** では **メモリ上のデータ** を扱う。再利用しやすい
+* 永続化は出力処理で担う。計算は気にしなくてよい
+* 小さく分かれたので、テストコードも書きやすい（特に ``calculate``）
+
+ふりかえると、注目すべき箇所が見えていなかった
+--------------------------------------------------
+
+* コードの行数に注目していた（N行くらいだから関数にしよう）
+* コードの **目的** （入出力、計算判断）に盲目でした
+* 混ぜていたので、計算だけ使えない
+
+入出力と計算判断を分けていく
+--------------------------------------------------
+
+* 過去の自分のコードをリファクタリングしていく
+* 関数の抽出
+* 関数のインライン化
+
+目的ごとに関数に抽出
+--------------------------------------------------
+
+.. code-block:: python
+
+    def save_result(data, file_path):
+        result = calculate(data)
+        write(result, file_path)
+    
+    def calculate(data):
+        ...
+    
+    def write(data, file_path):
+        ...
+
+元の関数をインライン化
+--------------------------------------------------
+
+.. code-block:: python
+
+    # save_resultを呼び出していた箇所（呼び出しがなくなる）
+    result = calculate(data)
+    write(result, file_path)
