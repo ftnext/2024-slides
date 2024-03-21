@@ -1,0 +1,62 @@
+作ると使うを分ける
+======================================================================
+
+分けて小さく、拡張しやすく
+
+作ると使うが一体となった処理（悪しき例）
+--------------------------------------------------
+
+.. code-block:: python
+
+    def fetch_awesome() -> AwesomeData:
+        client = AwesomeAPIClient()
+        raw_data = client.get(...)  # パラメタを渡してデータ取得
+        return AwesomeData.from_(raw_data)
+
+少し後になって
+--------------------------------------------------
+
+* 「Awesome API、v1で使ってきたけど、v2がリリースされてる！」
+* 「v1は ``fetch_awesome()`` で叩いてたな。v2も叩ける？」
+* 「いや、別に関数作ったほうがいいかー」
+
+爆誕する似た処理
+--------------------------------------------------
+
+.. code-block:: python
+
+    def fetch_awesome_v2() -> AwesomeData:
+        client = AwesomeAPIV2Client()
+        raw_data = client.get(...)
+        return AwesomeData.from_(raw_data)
+
+``client`` の使い方は同じと単純化してます
+
+作ると使うが一体の関数を書いていた私へ
+--------------------------------------------------
+
+* v3が出たら、また増やしますか？
+* ``AwesomeData`` への変換は変わっていない。 ``fetch_awesome()`` の拡張で済まないのはどうして？
+
+実はテストも書きづらかった
+--------------------------------------------------
+
+.. code-block:: python
+
+    @patch("......AwesomeAPIClient")
+    def test_fetch_awesome(AwesomeAPIClient):  # モックにする
+        actual = fetch_awesome()
+
+        AwesomeAPIClient.assert_called_once_with()
+        AwesomeAPIClient.get.assert_called_once_with(...)
+
+実際の ``AwesomeAPIClient`` が実行されないようにしています
+
+使用と生成の分離
+--------------------------------------------------
+
+* 『ちょうぜつ本』第7章
+* 作ると使うを **分けよう**
+
+WIP
+--------------------------------------------------
