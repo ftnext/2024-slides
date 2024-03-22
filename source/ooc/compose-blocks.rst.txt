@@ -71,5 +71,4 @@ SOLIDのSについて
 
 .. include:: blocks/io-and-calculation.rst.txt
 
-作ると使うを分ける
-======================================================================
+.. include:: blocks/use-and-creation.rst.txt
