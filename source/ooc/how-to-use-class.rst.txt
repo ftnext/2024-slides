@@ -84,4 +84,4 @@ Pythonでの実装例
 
     使う側のプログラムの記述がかんたんになるように、使われる側のクラスに便利なメソッドを用意する (Kindle版 p.54)
 
-* 「コーヒーください」（ななうぇぶさん `Tell, don't ask <https://speakerdeck.com/77web/tell-dont-ask>`__
+* 「コーヒーください」（ななうぇぶさん `Tell, don't ask <https://speakerdeck.com/77web/tell-dont-ask>`__）
