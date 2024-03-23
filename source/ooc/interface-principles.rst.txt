@@ -89,10 +89,35 @@ SOLIDのD
 作ると使うを分けた先に
 --------------------------------------------------
 
-TODO 接続する
+.. code-block:: python
+
+    def execute_ocr(client: ImageOcrClient | DocumentOcrClient) -> str:
+        result = client.recognize(...)
+        return result
+
+    client = ImageOcrClient()
+    return execute_ocr(client)
+
+インターフェースを導入
+--------------------------------------------------
+
+.. code-block:: python
+
+    def execute_ocr(client: OcrClientInterface) -> str:
+        result = client.recognize(...)
+        return result
+
+画像を受け取れる ``recognize()`` メソッドを持つ
 
 差し替え可能になっている
 --------------------------------------------------
 
-* fooメソッドがある **別のクラス** （具象）を **注入** することもできる
+* ``recognize`` メソッドがある **別のクラス** （具象）を **注入** することもできる
 * 作ると使うが一体になり、具象に依存していた状態からは天地の差
+
+「作ると使うを分ける」から依存性逆転へ
+--------------------------------------------------
+
+* 最初は引数に切り出した
+* 引数の共通の性質として、インターフェースを導入
+* 結果、インターフェースに依存させられた！
