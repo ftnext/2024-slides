@@ -7,6 +7,7 @@
 --------------------------------------------------
 
 .. code-block:: python
+    :linenos:
 
     def save_result(data, file_path):
         result = []
@@ -17,7 +18,25 @@
         with jsonlines.open(file_path, "w") as writer:
             writer.write_all(result)
 
-.. TODO クラスならこう（saveに使うインスタンスを渡していくように発展しそう）
+参考例：クラスの場合
+--------------------------------------------------
+
+.. code-block:: python
+    :linenos:
+
+    class DataCollection:
+        def __init__(self, data):
+            self.data = data
+
+        def save(self, file_path):
+            result = []
+            for obj in self.data:
+                result.append({"text": obj["summary"] + obj["detail"]})
+
+            with jsonlines.open(file_path, "w") as writer:
+                writer.write_all(result)
+
+.. saveに使うインスタンスを渡していくように発展しそう
 
 少し後になって
 --------------------------------------------------
@@ -29,6 +48,7 @@
 --------------------------------------------------
 
 .. code-block:: python
+    :linenos:
 
     @patch("(Pythonの詳細なので略).jsonlines")
     def test_save_result(jsonlines):  # 書き込まないようモックにする
@@ -65,6 +85,7 @@
 --------------------------------------------------
 
 .. code-block:: python
+    :linenos:
 
     def calculate(data):  # データを受け取ってデータを返す
         result = []
@@ -82,8 +103,8 @@
 --------------------------------------------------
 
 * **計算** では **メモリ上のデータ** を扱う。再利用しやすい
-* 永続化は出力処理で担う。計算は気にしなくてよい
-* 小さく分かれたので、テストコードも書きやすい（特に ``calculate``）
+* 永続化は出力処理で担う。計算は気にしなくてよい（出力形式の変更も対応できる）
+* 小さく分かれたので、テストコードも書きやすい
 
 ふりかえると、注目すべき箇所が見えていなかった
 --------------------------------------------------
@@ -92,31 +113,35 @@
 * コードの **目的** （入出力、計算判断）に盲目でした
 * 混ぜていたので、計算だけ使えない
 
-.. TODO 入出力のバリエーションが増えても対応できる
-
 入出力と計算判断を分けていく
 --------------------------------------------------
 
-* 過去の自分のコードをリファクタリングしていく
-* 関数の抽出
-* 関数のインライン化
+過去の自分のコードをリファクタリングしていく
 
-目的ごとに関数に抽出
+* `関数の抽出 <https://refactoring.com/catalog/extractFunction.html>`__
+* `関数のインライン化 <https://refactoring.com/catalog/inlineFunction.html>`__
+
+目的ごとに関数に **抽出**
 --------------------------------------------------
 
 .. code-block:: python
+    :linenos:
 
     def save_result(data, file_path):
         result = calculate(data)
         write(result, file_path)
-    
-    def calculate(data):
-        ...
-    
-    def write(data, file_path):
-        ...
 
-元の関数をインライン化
+    def calculate(data):
+        result = []
+        for obj in data:
+            result.append({"text": obj["summary"] + obj["detail"]})
+        return result
+
+    def write(file_path, data):
+        with jsonlines.open(file_path, "w") as writer:
+            writer.write_all(data)
+
+元の関数を **インライン化**
 --------------------------------------------------
 
 .. code-block:: python
@@ -125,4 +150,11 @@
     result = calculate(data)
     write(result, file_path)
 
-.. 基本のリファクタリングで分けられる
+参考： **基本** のリファクタリングテクニックでできちゃいます
+------------------------------------------------------------
+
+『`リファクタリング（第2版） <https://www.ohmsha.co.jp/book/9784274224546/>`__』6章「リファクタリングはじめの一歩」
+
+* 関数の抽出
+* 関数のインライン化
+* 関数宣言の変更（後述）
