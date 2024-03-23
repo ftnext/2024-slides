@@ -1,0 +1,13 @@
+お前、誰よ（詳細版）
+======================================================================
+
+* :fab:`twitter` `@ftnext <https://twitter.com/ftnext>`__ ／ :fab:`github` `@ftnext <https://github.com/ftnext>`__
+* 毎月の `みんなのPython勉強会 <https://startpython.connpass.com/>`__ スタッフ
+* 登壇 `2024 <https://github.com/ftnext/2024-slides>`__ `2023 <https://github.com/ftnext/2023-slides>`__
+* 代表作：Sphinx拡張 `sphinx-new-tab-link <https://github.com/ftnext/sphinx-new-tab-link>`__
+
+コード例にした自作ライブラリ
+--------------------------------------------------
+
+* kurenai https://github.com/ftnext/kurenai
+* ocroy https://github.com/ftnext/ocroy
