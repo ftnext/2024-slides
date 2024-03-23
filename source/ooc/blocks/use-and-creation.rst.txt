@@ -12,7 +12,7 @@
 手元にクライアントを実装
 --------------------------------------------------
 
-* 画像中の文字を認識（例：標識）： ``ImageOcrClient`` 使うぞ！
+* 画像中の文字を認識（例：標識）： ``ImageOcrClient``
 * ドキュメントの画像から文字を認識（例：帳票）： ``DocumentOcrClient``
 
 ``recognize()`` メソッドで使う
@@ -20,14 +20,29 @@
 作ると使うが一体となった処理（悪しき例）
 --------------------------------------------------
 
-.. code-block:: python
+「``ImageOcrClient`` 使うぞ！」
 
-    def execute_ocr(...) -> str:
+.. code-block:: python
+    :linenos:
+
+    def execute_ocr(image) -> str:
         client = ImageOcrClient()
-        result = client.recognize(...)  # 読み込んだ画像を渡す
+        result = client.recognize(image)  # 読み込まれた画像を渡す
         return result
 
-.. クラスの例（__init__で作っちゃう）
+参考例：クラスの場合
+--------------------------------------------------
+
+.. code-block:: python
+    :linenos:
+
+    class OcrExecutor:
+        def __init__(self):
+            self.client = ImageOcrClient()
+
+        def execute(self, image):
+            result = client.recognize(image)
+            return result
 
 少し後になって
 --------------------------------------------------
@@ -40,10 +55,11 @@
 --------------------------------------------------
 
 .. code-block:: python
+    :linenos:
 
-    def execute_document_ocr(...) -> str:
+    def execute_document_ocr(image) -> str:
         client = DocumentOcrClient()
-        result = client.recognize(...)  # 読み込んだ画像を渡す
+        result = client.recognize(image)
         return result
 
 作ると使うが一体の関数を書いていた私へ
@@ -52,22 +68,10 @@
 * 3つ目のクライアントを追加したら、 ``execute_ocr`` の亜種をまた増やしますか？
 * クライアントの文字認識結果を返すだけ。なのに ``execute_ocr()`` の拡張で済まないのはどうして？
 
-テストはこんな感じでした
---------------------------------------------------
-
-.. code-block:: python
-
-    @patch("(Pythonの詳細なので略).ImageOcrClient")
-    def test_execute_ocr(ImageOcrClient):  # 通信しないようモックにする
-        actual = execute_ocr()
-
-        ImageOcrClient.assert_called_once_with()
-        ImageOcrClient.recognize.assert_called_once_with(...)
-
 🧭生成と使用の分離
 --------------------------------------------------
 
-* 『ちょうぜつ本』第7章
+* 『`ちょうぜつ本`_』第7章
 * 作ると使うを **分けよう**
 
 生成と使用
@@ -87,9 +91,10 @@
 --------------------------------------------------
 
 .. code-block:: python
+    :linenos:
 
-    def execute_ocr(client, ...) -> str:
-        result = client.recognize(...)
+    def execute_ocr(client, image) -> str:
+        result = client.recognize(image)
         return result
     
     # ImageOcrClientを作ってexecute_ocr関数を呼び出す
@@ -97,49 +102,53 @@
 作ると使うを分けた実装
 --------------------------------------------------
 
-* 与えられた ``client`` を使うだけ！
+* 与えられた ``client`` を使うだけ！（使い方は共通だった！）
 * ``ImageOcrClient`` を渡しても ``DocumentOcrClient`` を渡してもよい
 * 画像を受け付ける ``recognize()`` メソッドを持ったモノならいいぞ（👉インターフェースの話へ）
 
 作ると使うを分けていく
 --------------------------------------------------
 
-* 過去の自分のコードをリファクタリング
-* 関数宣言の変更（抽出 & インライン化）
+過去の自分のコードをリファクタリング
 
-一時的な関数に抽出
+* `関数宣言の変更 <https://refactoring.com/catalog/changeFunctionDeclaration.html>`__ （抽出 & インライン化）
+
+一時的な関数に **抽出**
 --------------------------------------------------
 
 .. code-block:: python
+    :linenos:
 
-    def execute_ocr(...) -> str:
+    def execute_ocr(image) -> str:
         client = ImageOcrClient()
-        return xx_execute_ocr(client)
+        return xx_execute_ocr(client, image)
 
-    def xx_execute_ocr(client) -> str:
-        result = client.recognize(...)
+    def xx_execute_ocr(client, image) -> str:
+        result = client.recognize(image)
         return result
 
-元の関数をインライン化
+元の関数を **インライン化**
 --------------------------------------------------
 
 .. code-block:: python
+    :linenos:
 
-    def xx_execute_ocr(client) -> str:
-        result = client.recognize(...)
+    def xx_execute_ocr(client, image) -> str:
+        result = client.recognize(image)
         return result
 
     client = ImageOcrClient()
-    return xx_execute_ocr(client)
+    xx_execute_ocr(client, image)
 
 関数名をrename
 --------------------------------------------------
 
 .. code-block:: python
+    :linenos:
 
-    def execute_ocr(client) -> str:
-        result = client.recognize(...)
+    def execute_ocr(client, image) -> str:
+        result = client.recognize(image)
         return result
 
     client = ImageOcrClient()
-    return execute_ocr(client)
+    execute_ocr(client, image)
