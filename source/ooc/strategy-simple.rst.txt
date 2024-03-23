@@ -15,7 +15,12 @@
 このトークで言うシンプルは、 **LEGOブロック** のイメージ
 ------------------------------------------------------------
 
-.. TODO 画像 or イラスト
+.. revealjs-break::
+    :notitle:
+
+.. image:: ../_static/ooc/wikipedia-commons-512px-LEGO-01.jpg
+
+https://commons.wikimedia.org/wiki/File:LEGO-01.jpg
 
 LEGOブロック
 --------------------------------------------------
@@ -23,19 +28,12 @@ LEGOブロック
 * ブロックの1つ1つは単純（2x2, 2x4）
 * ブロックを組合せることで **どんな大きなものでも作れる** （例：城）
 
-Rich Hickeyの「Simple Made Easy」
---------------------------------------------------
+.. revealjs-break::
+    :notitle:
 
-* 訳すなら「 **誰でもわかる** Simple」
-* Clojureの作者のプログラミング観
-* 紹介 `Clojureと「Simple Made Easy」 <https://boxofpapers.hatenablog.com/entry/simple_made_easy>`__
+.. image:: ../_static/ooc/11_Article_Biggest_Sets_Desktop_Hero_Std_desktop.jpg
 
-『Clean Craftsmanship』第6章
---------------------------------------------------
-
-    シンプルは「簡単」という意味ではない。シンプルとは「もつれていない、絡み合っていない」という意味である。(Kindle版 p.262)
-
-※直前の脚注で「Simple Made Easy」を案内。また、Uncle BobはClojureを書きます
+`世界のベスト レゴ®アーティスト <https://www.lego.com/ja-jp/categories/adults-welcome/article/artists>`__ より
 
 **小さな部品を組み合わせる**
 --------------------------------------------------
@@ -43,4 +41,16 @@ Rich Hickeyの「Simple Made Easy」
 * 変更しやすい構造のコードを書くための戦略
 * 1つ1つの部品はLEGOブロックのようにして、組合せて機能を実現する
 
-.. TODO 正しい使い方を簡単に
+影響：Rich Hickeyの「Simple Made Easy」
+--------------------------------------------------
+
+* 訳すなら「 **誰でもわかる** Simple」
+* Clojureの作者のプログラミング観
+* 紹介 `Clojureと「Simple Made Easy」 <https://boxofpapers.hatenablog.com/entry/simple_made_easy>`__
+
+参考：『Clean Craftsmanship』第6章
+--------------------------------------------------
+
+    シンプルは「簡単」という意味ではない。シンプルとは「もつれていない、絡み合っていない」という意味である。(Kindle版 p.262)
+
+※直前の脚注で「Simple Made Easy」を案内。また、Uncle BobはClojureを書きます
