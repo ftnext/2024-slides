@@ -38,7 +38,7 @@ LEGOブロック
 **小さな部品を組み合わせる**
 --------------------------------------------------
 
-* 変更しやすい構造のコードを書くための戦略
+* 変更しやすい構造のコードを書くために採用した戦略
 * 1つ1つの部品はLEGOブロックのようにして、組合せて機能を実現する
 
 影響：Rich Hickeyの「Simple Made Easy」
@@ -48,7 +48,7 @@ LEGOブロック
 * Clojureの作者のプログラミング観
 * 紹介 `Clojureと「Simple Made Easy」 <https://boxofpapers.hatenablog.com/entry/simple_made_easy>`__
 
-参考：『Clean Craftsmanship』第6章
+参考：『`Clean Craftsmanship`_』第6章
 --------------------------------------------------
 
     シンプルは「簡単」という意味ではない。シンプルとは「もつれていない、絡み合っていない」という意味である。(Kindle版 p.262)
