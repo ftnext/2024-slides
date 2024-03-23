@@ -4,7 +4,7 @@
 .. 部品についてのパート
 
 * 小さい部品？ 関数は任せて！
-* クラス？ うっ...
+* クラス？ うっ...🙈
 
 ずっと分からなかった、クラスの使い所
 --------------------------------------------------
@@ -19,6 +19,7 @@
 --------------------------------------------------
 
 .. code-block:: python
+    :linenos:
 
     class Dog:
         kind = 'canine'  # クラス変数
@@ -28,60 +29,83 @@
 
 `Python チュートリアル「9.3.5. クラスとインスタンス変数」 <https://docs.python.org/ja/3/tutorial/classes.html#class-and-instance-variables>`__
 
-よい構造のコードとしてのクラスの例（ミノ駆動本 2章）
+よい構造のコードとしてのクラスの例（`ミノ駆動本`_ 2章）
 ------------------------------------------------------------
 
     強く関係し合うデータとロジックを一箇所にギュッと集めておく (Kindle版 p.51)
 
-* ヒットポイント
-* ダメージを受ける
-* 回復する
+例：ヒットポイント
 
 Pythonでの実装例
 ------------------------------------------------------------
 
-.. code-block:: python
-
-    class HitPoint:
-        MIN: Final[int] = 0
-        MAX: Final[int] = 999
-
-        def __init__(self, value: int) -> None:
-            if value < self.MIN:
-                raise ValueError(f"{self.MIN}以上を指定してください")
-            if value > self.MAX:
-                raise ValueError(f"{self.MAX}以下を指定してください")
-
-            self.value = value
-
-        def damage(self, damage_amount: int) -> HitPoint:
-            # 省略
-
-        def recover(self, recovery_amount: int) -> HitPoint:
-            # 省略
+.. literalinclude:: ../../samplecode/software-journey/hitpoint_minodriven.py
+    :language: python
+    :linenos:
 
 `実装の全体 <https://github.com/ftnext/exile-of-the-wicked-py/blob/ef07c9a870013580b240f9a6d05f0d4dbecb9a88/chapter2/first_step.py>`__
 
-クラスは **データとロジックをまとめる**
+クラス変数
+------------------------------------------------------------
+
+ヒットポイントの最大、最小
+
+.. literalinclude:: ../../samplecode/software-journey/hitpoint_minodriven.py
+    :language: python
+    :linenos:
+    :emphasize-lines: 2-3
+
+インスタンス変数
+------------------------------------------------------------
+
+値を検証している！！
+
+.. literalinclude:: ../../samplecode/software-journey/hitpoint_minodriven.py
+    :language: python
+    :linenos:
+    :emphasize-lines: 5-11
+
+ヒットポイントに関わるメソッド
+------------------------------------------------------------
+
+.. literalinclude:: ../../samplecode/software-journey/hitpoint_minodriven.py
+    :language: python
+    :linenos:
+    :emphasize-lines: 13-17
+
+クラスは **データとロジックをまとめる** もの
 ------------------------------------------------------------
 
 * 文法を学べば、処理系が動作するクラスは書ける
 * コードの構造としてよいクラスも悪いクラスも、同様に動作してしまう
 * 良し悪しの **判断基準** 「まとめているか」（過去の私はこれが持てていなかった）
 
-データだけのクラスに注意
+データだけのクラスに注意⚠️
 ------------------------------------------------------------
 
-* ロジックを持たない
-* データクラスとして知られる悪しき構造（私はよくやってました）
+* **ロジックを持たない**
+* クラスを使うコードがデータを取り出して加工してしまっている
+* 私はよくやってました
 
-増田本 第3章・ミノ駆動本 第1章
-
-まとめることで、クラスを使う側に *楽* をさせる
+データクラス
 ------------------------------------------------------------
 
-* 増田本 第1章
+* 悪しき構造として知られる（`増田本`_ 第3章・`ミノ駆動本`_ 第1章）
+* リファクタリングでは、データを取り出して加工するコードを **クラスの中へ移動する**
+
+クラスを使う側のコードよ、 **楽** してこうぜ
+------------------------------------------------------------
+
+クラスにデータとロジックをまとめる効能
+
+参考：「コーヒーちょうだい」
+------------------------------------------------------------
+
+.. raw:: html
+
+    <iframe class="speakerdeck-iframe" style="border: 0px; background: rgba(0, 0, 0, 0.1) padding-box; margin: 0px; padding: 0px; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 40px; width: 100%; height: auto; aspect-ratio: 560 / 395;" frameborder="0" src="https://speakerdeck.com/player/d4f99108649049b1a0f91c86e7890b98?slide=7" title="Tell, don't ask" allowfullscreen="true" data-ratio="1.4177215189873418"></iframe>
+
+参考：`増田本`_ 第1章
+------------------------------------------------------------
 
     使う側のプログラムの記述がかんたんになるように、使われる側のクラスに便利なメソッドを用意する (Kindle版 p.54)
-
-* 「コーヒーください」（ななうぇぶさん `Tell, don't ask <https://speakerdeck.com/77web/tell-dont-ask>`__）
