@@ -9,8 +9,15 @@
 .. code-block:: python
 
     def save_result(data, file_path):
-        # 渡されたデータ data を計算して加工。resultができる（具体例としてはfor文？）
-        # resultをファイルに保存する
+        result = []
+        for obj in data:
+            # 実際は、summaryの末尾に句点「。」がなければ補うなども入ってきます
+            result.append({"text": obj["summary"] + obj["detail"]})
+
+        with jsonlines.open(file_path, "w") as writer:
+            writer.write_all(result)
+
+.. TODO クラスならこう（saveに使うインスタンスを渡していくように発展しそう）
 
 少し後になって
 --------------------------------------------------
@@ -21,21 +28,25 @@
 実はテストも書きづらかった
 --------------------------------------------------
 
-.. TODO ここ、自作の関数を呼んだらモックでよくなる。ラップしてない処理をもっとベタ書きにする
-
 .. code-block:: python
 
-    @patch("......write")
-    @patch("......calculate")
-    def test_save_result(calculate, write):  # モックにする
-        # dataを用意（縦に長くなる）
-        # 計算結果の期待値を用意（ここも縦に長くなる）
-        calculate.return_value = expected_result
+    @patch("(Pythonの詳細なので略).jsonlines")
+    def test_save_result(jsonlines):  # 書き込まないようモックにする
+        writer = jsonlines.open.return_value.__enter__.return_value
+        data = [
+            # 実際はsummaryやdetail以外の項目も含みます
+            {"summary": "すごい要約。", "detail": "かくかくしかじか、ほげほげふがふが"},
+            {"summary": "今北産業", "detail": "..."},
+        ]
 
         save_result(data, file_path)
 
-        calculate.assert_called_once_with(data)
-        write.assert_called_once_with(expected_result)
+        writer.write_all.assert_called_once_with(
+            [
+                {"text": "すごい要約。かくかくしかじか、ほげほげふがふが"},
+                {"text": "今北産業。..."},
+            ]
+        )
 
 計算して保存する関数を書いていた私
 --------------------------------------------------
@@ -50,17 +61,20 @@
 
     <iframe class="speakerdeck-iframe" style="border: 0px; background: rgba(0, 0, 0, 0.1) padding-box; margin: 0px; padding: 0px; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 40px; width: 100%; height: auto; aspect-ratio: 560 / 315;" frameborder="0" src="https://speakerdeck.com/player/d663c3f2afec45379371126260431048?slide=12" title="これだけは知っておきたいクラス設計の基礎知識" allowfullscreen="true" data-ratio="1.7777777777777777"></iframe>
 
-計算結果を書き込む処理
+計算と出力を分けて書く
 --------------------------------------------------
 
 .. code-block:: python
 
-    def calculate(data):
-        # データを受け取ってデータを返す（）
+    def calculate(data):  # データを受け取ってデータを返す
+        result = []
+        for obj in data:
+            result.append({"text": obj["summary"] + obj["detail"]})
         return result
 
-    def write(data, file_path):
-        # ファイルに保存する処理
+    def write(file_path, data):  # ファイルに保存する処理
+        with jsonlines.open(file_path, "w") as writer:
+            writer.write_all(data)
 
     # calculateしてwriteするとして、先のsave_resultを実現
 
@@ -77,6 +91,8 @@
 * コードの行数に注目していた（N行くらいだから関数にしよう）
 * コードの **目的** （入出力、計算判断）に盲目でした
 * 混ぜていたので、計算だけ使えない
+
+.. TODO 入出力のバリエーションが増えても対応できる
 
 入出力と計算判断を分けていく
 --------------------------------------------------
@@ -108,3 +124,5 @@
     # save_resultを呼び出していた箇所（呼び出しがなくなる）
     result = calculate(data)
     write(result, file_path)
+
+.. 基本のリファクタリングで分けられる
