@@ -11,3 +11,23 @@
 
 * kurenai https://github.com/ftnext/kurenai
 * ocroy https://github.com/ftnext/ocroy
+
+この発表の元になったアウトプット
+======================================================================
+
+* シンプルさ： `読書ログ | 『Clean Craftsmanship』 第6章 シンプルな設計 <https://nikkie-ftnext.hatenablog.com/entry/clean-craftsmanship-simple-design-four-rule-in-clean-series#%E3%82%B7%E3%83%B3%E3%83%97%E3%83%AB%E3%81%A8%E3%81%AF>`__
+* `#ミノ駆動本 2章を読んで、クラスの使い所がようやく分かった気がします <https://nikkie-ftnext.hatenablog.com/entry/minodriven-book-chapter2-class>`__
+
+.. revealjs-break::
+
+* 依存性注入： `読書ログ | #ちょうぜつ本 第7章 <https://nikkie-ftnext.hatenablog.com/entry/the-transcendent-book-chapter7-grasp-dependency-injection-and-auto-wiring-by-di-container>`__
+* インターフェース： `読書ログ | #ちょうぜつ本 第5章 <https://nikkie-ftnext.hatenablog.com/entry/the-transcendent-book-chapter5-solid-principles#ISP>`__
+* `nikkieと「ほげ言語」のパラドックス 〜"Pythonで考えていた"からインターフェースの理解が難しかった説〜 <https://nikkie-ftnext.hatenablog.com/entry/hoge-language-paradox-nikkie-case-python-interface>`__
+
+登壇準備中のアウトプット
+--------------------------------------------------
+
+ソフトウェアを作りたかった私へ
+
+* `入出力と計算を分ける <https://nikkie-ftnext.hatenablog.com/entry/sharply-distinguish-io-from-calculation>`__
+* `作ると使うを分ける <https://nikkie-ftnext.hatenablog.com/entry/sharply-distinguish-use-from-creation>`__
