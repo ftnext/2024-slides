@@ -1,0 +1,113 @@
+本題：文字列のちょっとした変換
+======================================================================
+
+例えば、Emily Stewartを **すべて小文字** にしたい
+
+手に馴染む言語（Python）でやってました
+--------------------------------------------------
+
+.. code-block:: python
+
+    >>> "Emily Stewart".lower()
+    'emily stewart'
+
+VS Codeでも、できます！！
+======================================================================
+
+1. テキストを選択
+2. *コマンドパレット*
+3. **Transform** で始まるコマンドを選択
+
+コマンドパレットとは
+--------------------------------------------------
+
+押してみて！🫵
+
+* Linux または Windowsの方： :kbd:`Ctrl + Shift + P`
+* macOSの方： :kbd:`⇧⌘P` （＝ :kbd:`Command + Shift + P`）
+
+デモ
+--------------------------------------------------
+
+VS Codeを操作して、Emily Stewartを小文字にする
+
+:guilabel:`Transform to` (1/2)
+--------------------------------------------------
+
+.. list-table:: VS Codeで文字列操作
+
+    * - :guilabel:`Lowercase`
+      - emily stewart
+    * - :guilabel:`Uppercase`
+      - EMILY STEWART
+    * - :guilabel:`Title Case`
+      - Emily Stewart
+
+:guilabel:`Transform to` (2/2)
+--------------------------------------------------
+
+.. list-table:: VS Codeで文字列操作
+
+    * - :guilabel:`Snake Case`
+      - emily_stewart
+    * - :guilabel:`Camel Case`
+      - emilyStewart
+    * - :guilabel:`Pascal Case`
+      - EmilyStewart
+    * - :guilabel:`Kebab Case`
+      - emily-stewart
+
+例：Snake ➡️ Kebab
+--------------------------------------------------
+
+* :guilabel:`Transform to Kebab Case`
+* sphinx_new_tab_link ➡️ sphinx-new-tab-link
+
+`自作ライブラリ <https://github.com/ftnext/sphinx-new-tab-link>`__ の開発中にちょっと助かりそう
+
+参考資料
+--------------------------------------------------
+
+* ドキュメント `Transform text commands <https://code.visualstudio.com/docs/getstarted/tips-and-tricks#_transform-text-commands>`__
+* 拙ブログ `テキストのちょっとした変換（全小文字化など）をPythonでやっていたのですが、VS Codeでサクッとtransformできることを知りました <https://nikkie-ftnext.hatenablog.com/entry/vscode-tips-transform-text-commands>`__
+
+コマンドパレットまわりで寄り道
+======================================================================
+
+1. Quick Open
+2. コマンド
+
+寄り道1️⃣ Quick Openとは
+--------------------------------------------------
+
+押してみて！🫵
+
+* Linux または Windowsの方： :kbd:`Ctrl + P`
+* macOSの方： :kbd:`⇧P` （＝ :kbd:`Command + P`）
+
+:guilabel:`>` があるかないか
+--------------------------------------------------
+
+* Quick Openで > と打ち込むと、コマンドパレット
+* コマンドパレットで :guilabel:`>` を消すと、Quick Open
+
+時間に余裕があったらデモ
+
+寄り道2️⃣ すべてはコマンド
+--------------------------------------------------
+
+* コマンドパレットで :guilabel:`Transform to` **コマンドを検索・実行** した
+* VS Code拡張開発でもコマンドを実装する
+
+昨年の拡張開発の発表資料より
+------------------------------------------------------------
+
+.. raw:: html
+
+    <iframe width="800" height="480" src="https://ftnext.github.io/2023-slides/vscodeconjp/awakening-extension.html#/12/2"
+        title="Awakening Extension (拡張開発はじまるよ🔰)"></iframe>
+
+寄り道の参考資料
+--------------------------------------------------
+
+* 拙ブログ `つながる操作 VS Code！Quick Openとコマンドパレットはキー入力で行き来できる！ <https://nikkie-ftnext.hatenablog.com/entry/vscode-tips-quick-open-command-palette-back-and-forth>`__
