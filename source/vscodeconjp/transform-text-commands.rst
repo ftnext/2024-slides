@@ -21,7 +21,7 @@ VS Codeで文字列のちょっとした変換ができるんです！
 お前、誰よ（自己紹介）
 ======================================================================
 
-* nikkie ／ 毎日 `ブログ <https://nikkie-ftnext.hatenablog.com/>`__ 執筆、520日突破
+* nikkie ／ 毎日 `ブログ <https://nikkie-ftnext.hatenablog.com/>`__ 執筆、連続520日突破
 * ソフトウェアエンジニアリングで突破するデータサイエンティスト（`We're hiring! <https://hrmos.co/pages/uzabase/jobs/1829077236709650481>`__）
 * 仕事もプライベートも **VS Code** で **Python** と戯れています
 
