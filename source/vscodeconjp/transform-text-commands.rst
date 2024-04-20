@@ -1,3 +1,9 @@
+:ogp_title: VS Codeで文字列のちょっとした変換ができるんです！
+:ogp_event_name: vscodeconjp
+:ogp_slide_name: transform-text-commands
+:ogp_description: 〜実装まで覗くクイックツアー〜 2024/04 VS Code Conference JP
+:ogp_image_name: vscodeconjp
+
 ======================================================================
 VS Codeで文字列のちょっとした変換ができるんです！
 ======================================================================
