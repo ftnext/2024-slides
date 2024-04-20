@@ -1,0 +1,13 @@
+classDiagram
+    direction LR
+    Command <|-- EditorCommand
+    EditorCommand <|-- EditorAction
+    EditorAction <|-- AbstractCaseAction
+    class Command{
+    }
+    class EditorCommand{
+    }
+    class EditorAction{
+    }
+    class AbstractCaseAction{
+    }
