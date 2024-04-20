@@ -1,7 +1,7 @@
 本題：文字列のちょっとした変換
 ======================================================================
 
-例えば、Emily Stewartを **すべて小文字** にしたい
+英語の文字列（例えば、Emily Stewart）を **すべて小文字** にしたい
 
 手に馴染む言語（Python）でやってました
 --------------------------------------------------
@@ -10,6 +10,16 @@
 
     >>> "Emily Stewart".lower()
     'emily stewart'
+
+選択肢は色々ある
+--------------------------------------------------
+
+.. code-block:: shell
+
+    $ python -c 'print("Emily Stewart".lower())'
+    emily stewart
+    $ echo 'Emily Stewart' | tr '[:upper:]' '[:lower:]'
+    emily stewart
 
 VS Codeでも、できます！！
 ======================================================================
@@ -30,6 +40,9 @@ VS Codeでも、できます！！
 --------------------------------------------------
 
 VS Codeを操作して、Emily Stewartを小文字にする
+
+* Version: 1.88.1 (Universal)
+* OS: Darwin arm64 21.6.0
 
 :guilabel:`Transform to` (1/2)
 --------------------------------------------------
@@ -65,8 +78,10 @@ VS Codeを操作して、Emily Stewartを小文字にする
 
 `自作ライブラリ <https://github.com/ftnext/sphinx-new-tab-link>`__ の開発中にちょっと助かりそう
 
-参考資料
+参考資料 🏃‍♂️
 --------------------------------------------------
+
+🏃‍♂️は本編ではスキップします。興味ある方向けです
 
 * ドキュメント `Transform text commands <https://code.visualstudio.com/docs/getstarted/tips-and-tricks#_transform-text-commands>`__
 * 拙ブログ `テキストのちょっとした変換（全小文字化など）をPythonでやっていたのですが、VS Codeでサクッとtransformできることを知りました <https://nikkie-ftnext.hatenablog.com/entry/vscode-tips-transform-text-commands>`__
@@ -91,7 +106,7 @@ VS Codeを操作して、Emily Stewartを小文字にする
 * Quick Openで > と打ち込むと、コマンドパレット
 * コマンドパレットで :guilabel:`>` を消すと、Quick Open
 
-時間に余裕があったらデモ
+時間に余裕があったら **行き来** するデモ
 
 寄り道2️⃣ すべてはコマンド
 --------------------------------------------------
@@ -107,7 +122,7 @@ VS Codeを操作して、Emily Stewartを小文字にする
     <iframe width="800" height="480" src="https://ftnext.github.io/2023-slides/vscodeconjp/awakening-extension.html#/12/2"
         title="Awakening Extension (拡張開発はじまるよ🔰)"></iframe>
 
-寄り道の参考資料
+拙ブログ 🏃‍♂️
 --------------------------------------------------
 
-* 拙ブログ `つながる操作 VS Code！Quick Openとコマンドパレットはキー入力で行き来できる！ <https://nikkie-ftnext.hatenablog.com/entry/vscode-tips-quick-open-command-palette-back-and-forth>`__
+* `つながる操作 VS Code！Quick Openとコマンドパレットはキー入力で行き来できる！ <https://nikkie-ftnext.hatenablog.com/entry/vscode-tips-quick-open-command-palette-back-and-forth>`__
