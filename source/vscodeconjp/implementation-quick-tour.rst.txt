@@ -1,9 +1,10 @@
-コマンドごとに実装（クラス）がある
+これらのコマンドはどう実装されている？
 ======================================================================
 
-.. TODO もうちょいいい見出しにできる？
+* VS Codeの実装（TypeScript）を見ていくパート
+* **コマンドごとにクラスがある**
 
-``registerEditorAction()``
+``registerEditorAction()`` 関数
 --------------------------------------------------
 
 .. code-block:: typescript
@@ -36,18 +37,20 @@ https://github.com/microsoft/vscode/blob/1.88.1/src/vs/editor/contrib/linesOpera
     }
 
 * Caseに関する **抽象** Action
-* 継承したクラスで具体のActionを実装する（例：小文字にする）
+* サブクラスで具体のActionを実装する（例：小文字にする）
 
 .. TODO 薄いレイヤをいくつも使った継承関係を補足
 
-``AbstractCaseAction`` は *Template Method* パターン
-------------------------------------------------------------
+``AbstractCaseAction`` はGoFの *Template Method* パターン
+----------------------------------------------------------------------
 
 .. code-block:: typescript
 
     // https://github.com/microsoft/vscode/blob/1.88.1/src/vs/editor/contrib/linesOperations/browser/linesOperations.ts#L1032
     export abstract class AbstractCaseAction extends EditorAction {
-            public run(_accessor: ServicesAccessor, editor: ICodeEditor): void {}
+            public run(_accessor: ServicesAccessor, editor: ICodeEditor): void {
+                // 処理の中で _modifyText が呼ばれる
+            }
 
             protected abstract _modifyText(text: string, wordSeparators: string): string;
     }
@@ -67,7 +70,7 @@ https://github.com/microsoft/vscode/blob/1.88.1/src/vs/editor/contrib/linesOpera
 1️⃣ ``LowerCaseAction``
 ======================================================================
 
-* **JavaScriptのメソッド** を使うパターン
+* **JavaScriptのメソッド** を使う実装（ ``UpperCaseAction`` も同様）
 * （私の理解が雑すぎるかもですが、）TypeScriptは型付きのJavaScript
 
 .. https://twitter.com/ftnext/status/1603355872809263104
@@ -99,7 +102,8 @@ MDN `String.prototype.toLocaleLowerCase() <https://developer.mozilla.org/ja/docs
 2️⃣ ``TitleCaseAction``
 ======================================================================
 
-* 正規表現を使うパターン
+* **正規表現** を使う実装
+* ``SnakeCaseAction`` などなども同様
 
 テストコードより
 --------------------------------------------------
@@ -130,7 +134,7 @@ https://github.com/microsoft/vscode/blob/1.88.1/src/vs/editor/contrib/linesOpera
 --------------------------------------------------
 
 * スラッシュで囲む ``/ab+c/g``
-* ``new RegExp("ab+c", "g")``
+* ``new RegExp("ab+c", "g")`` （👈今回はこちら）
 
 MDN `正規表現の作成 <https://developer.mozilla.org/ja/docs/Web/JavaScript/Guide/Regular_Expressions#%E6%AD%A3%E8%A6%8F%E8%A1%A8%E7%8F%BE%E3%81%AE%E4%BD%9C%E6%88%90>`__
 
@@ -145,7 +149,33 @@ MDN `正規表現の作成 <https://developer.mozilla.org/ja/docs/Web/JavaScript
 
     * グローバル検索(g)・複数行の検索(m)・unicode(u)
 
-.. 正確には BackwardsCompatibleRegExp である点に触れる
+独自クラス ``BackwardsCompatibleRegExp`` 🏃‍♂️
+--------------------------------------------------
+
+* 正確には、 ``RegExp`` を返す ``BackwardsCompatibleRegExp`` を定義した実装
+* ``RegExp`` インスタンス作成時に例外を送出したら、握りつぶして ``null`` を返す（＝後方互換）
+
+正規表現を使った ``_modifyText()``
+======================================================================
+
+.. code-block:: typescript
+
+    // https://github.com/microsoft/vscode/blob/1.88.1/src/vs/editor/contrib/linesOperations/browser/linesOperations.ts#L1146-L1155
+    protected _modifyText(text: string, wordSeparators: string): string {
+        // 省略
+        return text
+                .toLocaleLowerCase()
+                .replace(titleBoundary, (b) => b.toLocaleUpperCase());
+    }
+
+正規表現を使った ``replace()``
+--------------------------------------------------
+
+* 置換文字列として関数を指定。シグネチャは ``b`` のみ
+* ``b`` は **正規表現に一致した文字列**
+* キャプチャグループの ``()`` を（幾重も）含むが、このreplaceでは無視
+
+MDN `置換文字列としての関数の指定 <https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/String/replace#%E7%BD%AE%E6%8F%9B%E6%96%87%E5%AD%97%E5%88%97%E3%81%A8%E3%81%97%E3%81%A6%E3%81%AE%E9%96%A2%E6%95%B0%E3%81%AE%E6%8C%87%E5%AE%9A>`__
 
 正規表現 ``'(^|[^\\p{L}\\p{N}\']|((^|\\P{L})\'))\\p{L}'`` 🤯
 ======================================================================
@@ -154,6 +184,9 @@ MDN `正規表現の作成 <https://developer.mozilla.org/ja/docs/Web/JavaScript
 
     new RegExp('(^|[^\\p{L}\\p{N}\']|((^|\\P{L})\'))\\p{L}', 'gmu');
     // /(^|[^\p{L}\p{N}']|((^|\P{L})'))\p{L}/gmu
+
+* ``titleBoundary`` と呼ばれる
+* （再掲） ``\`` をエスケープするために ``\\``
 
 ``\p{L}``
 --------------------------------------------------
@@ -171,7 +204,7 @@ MDN `正規表現の作成 <https://developer.mozilla.org/ja/docs/Web/JavaScript
 
 これらのあとに ``\\p{L}`` が続く
 
-``^`` 入力の先頭
+(1) ``^`` 入力の先頭
 --------------------------------------------------
 
 * mフラグで「*改行文字の直後にも一致*」
@@ -179,7 +212,7 @@ MDN `正規表現の作成 <https://developer.mozilla.org/ja/docs/Web/JavaScript
 
 MDN `境界型のアサーション <https://developer.mozilla.org/ja/docs/Web/JavaScript/Guide/Regular_expressions/Assertions#%E5%A2%83%E7%95%8C%E5%9E%8B%E3%81%AE%E3%82%A2%E3%82%B5%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3>`__
 
-文字クラス ``[^\\p{L}\\p{N}\']``
+(2) 文字クラス ``[^\\p{L}\\p{N}\']``
 --------------------------------------------------
 
 * 否定の ``^``
@@ -188,31 +221,30 @@ MDN `境界型のアサーション <https://developer.mozilla.org/ja/docs/Web/J
 
 MDN `文字クラス 種類 <https://developer.mozilla.org/ja/docs/Web/JavaScript/Guide/Regular_expressions/Character_classes#%E7%A8%AE%E9%A1%9E>`__
 
-``((^|\\P{L})\')``
+(3) ``((^|\\P{L})\')``
 --------------------------------------------------
 
 * ``\P{L}`` は、 ``\p{L}`` の否定（すなわち、 **文字でない** ）
 
-    * ``(^|\\P{L})`` ：先頭または、文字でない
+    * ``(^|\\P{L})`` ：先頭、または、文字でない
 
-* ``((^|\\P{L})\')\\p{L}`` は ``'\'physician\'s assistant\''`` で ``'\'p'`` にマッチ
-
-正規表現の名は ``titleBoundary``
+``((^|\\P{L})\')\\p{L}`` がマッチするもの
 --------------------------------------------------
+
+* ``'\'physician\'s assistant\''`` で ``'\'p'`` にマッチ（先頭の方がマッチ）
+* ``'hello \'world'`` の ``' \'w'`` にもマッチ（文字でない方がマッチ）
+
+この正規表現の名は ``titleBoundary``
+======================================================================
 
 * タイトルケースにする上での **境界**
-* ``'hello world'`` であれば、境界は ``'h'`` と ``' w'``
+* ``'hello world'`` であれば、境界に一致する部分文字列は ``'h'`` と ``' w'``
 
-キャプチャグループの ``()``
+🌯要点：タイトルケースの境界部分を大文字にする
 --------------------------------------------------
 
-* ``titleBoundary`` の正規表現は ``()`` を（幾重も）含む
-* 一致した内容を記憶できる（ので ``'hello world'`` から ``'h'`` と ``' w'`` が取得できる）
-
-MDN `グループと後方参照 種類 <https://developer.mozilla.org/ja/docs/Web/JavaScript/Guide/Regular_expressions/Groups_and_backreferences#%E7%A8%AE%E9%A1%9E>`__
-
-以上をまとめて、 ``_modifyText()``
-======================================================================
+1. テキスト全体を **小文字** にする
+2. タイトルケースの **境界部分** を **大文字** にする
 
 .. code-block:: typescript
 
@@ -221,15 +253,8 @@ MDN `グループと後方参照 種類 <https://developer.mozilla.org/ja/docs/W
             .toLocaleLowerCase()
             .replace(titleBoundary, (b) => b.toLocaleUpperCase());
 
-タイトルケースの境界部分を大文字にする
+拙ブログより 🏃‍♂️
 --------------------------------------------------
 
-1. テキスト全体を **小文字** にする
-2. タイトルケースの **境界部分** （キャプチャしている）を **大文字** にする
-
-🌯実装まで覗いたクイックツアーのまとめ
-======================================================================
-
-* Transformコマンドごとのクラス：Template Methodパターン
-* JavaScriptのメソッドを使って大文字化／小文字化
-* 正規表現を使った実装（特に、Unicode文字クラスエスケープ）
+* `JavaScriptの正規表現のコードに見た\\pや\\Pって何だ？ Unicode文字クラスエスケープ！ <https://nikkie-ftnext.hatenablog.com/entry/regex-unicode-character-class-escape-javascript-python>`__
+* `VS Codeで「Transform to Title Case」を担当するTitleCaseActionの実装の中の正規表現を読み解く <https://nikkie-ftnext.hatenablog.com/entry/understand-vscode-title-case-action-implementation-regex>`__
