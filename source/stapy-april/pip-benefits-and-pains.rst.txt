@@ -1,0 +1,159 @@
+パッケージマネージャ
+======================================================================
+
+ライブラリ（＝パッケージ）は便利だから、インストールしまくろう！
+
+``pip``
+--------------------------------------------------
+
+* venvやvirtualenvで作る仮想環境にある
+
+.. code-block:: shell
+
+    $ pip install kojo-fan-art
+    $ pip install git+https://github.com/ftnext/unko
+
+``pip`` は何をしているのか
+--------------------------------------------------
+
+* ＝ライブラリを *インストール* するとは
+* ライブラリの **実体のコードを取得** し、あなたのPython環境に置く
+
+  * PyPI https://pypi.org/ やリポジトリ（GitHub）から
+
+* だから ``import`` できる！
+
+例：仮想環境で :command:`pip install httpx`
+--------------------------------------------------
+
+* 実体のコードは :file:`site-packages` というディレクトリの下にある
+
+.. code-block:: shell
+
+    $ ls .venv/lib/python3.12/site-packages/httpx
+
+https://github.com/encode/httpx/tree/0.27.0/httpx の内容
+
+``import`` は :file:`site-packages` を見ている
+--------------------------------------------------
+
+.. raw:: html
+
+    <iframe class="speakerdeck-iframe" style="border: 0px; background: rgba(0, 0, 0, 0.1) padding-box; margin: 0px; padding: 0px; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 40px; width: 100%; height: auto; aspect-ratio: 560 / 315;" frameborder="0" src="https://speakerdeck.com/player/4eeda4cc2011471d91e325c7df7dbaff?slide=38" title="ModuleNotFoundErrorの傾向と対策:仕組みから学ぶImport / Unpacking ModuleNotFoundError" allowfullscreen="true" data-ratio="1.7777777777777777"></iframe>
+
+仮に仮想環境を使わなかったら（真似しないでね）
+--------------------------------------------------
+
+.. /Library/Frameworks/Python.framework/Versions/3.12/bin/python3 -m pip install httpx
+
+.. code-block:: shell
+
+    $ python3 -m pip install httpx
+
+:file:`/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages` にhttpxのコードが置かれる
+
+📌環境を分けるとは
+--------------------------------------------------
+
+* 仮想環境でプロジェクト用の :file:`site-packages` を用意した！
+
+    * 2つのプロジェクトで同じライブラリのバージョン違いが **共存できる**
+
+* Python環境には1つの :file:`site-packages` しかないゆえに共存できない
+
+:command:`.venv/bin/python -m pip install`
+--------------------------------------------------
+
+* 仮想環境を有効にしなくても、仮想環境にインストールできる
+* **仮想環境のPythonを指定** した
+
+:command:`pip` コマンドを使う
+======================================================================
+
+チュートリアル `12.3. pip を使ったパッケージ管理 <https://docs.python.org/ja/3/tutorial/venv.html#managing-packages-with-pip>`__
+
+:command:`python -m pip`
+--------------------------------------------------
+
+* チュートリアル記載の方法（※nikkieは公式厨）
+
+    * 仮想環境を有効にして、単に :command:`pip` でもよい
+
+* install / uninstall
+* show, list, freeze
+
+環境を再現するには
+--------------------------------------------------
+
+    ``python -m pip freeze`` はインストールされたパッケージ一覧を、``python -m pip install`` が解釈するフォーマットで生成します。
+
+環境を再現するコマンド
+--------------------------------------------------
+
+.. code-block:: shell
+
+    $ python -m pip freeze > requirements.txt
+    $ python -m pip install -r requirements.txt
+
+* freeze：ライブラリとバージョンの一覧
+* install：指定されたバージョンのライブラリをインストール
+
+思うに、仮想環境は使い捨て
+--------------------------------------------------
+
+* 仮想環境のディレクトリの名前は変更できない（壊れてしまう）
+* **作り直す** （というスタンスが公式と理解した）
+
+.. code-block:: shell
+
+    $ python3 -m venv .venv --clear --upgrade-deps
+    $ .venv/bin/python -m pip install -r requirements.txt
+
+:command:`pip` コマンドを使っていくなかで
+======================================================================
+
+伸びしろが感じられてきます
+
+人力 :command:`pip freeze` の功 **罪**
+--------------------------------------------------
+
+* 知らないと環境を再現できない
+* 知っていても忘れたら再現できない
+* :file:`requirements.txt` という命名は慣習でしかない（バベルの塔感）
+
+さらに :file:`requirements.txt` のメンテが大変
+------------------------------------------------------------
+
+* ライブラリの追加はまあできる（忘れずに :command:`pip freeze` するだけ）
+* 使っていたライブラリの削除がツラい（Help wanted!）
+
+2種類の依存
+--------------------------------------------------
+
+* プロジェクトが直接（**direct**）依存： httpx
+* 直接の依存が依存（**transitive**）しているライブラリ
+
+    * （httpxの場合）httpcore, idna などなど
+
+指定したライブラリしかuninstallできない
+--------------------------------------------------
+
+.. code-block:: shell
+
+    $ python -m pip uninstall -y httpx
+
+directの依存だけを指定しても、transitiveの依存は自動でuninstallされない
+
+削除がツラいのは、transitiveの依存
+--------------------------------------------------
+
+* httpxをuninstallするぞ！
+* httpxの依存するidna、 **他のdirect依存のライブラリのtransitive依存** だった！
+* idnaはuninstallできない。このチェックを1つ1つしていくのが大変😫
+
+🌯なぜアプリケーションごとにライブラリを分けるのか
+======================================================================
+
+* site-packages というディレクトリ下にインストールされたライブラリを ``import`` する
+* **アプリケーションごとにライブラリのインストール先を分けた** （バージョン違い共存可能に！）
+* ``pip`` が最初から使えるが、環境の再現となると伸びしろがある
