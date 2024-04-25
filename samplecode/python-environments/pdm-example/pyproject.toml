@@ -5,7 +5,9 @@ description = "Default template for PDM package"
 authors = [
     {name = "ftnext", email = "takuyafjp+develop@gmail.com"},
 ]
-dependencies = []
+dependencies = [
+    "kojo-fan-art>=0.1.1",
+]
 requires-python = ">=3.9"
 readme = "README.md"
 license = {text = "MIT"}
