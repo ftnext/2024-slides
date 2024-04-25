@@ -1,0 +1,228 @@
+pipのペインを解消する種々のツール
+======================================================================
+
+* 矢継ぎ早✨に紹介。気になるものはぜひドキュメントを
+* ⚠️ライブラリのインストールという観点に限る
+* pip「うう。。俺が弱くてごめん」
+
+仮想環境とpipをラップして **easy** にしたツールたち曰く
+----------------------------------------------------------------------
+
+* 仮想環境の管理、俺達に任せて！！
+* 環境の再現、簡単にしといたよ！
+
+Poetry
+======================================================================
+
+.. code-block:: shell
+
+    $ poetry --version
+    Poetry (version 1.8.2)
+
+インストール
+--------------------------------------------------
+
+.. code-block:: shell
+
+    $ curl -sSL https://install.python-poetry.org | python3 -
+    $ # または pipx install poetry
+
+https://python-poetry.org/docs/#installation
+
+導入
+--------------------------------------------------
+
+* 新規プロジェクトは :command:`poetry new` で作成
+* 既存プロジェクトには :command:`poetry init` で導入
+
+https://python-poetry.org/docs/basic-usage/#project-setup
+
+Poetry「仮想環境の管理は任せて！」
+--------------------------------------------------
+
+* :command:`poetry add` / remove
+* :command:`poetry shell` や :command:`poetry run` で仮想環境を有効にして実行できる
+
+https://python-poetry.org/docs/basic-usage/#using-your-virtual-environment
+
+Pipenv
+======================================================================
+
+.. code-block:: shell
+
+    $ pipenv --version
+    pipenv, version 2023.12.1
+
+🔰本発表を気に触ったので、補足大歓迎！
+
+インストール
+--------------------------------------------------
+
+.. code-block:: shell
+
+    $ pipx install pipenv
+
+https://github.com/pypa/pipenv/tree/v2023.12.1?tab=readme-ov-file#installation
+
+導入
+--------------------------------------------------
+
+* 新規作成：空ディレクトリで :command:`pipenv --python 3.12`
+
+Pipenv「仮想環境の管理は任せて！」
+--------------------------------------------------
+
+* :command:`pipenv install` / uninstall
+* :command:`pipenv shell` や :command:`pipenv run` で仮想環境を有効にして、コマンドを実行できる
+
+https://pipenv.pypa.io/en/latest/installation.html#installing-packages-for-your-project
+
+Hatch
+======================================================================
+
+.. code-block:: shell
+
+    $ hatch --version
+    Hatch, version 1.9.7
+
+🔰本発表を気に触ったので、補足大歓迎！
+
+インストール
+--------------------------------------------------
+
+* インストーラがある
+* または ``pipx install hatch``
+
+https://hatch.pypa.io/latest/install/#installers
+
+導入
+--------------------------------------------------
+
+* 新規プロジェクトは :command:`hatch new` で作成
+* 既存プロジェクトには :command:`hatch new --init` で導入
+
+https://hatch.pypa.io/latest/intro/#setup
+
+Hatch「:file:`pyproject.toml` 書いて」
+--------------------------------------------------
+
+* 開発者が :file:`pyproject.toml` を書く模様
+* :command:`hatch shell` や :command:`hatch run` で仮想環境を有効にして、コマンドを実行できる
+
+https://hatch.pypa.io/latest/environment/#dependencies
+
+PDM
+======================================================================
+
+.. code-block:: shell
+
+    $ pdm --version
+    PDM, version 2.15.1
+
+🔰本発表を気に触ったので、補足大歓迎！
+
+インストール
+--------------------------------------------------
+
+.. code-block:: shell
+
+    $ curl -sSL https://pdm-project.org/install-pdm.py | python3 -
+
+https://pdm-project.org/en/stable/#installation
+
+導入
+--------------------------------------------------
+
+* 新規作成：空ディレクトリで :command:`pdm new`
+* 却下されたPEP 582をサポートしており、依存をインストールするディレクトリ :file:`__pypackages__` を作ることもできる
+
+https://pdm-project.org/en/stable/usage/project/
+
+PDM「仮想環境の管理は任せて！」
+--------------------------------------------------
+
+* :command:`pdm add` / remove
+
+    * https://pdm-project.org/en/stable/usage/dependency/
+
+* :command:`poetry run` で仮想環境を有効にして実行できる
+
+    * https://pdm-project.org/en/stable/usage/venv/
+
+Rye
+======================================================================
+
+.. code-block:: shell
+
+    $ rye --version
+    rye 0.33.0
+    commit: 0.33.0 (58523f69f 2024-04-24)
+    platform: macos (aarch64)
+    self-python: not bootstrapped (target: cpython@3.12)
+    symlink support: true
+    uv enabled: false
+
+インストール「**Rust** のように簡単」
+--------------------------------------------------
+
+.. code-block:: shell
+
+    curl -sSf https://rye-up.com/get | bash
+
+https://rye-up.com/guide/installation/
+
+導入「Pythonも管理しときますね〜」
+--------------------------------------------------
+
+* 新規作成：:command:`rye init`
+* Ryeで管理してるプロジェクトは :command:`rye sync`
+
+https://rye-up.com/guide/basics/
+
+Rye「どう？簡単でしょ？」
+--------------------------------------------------
+
+* :command:`rye add` / remove して :command:`rye sync`
+* :command:`rye run` で仮想環境を有効にして、コマンドを実行できる
+* 仮想環境 :file:`.venv` はあるが、開発者が手出しできない
+
+uv
+======================================================================
+
+.. code-block:: shell
+
+    $ uv --version
+    uv 0.1.38
+
+インストール
+--------------------------------------------------
+
+.. code-block:: shell
+
+    $ curl -LsSf https://astral.sh/uv/install.sh | sh
+    $ # または pipx install uv
+
+https://github.com/astral-sh/uv/tree/0.1.38?tab=readme-ov-file#getting-started
+
+導入：uvで仮想環境を作る
+--------------------------------------------------
+
+.. code-block:: shell
+
+    $ uv venv
+
+* :file:`.venv` という名前の仮想環境ができる
+* Pythonのvenvやvirtualenvで作った仮想環境とは **互換性がない**
+
+uvは **高速** なvenvでありpip
+--------------------------------------------------
+
+* 環境の再現は人手
+
+.. code-block:: shell
+
+    $ uv pip install ...
+    $ uv pip freeze > requirements.txt
+    $ uv pip sync requirements.txt
+
++ Ryeはuvを使える
