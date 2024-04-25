@@ -6,14 +6,21 @@
 ``pip``
 --------------------------------------------------
 
-* venvやvirtualenvで作る仮想環境にある
+* venvやvirtualenvで作る仮想環境にすでにある
+
+.. literalinclude:: virtualenv-tree.txt
+    :language: txt
+    :emphasize-lines: 4
+
+:command:`pip install`
+--------------------------------------------------
 
 .. code-block:: shell
 
     $ pip install kojo-fan-art
     $ pip install git+https://github.com/ftnext/unko
 
-``pip`` は何をしているのか
+``pip install`` は何をしているのか
 --------------------------------------------------
 
 * ＝ライブラリを *インストール* するとは
@@ -21,7 +28,7 @@
 
   * PyPI https://pypi.org/ やリポジトリ（GitHub）から
 
-* だから ``import`` できる！
+* ソースコードが置かれるから ``import`` できる！
 
 例：仮想環境で :command:`pip install httpx`
 --------------------------------------------------
@@ -34,15 +41,15 @@
 
 https://github.com/encode/httpx/tree/0.27.0/httpx の内容
 
-``import`` は :file:`site-packages` を見ている
---------------------------------------------------
+``import`` は :file:`site-packages` を見ている 🏃‍♂️
+------------------------------------------------------------
 
 .. raw:: html
 
     <iframe class="speakerdeck-iframe" style="border: 0px; background: rgba(0, 0, 0, 0.1) padding-box; margin: 0px; padding: 0px; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 40px; width: 100%; height: auto; aspect-ratio: 560 / 315;" frameborder="0" src="https://speakerdeck.com/player/4eeda4cc2011471d91e325c7df7dbaff?slide=38" title="ModuleNotFoundErrorの傾向と対策:仕組みから学ぶImport / Unpacking ModuleNotFoundError" allowfullscreen="true" data-ratio="1.7777777777777777"></iframe>
 
-仮に仮想環境を使わなかったら（真似しないでね）
---------------------------------------------------
+仮に仮想環境を使わなかったら（真似しないでね🙅‍♂️）
+------------------------------------------------------------
 
 .. /Library/Frameworks/Python.framework/Versions/3.12/bin/python3 -m pip install httpx
 
@@ -55,14 +62,14 @@ https://github.com/encode/httpx/tree/0.27.0/httpx の内容
 📌環境を分けるとは
 --------------------------------------------------
 
-* 仮想環境でプロジェクト用の :file:`site-packages` を用意した！
+* 仮想環境は、プロジェクト専用の :file:`site-packages` を用意している！
 
     * 2つのプロジェクトで同じライブラリのバージョン違いが **共存できる**
 
-* Python環境には1つの :file:`site-packages` しかないゆえに共存できない
+* 大元のPython環境には1つの :file:`site-packages` しかないゆえに共存できない
 
-:command:`.venv/bin/python -m pip install`
---------------------------------------------------
+tips✨ :command:`.venv/bin/python -m pip install`
+------------------------------------------------------------
 
 * 仮想環境を有効にしなくても、仮想環境にインストールできる
 * **仮想環境のPythonを指定** した
@@ -87,6 +94,22 @@ https://github.com/encode/httpx/tree/0.27.0/httpx の内容
 
     ``python -m pip freeze`` はインストールされたパッケージ一覧を、``python -m pip install`` が解釈するフォーマットで生成します。
 
+:command:`python -m pip freeze`
+--------------------------------------------------
+
+.. code-block:: shell
+
+    $ python -m pip freeze
+    anyio==4.3.0
+    certifi==2024.2.2
+    h11==0.14.0
+    httpcore==1.0.5
+    httpx==0.27.0
+    idna==3.7
+    sniffio==1.3.1
+
+ライブラリとバージョンの一覧
+
 環境を再現するコマンド
 --------------------------------------------------
 
@@ -95,7 +118,7 @@ https://github.com/encode/httpx/tree/0.27.0/httpx の内容
     $ python -m pip freeze > requirements.txt
     $ python -m pip install -r requirements.txt
 
-* freeze：ライブラリとバージョンの一覧
+* freeze：動作する環境に入っているライブラリのバージョンを列挙
 * install：指定されたバージョンのライブラリをインストール
 
 思うに、仮想環境は使い捨て
@@ -125,15 +148,26 @@ https://github.com/encode/httpx/tree/0.27.0/httpx の内容
 ------------------------------------------------------------
 
 * ライブラリの追加はまあできる（忘れずに :command:`pip freeze` するだけ）
-* 使っていたライブラリの削除がツラい（Help wanted!）
+* 使っていたライブラリの **削除** がツラい（Help wanted!）
 
 2種類の依存
 --------------------------------------------------
 
-* プロジェクトが直接（**direct**）依存： httpx
+* プロジェクトが直接（**direct**）依存
 * 直接の依存が依存（**transitive**）しているライブラリ
+* 用語は `The maze of Python dependency management <https://blog.frankel.ch/maze-python-dependency-management/>`__ から
 
-    * （httpxの場合）httpcore, idna などなど
+httpxを例に、2種類の依存
+--------------------------------------------------
+
+.. code-block:: shell
+
+    $ python -m pip install httpx  # directの依存
+
+    Installing collected packages: sniffio, idna, h11, certifi, httpcore, anyio, httpx
+    Successfully installed anyio-4.3.0 certifi-2024.2.2 h11-0.14.0 httpcore-1.0.5 httpx-0.27.0 idna-3.7 sniffio-1.3.1
+
+httpcore, idna などなどが transitiveの依存
 
 指定したライブラリしかuninstallできない
 --------------------------------------------------
@@ -147,13 +181,19 @@ directの依存だけを指定しても、transitiveの依存は自動でuninsta
 削除がツラいのは、transitiveの依存
 --------------------------------------------------
 
-* httpxをuninstallするぞ！
-* httpxの依存するidna、 **他のdirect依存のライブラリのtransitive依存** だった！
-* idnaはuninstallできない。このチェックを1つ1つしていくのが大変😫
+* httpxの依存するhttpcore、他のdirect依存のライブラリで使ってない。消せる！
+* httpxの依存するidna、 **他のdirect依存のライブラリのtransitive依存** だった。消せない！
+* このチェックを1つ1つしていくのが大変😫
 
 🌯なぜアプリケーションごとにライブラリを分けるのか
 ======================================================================
 
-* site-packages というディレクトリ下にインストールされたライブラリを ``import`` する
+* :file:`site-packages` というディレクトリ下にインストールされたライブラリを ``import`` している
 * **アプリケーションごとにライブラリのインストール先を分けた** （バージョン違い共存可能に！）
-* ``pip`` が最初から使えるが、環境の再現となると伸びしろがある
+* ``pip`` が最初から使えるが、環境の再現となると伸びしろを感じる
+
+拙ブログより 🏃‍♂️
+--------------------------------------------------
+
+* `Python使いはpip freezeの出力を常にrequirements.txtというファイルに保存する？ 文献を調べたところいくつか流派があるようです <https://nikkie-ftnext.hatenablog.com/entry/various-file-names-of-pip-freeze>`__
+* `Pythonライブラリをpipで管理するとき、uninstallが私にはツラい <https://nikkie-ftnext.hatenablog.com/entry/python-dependency-management-pip-only-uninstall-pain>`__
