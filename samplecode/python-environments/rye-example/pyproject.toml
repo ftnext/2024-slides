@@ -5,7 +5,9 @@ description = "Add your description here"
 authors = [
     { name = "ftnext", email = "takuyafjp+develop@gmail.com" }
 ]
-dependencies = []
+dependencies = [
+    "kojo-fan-art>=0.1.1",
+]
 readme = "README.md"
 requires-python = ">= 3.12"
 

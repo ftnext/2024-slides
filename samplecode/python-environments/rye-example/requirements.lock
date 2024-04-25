@@ -8,3 +8,5 @@
 #   with-sources: false
 
 -e file:.
+kojo-fan-art==0.1.1
+    # via rye-example
