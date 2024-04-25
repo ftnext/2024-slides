@@ -8,7 +8,7 @@ Is your Python environment a ricecake?
 Python環境
 --------------------------------------------------
 
-* https://www.python.org/ からダウンロード
+* https://www.python.org/ からダウンロード 👈
 
   * 一例 `PyCon JP TV #39: 開発環境の整え方ライブデモ <https://tv.pycon.jp/episode/39.html>`__
 
@@ -33,7 +33,12 @@ Python環境
 
     * Windows周りは弱いです（文献で見た知識。補足求ム）
 
-:command:`python3` コマンド
+Python環境はなぜ動くのですか？
+======================================================================
+
+少しだけ、シェルの仕組み（※伏線です）
+
+:command:`python3` コマンドで対話モードに入る
 --------------------------------------------------
 
 .. code-block:: shell
@@ -41,19 +46,33 @@ Python環境
     $ python3 -q
     >>>
 
-* Pythonの対話モードが立ち上がるのは、 **シェルの仕組み** による
-
-シェルは環境変数 ``$PATH`` から ``python3`` コマンドの実体を探す
+呼ばれているコマンド
 ----------------------------------------------------------------------
-
-`「シェル」ってなに？から改めて学ぶLinuxのきほん <https://speakerdeck.com/os1ma/sieru-tutenani-karagai-metexue-bulinuxnokihon>`__
 
 .. code-block:: shell
 
     $ /Library/Frameworks/Python.framework/Versions/3.12/bin/python3 -q
     >>>
 
-（あとで回収される、はず）
+シェルの仕組み
+----------------------------------------------------------------------
+
+* 環境変数 ``$PATH`` から ``python3`` コマンドの実体を探す
+* シェル「``python3`` は ``$PATH`` を見たところ、:file:`/Library/Frameworks/Python.framework/Versions/3.12/bin/python3` のことっぽいな！」
+
+オススメ `「シェル」ってなに？から改めて学ぶLinuxのきほん <https://speakerdeck.com/os1ma/sieru-tutenani-karagai-metexue-bulinuxnokihon>`__
+
+別の例 :command:`ls` コマンド 🏃‍♂️
+--------------------------------------------------
+
+.. code-block:: shell
+
+    $ which ls
+    /bin/ls
+    $ type ls
+    ls is /bin/ls
+
+:file:`/bin` も ``$PATH`` に含まれます
 
 本題へ：プログラミングでは **ライブラリ** を使う
 ======================================================================
@@ -65,18 +84,26 @@ Python環境
 
     <iframe src="https://www.slideshare.net/slideshow/embed_code/key/9iS8q5POhRi14T?startSlide=23" width="597" height="486" frameborder="0"   marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px;   margin-bottom:5px;max-width: 100%;" allowfullscreen></iframe><div style="margin-bottom:5px"><strong><a href="https://www.slideshare.net/shimizukawa/suburi-no-susume-at-python-nyumon" title="素振りのススメ at Python入門者の集い" target="_blank">素振りのススメ at Python入門者の集い</a></strong> from <strong><a href="https://www.slideshare.net/shimizukawa" target="_blank">Takayuki Shimizukawa</a></strong></div>
 
-巨人の肩に乗る（**乗りまくる**）
+`巨人の肩の上 <https://ja.wikipedia.org/wiki/%E5%B7%A8%E4%BA%BA%E3%81%AE%E8%82%A9%E3%81%AE%E4%B8%8A>`__
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+* 「*先人の積み重ねた発見に基づいて何かを発見すること*」
+* 万有引力のアイザック・ニュートン
+
+    私がかなたを見渡せたのだとしたら、それは巨人の肩の上に立っていたからです。
+
+巨人の肩に **乗りまくる**
 --------------------------------------------------
 
 * ライブラリ ＝ 先人の残したコード
 * 機械学習では scikit-learn や PyTorch などなど
 * Webアプリ開発では Django や FastAPI などなど
 
-📌Pythonではアプリケーションごとにライブラリを分けよう
+📌伝えたい：Pythonではアプリケーションごとにライブラリを分けよう
 ======================================================================
 
 * Pythonには豊富な標準ライブラリ
-* 今回は **サードパーティ** ライブラリの話
+* 今回は **サードパーティ** ライブラリの話（``pip install`` するもの）
 
 なぜアプリケーションごとにライブラリを分ける？
 --------------------------------------------------
@@ -88,19 +115,17 @@ Python環境
 チュートリアルの例（を補足）
 --------------------------------------------------
 
-* あなたはPython 3.11（だけ）をインストールした
+* あなたはPython 3.12（だけ）をインストールした
 * アプリケーションAとBを開発
-* アプリAの開発では、あるモジュールの **1.0** を使う
-* アプリBの開発では、同じモジュールの **2.0** を使う
+* アプリAの開発では、``awesome`` の **1.0** を使う
+* アプリBの開発では、``awesome`` の **2.0** を使う
 
 分けよう！
 --------------------------------------------------
 
-* アプリAの開発環境には、あるモジュールの **1.0** をインストール
-* アプリBの開発環境には、同じモジュールの **2.0** をインストール
-* 分けない場合、バージョン違いが共存できない
-
-.. 共存できないは後で補足できる
+* アプリAの開発環境には、``awesome`` の **1.0** をインストール
+* アプリBの開発環境には、``awesome`` の **2.0** をインストール
+* 分けない場合、バージョン違いが共存できない（後述）
 
 分ける方法の1つが **仮想環境**
 --------------------------------------------------
@@ -149,7 +174,7 @@ Python環境
 --------------------------------------------------
 
 * :command:`python3 -m venv .venv --upgrade-deps`
-* ``.venv`` は仮想環境のディレクトリの名前（ *パス* として扱う）
+* ``.venv`` は仮想環境のディレクトリの **名前** （ *パス* として扱う）
 
   * ``tutorial-env`` （チュートリアル）・ ``venv``
 
@@ -158,20 +183,29 @@ Python環境
 ディレクトリが、作られた！
 --------------------------------------------------
 
-.. code-block:: txt
+.. literalinclude:: virtualenv-tree.txt
+    :language: txt
 
-    .venv
-    ├── bin
-    │   ├── activate
-    │   ├── pip
-    │   ├── pip3
-    │   ├── pip3.12
-    │   ├── python -> python3.12
-    │   ├── python3 -> python3.12
-    │   └── python3.12 -> /Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12
-    ├── lib
-    │   └── python3.12
-    └── pyvenv.cfg
+シンボリックリンク！
+--------------------------------------------------
+
+.. literalinclude:: virtualenv-tree.txt
+    :language: txt
+    :emphasize-lines: 7,9
+
+あとで出てくる :file:`.venv/lib/python3.12/`
+--------------------------------------------------
+
+.. literalinclude:: virtualenv-tree.txt
+    :language: txt
+    :emphasize-lines: 10-11
+
+有効化するためのスクリプト
+--------------------------------------------------
+
+.. literalinclude:: virtualenv-tree.txt
+    :language: txt
+    :emphasize-lines: 1-3
 
 仮想環境を有効化
 --------------------------------------------------
@@ -184,6 +218,8 @@ Python環境
     Python 3.12.3
     $ .venv/bin/python -V  # PATHが更新されていて、これが見つかっている
     Python 3.12.3
+    $ type python
+    python is /.../.venv/bin/python
 
 オススメ：Pythonの「仮想環境」を完全に理解しよう
 --------------------------------------------------
@@ -195,6 +231,12 @@ Python環境
 🌯Pythonではアプリケーションごとにライブラリを分けよう
 ======================================================================
 
-* 仮想環境を紹介（*他の方法もある*）
+* **仮想環境** を紹介（*他の方法もある*）    
 * :command:`python3 -m venv .venv --upgrade-deps`
 * アプリケーションごとに、ライブラリをインストールするディレクトリを設ける
+
+拙ブログより 🏃‍♂️
+--------------------------------------------------
+
+* `Pythonの仮想環境、最近は .venv という名前で作っています <https://nikkie-ftnext.hatenablog.com/entry/python-venv-directory-name-202404>`__
+* `Pythonのvenvの--upgrade-depsオプションは、どこから来てどこへ行くのか <https://nikkie-ftnext.hatenablog.com/entry/python-venv-upgrade-deps-option>`__
