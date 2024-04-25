@@ -1,15 +1,16 @@
 pipのペインを解消する種々のツール
 ======================================================================
 
-* 矢継ぎ早✨に紹介。気になるものはぜひドキュメントを
-* ⚠️ライブラリのインストールという観点に限る
-* pip「うう。。俺が弱くてごめん」
+* 矢継ぎ早✨に紹介。**気になるものはぜひドキュメントを**
+* サンプルは🈁 https://github.com/ftnext/2024-slides/tree/main/samplecode/python-environments
+* pip「うう。。俺が弱くて、ごめん。。」
 
 仮想環境とpipをラップして **easy** にしたツールたち曰く
 ----------------------------------------------------------------------
 
-* 仮想環境の管理、俺達に任せて！！
-* 環境の再現、簡単にしといたよ！
+* 仮想環境の **管理**、俺達に任せて！！
+* 環境の **再現**、簡単にしといたよ！
+* ⚠️ライブラリのインストールという観点に限る（もっと色々できます）
 
 Poetry
 ======================================================================
@@ -77,6 +78,12 @@ Pipenv「仮想環境の管理は任せて！」
 
 https://pipenv.pypa.io/en/latest/installation.html#installing-packages-for-your-project
 
+時間ないのに脱線：pipxって、何よ
+======================================================================
+
+* インストールして *コマンド* で使うライブラリを、隔離した仮想環境にインストールしてくれる（:command:`pipx install`）
+* :command:`pipx run` が個人的にメチャ熱い🔥🔥🔥： `Pythonスクリプトの未来。pipxが部分的にサポートしたInline script metadata（PEP 723）を触る <https://nikkie-ftnext.hatenablog.com/entry/henry-schreiner-pipx-supports-pep723-dependencies-metadata>`__
+
 Hatch
 ======================================================================
 
@@ -107,7 +114,7 @@ Hatch「:file:`pyproject.toml` 書いて」
 --------------------------------------------------
 
 * 開発者が :file:`pyproject.toml` を書く模様
-* :command:`hatch shell` や :command:`hatch run` で仮想環境を有効にして、コマンドを実行できる
+* :command:`hatch shell` や :command:`hatch run` で :file:`pyproject.toml` **の通りの仮想環境** でコマンドを実行できる（宣言的だ）
 
 https://hatch.pypa.io/latest/environment/#dependencies
 
@@ -134,7 +141,7 @@ https://pdm-project.org/en/stable/#installation
 --------------------------------------------------
 
 * 新規作成：空ディレクトリで :command:`pdm new`
-* 却下されたPEP 582をサポートしており、依存をインストールするディレクトリ :file:`__pypackages__` を作ることもできる
+* 却下された `PEP 582 <https://peps.python.org/pep-0582/>`__ をサポートしており、依存をインストールするディレクトリ :file:`__pypackages__` を作ることもできる
 
 https://pdm-project.org/en/stable/usage/project/
 
@@ -162,7 +169,7 @@ Rye
     symlink support: true
     uv enabled: false
 
-インストール「**Rust** のように簡単」
+インストール「**Rust** のように簡単🍰」
 --------------------------------------------------
 
 .. code-block:: shell
@@ -179,12 +186,23 @@ https://rye-up.com/guide/installation/
 
 https://rye-up.com/guide/basics/
 
-Rye「どう？簡単でしょ？」
+開発者は :command:`rye sync` を叩く
 --------------------------------------------------
 
 * :command:`rye add` / remove して :command:`rye sync`
 * :command:`rye run` で仮想環境を有効にして、コマンドを実行できる
-* 仮想環境 :file:`.venv` はあるが、開発者が手出しできない
+
+Rye「どう？簡単でしょ？」
+--------------------------------------------------
+
+* virtualenvやpip-toolsなどの既存ツールをバンドルして、easyに提供
+* 仮想環境 :file:`.venv` はあるが、開発者が手出しできない（nikkie「simpleなのだろうか？」）
+
+拙ブログより 🏃‍♂️
+--------------------------------------------------
+
+* `素振りの記：Ryeに慣れるために、Pythonで自分だけのクソライブラリを作る <https://nikkie-ftnext.hatenablog.com/entry/uv-first-trial-different-implementation-venv>`__
+* `Q: Pythonではパッケージ管理ツールpipを含まない仮想環境を作ることができる。◯か☓か <https://nikkie-ftnext.hatenablog.com/entry/create-python-virtual-environments-without-pip>`__
 
 uv
 ======================================================================
@@ -193,6 +211,15 @@ uv
 
     $ uv --version
     uv 0.1.38
+
+uvは、**Rustで再実装** したvenvとpip
+--------------------------------------------------
+
+* PythonからRustに変わったことで **高速** に動作（売りにしている）
+* ただし、venvやpipの複製にする気はないと明言（開発者は *覚え直し* が必要）
+* Ryeはpipの代わりにuvを使える
+
+.. https://twitter.com/ftnext/status/1779390547385610354
 
 インストール
 --------------------------------------------------
@@ -214,10 +241,8 @@ https://github.com/astral-sh/uv/tree/0.1.38?tab=readme-ov-file#getting-started
 * :file:`.venv` という名前の仮想環境ができる
 * Pythonのvenvやvirtualenvで作った仮想環境とは **互換性がない**
 
-uvは **高速** なvenvでありpip
---------------------------------------------------
-
-* 環境の再現は人手
+uv「俺は、速い。あ、環境の再現は **人手** でお願いします」
+------------------------------------------------------------
 
 .. code-block:: shell
 
@@ -225,4 +250,8 @@ uvは **高速** なvenvでありpip
     $ uv pip freeze > requirements.txt
     $ uv pip sync requirements.txt
 
-+ Ryeはuvを使える
+参考 🏃‍♂️
+--------------------------------------------------
+
+* `Rust製のPythonパッケージ管理ツール「uv」を使ってみよう <https://gihyo.jp/article/2024/03/monthly-python-2403>`__
+* 拙ブログ `uvお試し記：uv venvで作った仮想環境でpip installしてはいけません。uv pip installしましょう <https://nikkie-ftnext.hatenablog.com/entry/uv-first-trial-different-implementation-venv>`__
