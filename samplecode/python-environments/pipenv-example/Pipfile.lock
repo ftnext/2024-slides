@@ -1,0 +1,31 @@
+{
+    "_meta": {
+        "hash": {
+            "sha256": "db4f327c936c0fd240743fad4a87b0abac08b60138c17e6b1b3a4a221cc496f7"
+        },
+        "pipfile-spec": 6,
+        "requires": {
+            "python_full_version": "3.12.2",
+            "python_version": "3.12"
+        },
+        "sources": [
+            {
+                "name": "pypi",
+                "url": "https://pypi.org/simple",
+                "verify_ssl": true
+            }
+        ]
+    },
+    "default": {
+        "kojo-fan-art": {
+            "hashes": [
+                "sha256:32539cffff9bce778103050cf229c6699f7c72a7a6ee75e3699f2fe452ab8ffb",
+                "sha256:ce74a9573f281d6bca04d88f0fa24c742c5cc6946a3ae26d332465dedd751833"
+            ],
+            "index": "pypi",
+            "markers": "python_version >= '3.9'",
+            "version": "==0.1.1"
+        }
+    },
+    "develop": {}
+}
