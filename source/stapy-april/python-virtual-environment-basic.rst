@@ -1,3 +1,9 @@
+:ogp_title: Python開発環境 基礎
+:ogp_event_name: stapy-april
+:ogp_slide_name: python-virtual-environment-basic
+:ogp_description: 2024/04 みんなのPython勉強会#103
+:ogp_image_name: stapy-april
+
 ======================================================================
 Python開発環境 **基礎**
 ======================================================================
