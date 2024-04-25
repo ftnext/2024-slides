@@ -1,0 +1,200 @@
+Python環境はおもちですか？
+======================================================================
+
+Is your Python environment a ricecake?
+
+.. https://goti.club/preview?pk=71863
+
+Python環境
+--------------------------------------------------
+
+* https://www.python.org/ からダウンロード
+
+  * 一例 `PyCon JP TV #39: 開発環境の整え方ライブデモ <https://tv.pycon.jp/episode/39.html>`__
+
+* `pyenv <https://github.com/pyenv/pyenv>`__
+* などなど
+
+.. ふだんはpyenvだがpython.orgからダウンロードして発表準備
+
+おことわり 1/2
+--------------------------------------------------
+
+* ``.py`` ファイルを作る方向け
+* 「Google ColabやJupyterLabで十分開発できている！」という方には使い所がないかも
+
+.. ``.py`` ファイルで作るアプリケーションは、自由度が高い
+
+おことわり 2/2
+--------------------------------------------------
+
+* Python **3.9** 以上を想定（`3.8は2024年10月でセキュリティアップデート終了 <https://peps.python.org/pep-0569/#lifespan>`__）
+* nikkieが経験しているのは、**macOS** とUbuntu
+
+    * Windows周りは弱いです（文献で見た知識。補足求ム）
+
+:command:`python3` コマンド
+--------------------------------------------------
+
+.. code-block:: shell
+
+    $ python3 -q
+    >>>
+
+* Pythonの対話モードが立ち上がるのは、 **シェルの仕組み** による
+
+シェルは環境変数 ``$PATH`` から ``python3`` コマンドの実体を探す
+----------------------------------------------------------------------
+
+`「シェル」ってなに？から改めて学ぶLinuxのきほん <https://speakerdeck.com/os1ma/sieru-tutenani-karagai-metexue-bulinuxnokihon>`__
+
+.. code-block:: shell
+
+    $ /Library/Frameworks/Python.framework/Versions/3.12/bin/python3 -q
+    >>>
+
+（あとで回収される、はず）
+
+本題へ：プログラミングでは **ライブラリ** を使う
+======================================================================
+
+.. revealjs-break::
+    :notitle:
+
+.. raw:: html
+
+    <iframe src="https://www.slideshare.net/slideshow/embed_code/key/9iS8q5POhRi14T?startSlide=23" width="597" height="486" frameborder="0"   marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px;   margin-bottom:5px;max-width: 100%;" allowfullscreen></iframe><div style="margin-bottom:5px"><strong><a href="https://www.slideshare.net/shimizukawa/suburi-no-susume-at-python-nyumon" title="素振りのススメ at Python入門者の集い" target="_blank">素振りのススメ at Python入門者の集い</a></strong> from <strong><a href="https://www.slideshare.net/shimizukawa" target="_blank">Takayuki Shimizukawa</a></strong></div>
+
+巨人の肩に乗る（**乗りまくる**）
+--------------------------------------------------
+
+* ライブラリ ＝ 先人の残したコード
+* 機械学習では scikit-learn や PyTorch などなど
+* Webアプリ開発では Django や FastAPI などなど
+
+📌Pythonではアプリケーションごとにライブラリを分けよう
+======================================================================
+
+* Pythonには豊富な標準ライブラリ
+* 今回は **サードパーティ** ライブラリの話
+
+なぜアプリケーションごとにライブラリを分ける？
+--------------------------------------------------
+
+    1つのインストールされたPythonが全てのアプリケーションの要求に対応することは不可能です。
+
+`12.1. はじめに（Python チュートリアル 12. 仮想環境とパッケージ） <https://docs.python.org/ja/3/tutorial/venv.html#introduction>`_
+
+チュートリアルの例（を補足）
+--------------------------------------------------
+
+* あなたはPython 3.11（だけ）をインストールした
+* アプリケーションAとBを開発
+* アプリAの開発では、あるモジュールの **1.0** を使う
+* アプリBの開発では、同じモジュールの **2.0** を使う
+
+分けよう！
+--------------------------------------------------
+
+* アプリAの開発環境には、あるモジュールの **1.0** をインストール
+* アプリBの開発環境には、同じモジュールの **2.0** をインストール
+* 分けない場合、バージョン違いが共存できない
+
+.. 共存できないは後で補足できる
+
+分ける方法の1つが **仮想環境**
+--------------------------------------------------
+
+* `12.2. 仮想環境の作成（Python チュートリアル） <https://docs.python.org/ja/3/tutorial/venv.html#creating-virtual-environments>`_
+* *私は公式厨なので*
+
+その他の方法（本トークのスコープ外）
+--------------------------------------------------
+
+* Anaconda
+
+  * `2023年6月 stapy#94 <https://startpython.connpass.com/event/272159/>`__ で取り上げ
+
+* Docker
+
+  * `Dev Containers時代のPython開発環境のあり方 <https://2023-apac.pycon.jp/timetable?id=M8QP3X>`__ （PyCon APAC 2023）
+
+.. jupyterlabは後述したい
+
+仮想環境
+======================================================================
+
+アプリケーションの開発に必要なライブラリを分ける方法
+
+仮想環境って、何よ
+--------------------------------------------------
+
+* **ディレクトリ**
+
+仮想環境は **ディレクトリ**
+--------------------------------------------------
+
+    仮想環境とは、特定のバージョンの Python と幾つかの追加パッケージを含んだ Python インストールを構成するディレクトリです。
+
+`12.1. はじめに（Python チュートリアル 12. 仮想環境とパッケージ）`_
+
+仮想環境を作るツール
+--------------------------------------------------
+
+* 標準ライブラリの `venv <https://docs.python.org/ja/3/library/venv.html>`__
+* サードパーティの `virtualenv <https://virtualenv.pypa.io/en/latest/index.html>`__
+* virtualenvが先にあり、人気を受けて標準に入った（`PEP 405 <https://peps.python.org/pep-0405/>`__）
+
+仮想環境を作る
+--------------------------------------------------
+
+* :command:`python3 -m venv .venv --upgrade-deps`
+* ``.venv`` は仮想環境のディレクトリの名前（ *パス* として扱う）
+
+  * ``tutorial-env`` （チュートリアル）・ ``venv``
+
+`12.2. 仮想環境の作成（Python チュートリアル）`_ （Windowsの方はぜひ）
+
+ディレクトリが、作られた！
+--------------------------------------------------
+
+.. code-block:: txt
+
+    .venv
+    ├── bin
+    │   ├── activate
+    │   ├── pip
+    │   ├── pip3
+    │   ├── pip3.12
+    │   ├── python -> python3.12
+    │   ├── python3 -> python3.12
+    │   └── python3.12 -> /Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12
+    ├── lib
+    │   └── python3.12
+    └── pyvenv.cfg
+
+仮想環境を有効化
+--------------------------------------------------
+
+* :command:`source .venv/bin/activate`
+
+.. code-block:: shell
+
+    $ python -V
+    Python 3.12.3
+    $ .venv/bin/python -V  # PATHが更新されていて、これが見つかっている
+    Python 3.12.3
+
+オススメ：Pythonの「仮想環境」を完全に理解しよう
+--------------------------------------------------
+
+.. raw:: html
+
+    <iframe class="speakerdeck-iframe" style="border: 0px; background: rgba(0, 0, 0, 0.1) padding-box; margin: 0px; padding: 0px; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 40px; width: 100%; height: auto; aspect-ratio: 560 / 320;" frameborder="0" src="https://speakerdeck.com/player/0012e2df64654dd88c13d588f1c26abf?slide=5" title="Pythonの「仮想環境」を完全に理解しよう" allowfullscreen="true" data-ratio="1.75"></iframe>
+
+🌯Pythonではアプリケーションごとにライブラリを分けよう
+======================================================================
+
+* 仮想環境を紹介（*他の方法もある*）
+* :command:`python3 -m venv .venv --upgrade-deps`
+* アプリケーションごとに、ライブラリをインストールするディレクトリを設ける
