@@ -96,12 +96,12 @@ SOLIDのD
 .. code-block:: python
     :linenos:
 
-    def execute_ocr(client: ImageOcrClient | DocumentOcrClient) -> str:
+    def execute_ocr(client: ImageOcrClient | DocumentOcrClient, image) -> str:
         result = client.recognize(...)
         return result
 
     client = ImageOcrClient()
-    return execute_ocr(client)
+    execute_ocr(client, image)
 
 インターフェースを導入
 --------------------------------------------------
@@ -109,7 +109,7 @@ SOLIDのD
 .. code-block:: python
     :linenos:
 
-    def execute_ocr(client: OcrClientInterface) -> str:
+    def execute_ocr(client: OcrClientInterface, image) -> str:
         result = client.recognize(...)
         return result
 
