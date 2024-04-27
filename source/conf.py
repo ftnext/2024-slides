@@ -23,6 +23,7 @@ extensions = [
     'sphinx_design',
     "custom_translator",
     "sphinx_new_tab_link",
+    "sphinxcontrib.budoux",
 ]
 
 templates_path = ['_templates']
@@ -64,3 +65,6 @@ revealjs_css_files = [
     "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css",
     "css/common.css",
 ]
+
+# -- Options for sphinxcontrib-budoux -------------------------------------------------
+budoux_targets = ["h1", "h2", "h3"]
