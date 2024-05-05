@@ -10,9 +10,9 @@
 お前、誰よ（自己紹介）
 ======================================================================
 
-* nikkie ／ :fab:`github` `@ftnext <https://github.com/ftnext>`__ ／ `ブログ <https://nikkie-ftnext.hatenablog.com/>`__ 連続520日突破
+* nikkie ／ :fab:`github` `@ftnext <https://github.com/ftnext>`__ ／ `ブログ <https://nikkie-ftnext.hatenablog.com/>`__ 連続530日突破
 * Pythonとアニメが好き
-* *副業の* エンジニア経験は8年（2016〜）
+* *副業で* エンジニア経験8年（2016〜）。AI・機械学習
 
 今期見てるアニメ
 --------------------------------------------------
@@ -24,16 +24,16 @@
 本業は **仕掛け人**
 --------------------------------------------------
 
-* 765プロ所属 にっP ミリシタ：VE5WQ24R
+* 765プロ所属 にっP `ミリシタ <https://millionlive-theaterdays.idolmaster-official.jp/>`__：VE5WQ24R
+* アイマスも好き。2018年 aniben LT「何かを決めるということ」
 * `エミリー・スチュアートちゃん <https://millionlive-theaterdays.idolmaster-official.jp/idol/emily/>`__、かわいいかわいい（`怪文書 <https://nikkie-ftnext.hatenablog.com/entry/happy-birthday-emily-chang-2024>`__）
-* 2018年LT「何かを決めるということ」
 
 アイの歌声を聴かせて （アイうた）
 ======================================================================
 
 * 2021年10月公開の映画
 * nikkieに **多大な影響** を与えた
-* 見たことある方〜？🙋‍♂️
+* 見たことある方〜？🙋‍♂️（映画館でも配信でも）
 
 **SF** 好きな方？🙋
 --------------------------------------------------
@@ -48,7 +48,7 @@
 ======================================================================
 
 * 「最後にきっと、笑顔になれる」（予告より）
-* SF・学園モノ・ミュージカルが好きな方には、とりわけ刺さる可能性があります
+* **SF・学園モノ・ミュージカル** が1つでも好きな方には、とりわけ刺さる可能性があります
 * いますぐ見て！ `見放題配信中！！ <https://ainouta.jp/ondemand.html>`__
 
 予告より：ひとりぼっちの **サトミ** の前に現れた、ポンコツAI **シオン**
@@ -58,13 +58,6 @@
 
     <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/2j2CQBk8uWM?si=ypJvh7LSgh0-fRBr" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-この5月、新宿で上映！！
---------------------------------------------------
-
-.. raw:: html
-
-    <blockquote class="twitter-tweet" data-lang="ja" data-align="center" data-dnt="true"><p lang="ja" dir="ltr">🎉情報解禁🎉<br><br>「アイの歌声を聴かせて」チケット販売決定🎫<br><br>会場：シネマート新宿<br><br>5/10　14:35～<a href="https://t.co/9OpnAptkuo">https://t.co/9OpnAptkuo</a><br><br>5/12　17:15～<a href="https://t.co/FCDmSPDhdJ">https://t.co/FCDmSPDhdJ</a><br><br>5/14　14:35～<a href="https://t.co/RTnuxRtdfk">https://t.co/RTnuxRtdfk</a><br><br>5/16　19:10～<a href="https://t.co/Er3VHghwp5">https://t.co/Er3VHghwp5</a><br><br>最後にきっと、笑顔になれる 。📡</p>&mdash; ドリパス君 (@dre_pass) <a href="https://twitter.com/dre_pass/status/1782695915356352698?ref_src=twsrc%5Etfw">2024年4月23日</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
 拙作の布教スライド、置いときます 🏃‍♂️
 --------------------------------------------------
 
@@ -72,6 +65,19 @@
 
     <iframe width="800" height="480" src="https://ftnext.github.io/2021_slides/ainouta/recommend_as_best.html"
         title="アイうたはいいぞ"></iframe>
+
+著名なエンジニアにも刺さってる！🏃‍♂️
+--------------------------------------------------
+
+.. raw:: html
+
+    <blockquote class="twitter-tweet" data-lang="ja" data-align="center" data-dnt="true"><p lang="ja" dir="ltr">「アイの歌声を聴かせて」観てきた。<br>最高だった。最高レベルのSF作品だった。<br>「すぐ隣にいる近未来」っていう世界観だけでも大好きなのに、もうなんというか上手く言い表わせない。<br>とにかくテクノロジーが健気なんだ。俺が言いたいのはそれだけだ。<br><br>本当に素晴らしいのに上映数が少ないのが謎。</p>&mdash; ミノ駆動 (@MinoDriven) <a href="https://twitter.com/MinoDriven/status/1467453679179800576?ref_src=twsrc%5Etfw">2021年12月5日</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+.. revealjs-break::
+
+.. raw:: html
+
+    <blockquote class="twitter-tweet" data-lang="ja" data-align="center" data-dnt="true"><p lang="ja" dir="ltr">こにふぁーさんとも話したのですが「アイの歌声を聴かせて」、とにかく周囲のエンジニアの評判が高い。徹底したエンタメとしての面白さが突き抜けていますが、それに加えて「とにかく練られている」「全てが丁寧」「神が細部に宿る」的なプロの仕事としてみんな尊敬＆大好きな印象。</p>&mdash; GO (@go0517go) <a href="https://twitter.com/go0517go/status/1483463918563790849?ref_src=twsrc%5Etfw">2022年1月18日</a></blockquote>
 
 目次：『アイの歌声を聴かせて』をきっかけに考え始めた幸せ
 ------------------------------------------------------------
@@ -82,12 +88,7 @@
 1️⃣シオン「私が幸せにしてあげる！」
 ======================================================================
 
-アイうた公開前後のnikkieの状況
---------------------------------------------------
-
-* `PyCon JP 2021 <https://2021.pycon.jp/>`__ 座長🪑（＝開催責任者。**ボランティア**）
-* ボランティアスタッフを集めて約1年準備し、10/15(金)・16(土)に開催！
-* アイうたは10/29(金)公開で、**10/30(土)に鑑賞**
+シオンは転校してきた人型AI
 
 興味はMLOps見地から👀 （職業病❤️）
 --------------------------------------------------
@@ -103,15 +104,21 @@
 
     <blockquote class="twitter-tweet" data-lang="ja" data-align="center" data-dnt="true"><p lang="ja" dir="ltr">「サトミを幸せにしてあげる！」<br>予告にも出てくるこのフレーズが脳裏に刻まれた感じです。<br><br>幸せになりたいというのは誰しも思うところだと思いますが、私はそこをガチで目指す行動をしているのかなと。プラチナエンドも想起しました<br><br>映画『アイの歌声を聴かせて』予告編①<a href="https://t.co/SYJ6Z0ArEl">https://t.co/SYJ6Z0ArEl</a></p>&mdash; nikkie / にっきー (@ftnext) <a href="https://twitter.com/ftnext/status/1454441273062924292?ref_src=twsrc%5Etfw">2021年10月30日</a></blockquote> 
 
-2021年の状況
+2021年のnikkieの状況
+--------------------------------------------------
+
+* 2019年からPyCon JPスタッフ。`PyCon JP 2021 <https://2021.pycon.jp/>`__ 座長🪑（＝開催責任者。**ボランティア**）
+* ボランティアスタッフを集めて約1年準備し、10/15(金)・16(土)に開催！
+* アイうたは10/29(金)公開で、**10/30(土)に鑑賞**
+
+仕事 == PyCon JP (ボランティア) >> プライベート
 --------------------------------------------------
 
 .. https://twitter.com/ftnext/status/1455514202018172928
 .. 1年経って https://twitter.com/ftnext/status/1581666843361652736
 
-* 2019年からスタッフ。2021年は責任者としてPyCon JPの優先度が上がった
-* 優先度：仕事 == PyCon JP (ボランティア) >> プライベート
-* `スーパースター <https://www.lovelive-anime.jp/yuigaoka/story/tv1st.php>`__ がなければ PyCon JP 2021 はなかったです（大げさ）
+* 責任者として、**仕事と同じ優先度** で取り組んだ
+* `スーパースター <https://www.lovelive-anime.jp/yuigaoka/story/tv1st.php>`__ がなければ PyCon JP 2021 はなかったです
 
 nikkieの幸せってなに？
 ======================================================================
@@ -136,18 +143,11 @@ nikkieの幸せってなに？
 
 https://twitter.com/harmonizer_bot
 
-OSS開発へ
---------------------------------------------------
-
-* 一例：`sphinx-new-tab-link <https://github.com/ftnext/sphinx-new-tab-link>`__
-* 稀にある、コードを介したコミュニケーション、楽しすぎる！！
-* `sphinx-new-tab-link 0.3.0 をリリースしました🦋 <https://nikkie-ftnext.hatenablog.com/entry/release-sphinx-new-tab-link-v0.3.0>`__
-
-「後でやるから今は我慢」を **しない**
+📌「後でやるから今は我慢」を **しない**
 --------------------------------------------------
 
 * アイうた前後でnikkieが明確に違う点
-* ミリアニを機に仕掛け人も復帰。**今両方を獲りにいく** （それが幸せ）
+* `ミリアニ <https://millionlive-anime.idolmaster-official.jp/>`__ を機に仕掛け人も復帰。**今両方を獲りにいく** （それが幸せ）
 * `あの日シアターデイズをインストールし、長らく封印していた仕掛け人を再開した私へ（ミリシタ新人Pのプレイ録） <https://nikkie-ftnext.hatenablog.com/entry/idol-master-million-live-theater-days-beginner-202311>`__
 
 自力で幸せを目指す
@@ -169,8 +169,8 @@ OSS開発へ
 アイうたは **ポジティブ** なAI観
 --------------------------------------------------
 
-* これまで出会ってきた数々のネガティブなAI観（人類を滅ぼす）
-* 副業では機械学習。「人を幸せにするAIがありえるかもしれない」
+* これまで出会ってきた数々のネガティブなAI観（仕事を奪う。人類を滅ぼす）
+* 「**人を幸せにするAI** がありえるかもしれない」
 * `秘密はね、最後に明かされるんだよ。nikkieはなぜこんなに #アイの歌声を聴かせて にハマった？ <https://nikkie-ftnext.hatenablog.com/entry/why-aiuta-is-awesome-for-me>`__
 
 コードが書ければそれだけでよかった
@@ -193,6 +193,8 @@ YAPC::Japan Online 2022 LT
 
     <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/bV8dm4I9148?si=Y4iqsSkiZompYjb1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
+`発表スライドなど <https://nikkie-ftnext.hatenablog.com/entry/nikkies-2022-january-february-march#YAPCJapanOnline-2022>`__
+
 PyCon APAC 2022 ※ **日本語** 発表です
 --------------------------------------------------
 
@@ -200,11 +202,7 @@ PyCon APAC 2022 ※ **日本語** 発表です
 
     <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/qPEGGlnTmA8?si=bvkjG69nYG7JOT4N" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-発表スライドなど 🏃‍♂️
---------------------------------------------------
-
-* `YAPC::Japan Online 2022 LT <https://nikkie-ftnext.hatenablog.com/entry/nikkies-2022-january-february-march#YAPCJapanOnline-2022>`__
-* `PyCon APAC 2022 <https://nikkie-ftnext.hatenablog.com/entry/nikkies-2022-july-august-september#%E6%97%A5%E6%9C%AC%E8%AA%9E%E3%81%A7%E7%99%BA%E8%A1%A8Implement-Shion%E8%A9%A9%E9%9F%B3-from-SingaBitofHarmony%E8%AE%93%E6%88%91%E8%81%BD%E8%A6%8B%E6%84%9B%E7%9A%84%E6%AD%8C%E8%81%B2-with-Python>`__
+`発表スライドなど <https://nikkie-ftnext.hatenablog.com/entry/nikkies-2022-july-august-september#%E6%97%A5%E6%9C%AC%E8%AA%9E%E3%81%A7%E7%99%BA%E8%A1%A8Implement-Shion%E8%A9%A9%E9%9F%B3-from-SingaBitofHarmony%E8%AE%93%E6%88%91%E8%81%BD%E8%A6%8B%E6%84%9B%E7%9A%84%E6%AD%8C%E8%81%B2-with-Python>`__
 
 2023年〜 **LLM** の台頭
 ======================================================================
@@ -215,7 +213,7 @@ nikkie「ChatGPT（GPT-3.5）、シオンさんじゃね？」
 --------------------------------------------------
 
 * AIに言葉で *お願い* する
-* アイうたでもやってなかった？（過去作のイヴの時間）
+* アイうたでもやってなかった？（過去作の『`イヴの時間 <https://timeofeve.com/>`__』）
 
 エージェント
 --------------------------------------------------
@@ -241,9 +239,16 @@ AI as a Copilot（副操縦士）
 『アイの歌声を聴かせて』をきっかけに考え始めた幸せ
 ======================================================================
 
-* 人を幸せにするAIが描かれた作品
-* AIシオンを見て、nikkie自身の幸せを考え、優先するように
+* AI（シオン）が人（サトミ）を幸せにしようとするのを描いた作品
+* シオンを見て、nikkie自身の幸せを考え、優先するように
 * LLMが出てきた現在、アイうたの世界と重なる部分が多くて楽しい
+
+この5月、新宿で上映！！
+--------------------------------------------------
+
+.. raw:: html
+
+    <blockquote class="twitter-tweet" data-lang="ja" data-align="center" data-dnt="true"><p lang="ja" dir="ltr">🎉情報解禁🎉<br><br>「アイの歌声を聴かせて」チケット販売決定🎫<br><br>会場：シネマート新宿<br><br>5/10　14:35～<a href="https://t.co/9OpnAptkuo">https://t.co/9OpnAptkuo</a><br><br>5/12　17:15～<a href="https://t.co/FCDmSPDhdJ">https://t.co/FCDmSPDhdJ</a><br><br>5/14　14:35～<a href="https://t.co/RTnuxRtdfk">https://t.co/RTnuxRtdfk</a><br><br>5/16　19:10～<a href="https://t.co/Er3VHghwp5">https://t.co/Er3VHghwp5</a><br><br>最後にきっと、笑顔になれる 。📡</p>&mdash; ドリパス君 (@dre_pass) <a href="https://twitter.com/dre_pass/status/1782695915356352698?ref_src=twsrc%5Etfw">2024年4月23日</a></blockquote>
 
 ご清聴ありがとうございました
 --------------------------------------------------
