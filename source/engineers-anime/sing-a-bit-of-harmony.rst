@@ -18,7 +18,7 @@
 ======================================================================
 
 * nikkie ／ :fab:`github` `@ftnext <https://github.com/ftnext>`__ ／ `ブログ <https://nikkie-ftnext.hatenablog.com/>`__ 連続530日突破
-* Pythonとアニメが好き。詳細な自己紹介記事をどうぞ（TODO）
+* Pythonとアニメが好き。`詳細な自己紹介記事 <https://nikkie-ftnext.hatenablog.com/entry/self-introduction-as-anime-fan-202405>`__ もどうぞ
 * *副業で* エンジニア 9年目（2016〜）。AI・機械学習
 
 本業は **仕掛け人** 🏃‍♂️
@@ -99,19 +99,19 @@
 
     <blockquote class="twitter-tweet" data-lang="ja" data-align="center" data-dnt="true"><p lang="ja" dir="ltr">こにふぁーさんとも話したのですが「アイの歌声を聴かせて」、とにかく周囲のエンジニアの評判が高い。徹底したエンタメとしての面白さが突き抜けていますが、それに加えて「とにかく練られている」「全てが丁寧」「神が細部に宿る」的なプロの仕事としてみんな尊敬＆大好きな印象。</p>&mdash; GO (@go0517go) <a href="https://twitter.com/go0517go/status/1483463918563790849?ref_src=twsrc%5Etfw">2022年1月18日</a></blockquote>
 
-目次：『アイの歌声を聴かせて』をきっかけに考え始めた幸せ
+「私が幸せにしてあげる！」からの **学び**
 ------------------------------------------------------------
 
-1. 「私が幸せにしてあげる！」で考えたこと
-2. 人工知能は人間を幸せにするか
+1. マインドセットの学び
+2. 技術面での学び
 
 予告を見ている前提で、ネタバレ無しで話します
 
-1️⃣シオン「私が幸せにしてあげる！」
+1️⃣マインドセットの学び
 ======================================================================
 
 * シオンは転校してきた人型AI
-* サトミを幸せにすると言って行動（結果ポンコツ認定）
+* 「私が（サトミを）幸せにしてあげる！」と言って行動（結果ポンコツ認定）
 
 興味はMLOps見地から👀 （職業病❤️）
 --------------------------------------------------
@@ -181,11 +181,11 @@ https://twitter.com/harmonizer_bot
 * 片方を我慢するのではなく **今両方を獲りにいく** （それが幸せ）
 * 一例： `あの日シアターデイズをインストールし、長らく封印していた仕掛け人を再開した私へ（ミリシタ新人Pのプレイ録） <https://nikkie-ftnext.hatenablog.com/entry/idol-master-million-live-theater-days-beginner-202311>`__
 
-自分が幸せを目指す！ 🏃‍♂️
+自分が自分を幸せにする！
 --------------------------------------------------
 
 * 私のもとにシオンは来ない、からこそ
-* nikkie、お前がシオンになるんだよ！！
+* お前が自身（＝サトミ）を幸せにしようとするシオンになるんだよ！！
 
 白馬の王子様は来ない 🏃‍♂️
 --------------------------------------------------
@@ -194,10 +194,11 @@ https://twitter.com/harmonizer_bot
 
     <iframe class="speakerdeck-iframe" style="border: 0px; background: rgba(0, 0, 0, 0.1) padding-box; margin: 0px; padding: 0px; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 40px; width: 100%; height: auto; aspect-ratio: 560 / 315;" frameborder="0" src="https://speakerdeck.com/player/e327d4e67f444671b0e766706fa0aa9f?slide=17" title="失敗から学ぶ 技術的負債との正しい歩き方 / learn from predecessors" allowfullscreen="true" data-ratio="1.7777777777777777"></iframe>
 
-2️⃣人工知能は人間を幸せにするか
+2️⃣技術面での学び
 ======================================================================
 
 * サトミを **幸せにしようとする** *ポンコツ* AIシオン
+* 人工知能は人間を幸せにするか
 
 アイうたは **ポジティブ** なAI観
 --------------------------------------------------
@@ -243,12 +244,12 @@ PyCon APAC 2022 ※ **日本語** 発表です
 
 nikkie「ChatGPT（GPT-3.5）、シオンさんじゃね？」
 
-シオンさん＝LLM という妄想
+シオンさん＝LLM と夢想
 --------------------------------------------------
 
 * 言葉で *お願い* （プロンプト）して色々やってもらえる
 * LLMの要素技術（*Transformer*）に **俄然興味**
-* もっと妄想してるブログ記事（TODO）
+* 👉 `大規模言語モデルって、だいぶ『#アイの歌声を聴かせて』のシオンさんじゃね？ <https://nikkie-ftnext.hatenablog.com/entry/question-is-large-language-model-sing-a-bit-of-harmony-shion>`__
 
 まとめ🌯：『アイの歌声を聴かせて』をきっかけに考え始めた幸せ
 ======================================================================
@@ -290,9 +291,10 @@ Appendix
 
     * `アイうた円盤発売アドベントカレンダー <https://docs.google.com/spreadsheets/d/1udFqDjcepUORBxwrFI7y-UgFzyeCp-vMSIsP1hSiCRs/edit?usp=sharing>`__ の一本
 
+* `nikkieによる、細かすぎて伝わらないアイの歌声を聴かせてのここが好き選手権まとめ <https://togetter.com/li/1965309>`__
 * `出演報告 | はんなりポッドキャスト「AI妄想たっぷり会」で #アイの歌声を聴かせて を語りました！ <https://nikkie-ftnext.hatenablog.com/entry/hannari-podcast-sing-a-bit-of-harmony-and-ai-fancy>`__
 
-合同誌もあるよ！ 資料価値が、高いです
+**合同誌** もあるよ！ 資料価値が、高いです
 --------------------------------------------------
 
 * C102 `Sing a lot of harmony <https://www.melonbooks.co.jp/detail/detail.php?product_id=2062761>`__
