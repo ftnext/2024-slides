@@ -1,0 +1,123 @@
+Pythonのパッケージ管理の基本をおさえる
+======================================================================
+
+上級の話に入る前準備
+
+* インストールとは
+* 仮想環境とは
+
+パッケージをインストールする、とは
+======================================================================
+
+* ``pip install`` がしていること。それは
+* パッケージの実体のコード（Pythonファイルなど）のコピーをあなたのマシンに置く
+
+.. TODO packageにまつわる用語 distributionとimport
+
+実体のコードはどこから入手するの？
+--------------------------------------------------
+
+* パッケージインデックス
+* （GitHubも可能）
+
+PyPI
+--------------------------------------------------
+
+* Python Package Index
+* ``pip install`` がデフォルトで見ている
+
+インストールしたパッケージはマシンのどこにあるの？
+--------------------------------------------------
+
+* :file:`site-packages` というディレクトリ
+
+.. code-block:: shell
+
+    % python3 -m site --user-site
+    /Users/private/Library/Python/3.12/lib/python/site-packages
+
+仮想環境とは
+======================================================================
+
+* **ディレクトリ**
+* Node.jsでいう :file:`node_modules`
+
+仮想環境は **ディレクトリ**
+--------------------------------------------------
+
+    仮想環境とは、特定のバージョンの Python と幾つかの追加パッケージを含んだ Python インストールを構成するディレクトリです。
+
+`12.1. はじめに（Python チュートリアル 12. 仮想環境とパッケージ） <https://docs.python.org/ja/3/tutorial/venv.html#introduction>`__
+
+仮想環境を作るツール
+--------------------------------------------------
+
+* 標準ライブラリの `venv <https://docs.python.org/ja/3/library/venv.html>`__
+* サードパーティの `virtualenv <https://virtualenv.pypa.io/en/latest/index.html>`__
+* virtualenvが先にあり、人気を受けて標準に入った（`PEP 405 <https://peps.python.org/pep-0405/>`__）
+
+なぜ仮想環境が必要なのか
+--------------------------------------------------
+
+* 仮想環境を使わないとき :file:`site-packages` が1つしかない
+* 同名ライブラリのバージョン違いが共存できない
+
+Pythonでは開発プロジェクトごとに依存パッケージを分けよう
+------------------------------------------------------------
+
+* プロジェクトごとに仮想環境を用意する
+* プロジェクトごとの :file:`site-packages`
+
+.. 仮想環境以外のアプローチもあります
+
+仮想環境の仕組み
+--------------------------------------------------
+
+* 環境変数 ``PATH`` を更新
+
+.. code-block:: shell
+
+    $ source .venv/bin/activate
+    $ python -V
+    Python 3.12.3
+    $ .venv/bin/python -V  # PATHが更新されていて、これが見つかっている
+    Python 3.12.3
+    $ type python
+    python is /.../.venv/bin/python
+
+環境を再現するには
+--------------------------------------------------
+
+``pip freeze`` と ``pip install``
+
+.. revealjs-break::
+
+チュートリアル `12.3. pip を使ったパッケージ管理 <https://docs.python.org/ja/3/tutorial/venv.html#managing-packages-with-pip>`__
+
+    ``python -m pip freeze`` はインストールされたパッケージ一覧を、``python -m pip install`` が解釈するフォーマットで生成します。
+
+環境を再現するコマンド
+--------------------------------------------------
+
+.. code-block:: shell
+
+    $ python -m pip freeze > requirements.txt
+    $ python -m pip install -r requirements.txt
+
+* freeze：動作する環境に入っているライブラリのバージョンを列挙
+* install：指定されたバージョンのライブラリをインストール
+
+依存パッケージには2種類ある
+--------------------------------------------------
+
+* direct
+* transitive
+
+.. directをpip installする。transitiveが入ってくる
+
+:command:`pip freeze` の小さな課題
+--------------------------------------------------
+
+* transitiveの依存の削除が大変
+
+.. TODO もっと例を入れよう
