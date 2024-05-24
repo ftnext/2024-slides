@@ -1,40 +1,117 @@
+.. _distribution package: https://packaging.python.org/en/latest/glossary/#term-Distribution-Package
+.. _import package: https://packaging.python.org/en/latest/glossary/#term-Import-Package
+
 Pythonのパッケージ管理の基本をおさえる
 ======================================================================
 
-上級の話に入る前準備
+上級の話に入る **前準備**
 
 * インストールとは
 * 仮想環境とは
 
+そもそも *パッケージ* には **2種類** ある
+--------------------------------------------------
+
+`Distribution package vs. import package (Python Packaging User Guide) <https://packaging.python.org/en/latest/discussions/distribution-package-vs-import-package/>`__
+
+`distribution package`_ （*配布* パッケージ）
+------------------------------------------------------------
+
+* :command:`pip install` で指定する
+* :file:`pyproject.toml` の ``dependencies`` に書く
+* **本トークの主題**
+
+.. https://packaging.python.org/en/latest/discussions/distribution-package-vs-import-package/#what-s-a-distribution-package
+
+`import package`_
+--------------------------------------------------
+
+* ``import`` 文に書く
+* import packageはPython `モジュール <https://docs.python.org/ja/3/glossary.html#term-module>`__
+
+.. https://packaging.python.org/en/latest/discussions/distribution-package-vs-import-package/#what-s-an-import-package
+
 パッケージをインストールする、とは
 ======================================================================
 
-* ``pip install`` がしていること。それは
-* パッケージの実体のコード（Pythonファイルなど）のコピーをあなたのマシンに置く
+* distribution packageの話（``pip install``）
+* パッケージの実体のコード（アーカイブファイル）のコピーを **あなたのマシンに置く**
 
-.. TODO packageにまつわる用語 distributionとimport
+.. A versioned archive file ... ref: https://packaging.python.org/en/latest/glossary/#term-Distribution-Package
 
 実体のコードはどこから入手するの？
 --------------------------------------------------
 
-* パッケージインデックス
-* （GitHubも可能）
+* `パッケージインデックス <https://packaging.python.org/en/latest/glossary/#term-Package-Index>`__
+* distribution packageたちの索引のWebシステム
 
-PyPI
+一例がPyPI（ぱいぴーあい）
 --------------------------------------------------
 
 * Python Package Index
+* https://pypi.org/simple/
 * ``pip install`` がデフォルトで見ている
+
+.. https://pip.pypa.io/en/stable/cli/pip_install/#cmdoption-i
+    default https://pypi.org/simple
+
+PyPI以外のパッケージインデックスの例 🏃‍♂️
+--------------------------------------------------
+
+* `pip install <https://pip.pypa.io/en/stable/cli/pip_install/#options>`__ の :command:`--index-url` や :command:`--extra-index-url`
+* 指定する例： `CPU環境で動かすPyTorch <https://pytorch.org/get-started/locally/>`__
+
+.. code-block:: shell
+
+    % python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+
+.. * 別の話題としてGitHubからインストールも可能
+
+.. .. code-block:: shell
+
+..    % python -m pip install git+https://github.com/ftnext/unko
 
 インストールしたパッケージはマシンのどこにあるの？
 --------------------------------------------------
 
-* :file:`site-packages` というディレクトリ
+* **site-packages** というディレクトリ
 
 .. code-block:: shell
 
-    % python3 -m site --user-site
-    /Users/private/Library/Python/3.12/lib/python/site-packages
+    % python3.12 -m pip show httpx
+
+    Location: /Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages
+
+グローバルの :file:`site-packages` に入れてしまっているので真似しないでください🙅‍♂️
+
+.. https://pip.pypa.io/en/stable/cli/pip_show/
+
+:command:`pip install` したパッケージはなぜ ``import`` できる？ 🏃‍♂️
+----------------------------------------------------------------------
+
+.. raw:: html
+
+    <iframe class="speakerdeck-iframe" style="border: 0px; background: rgba(0, 0, 0, 0.1) padding-box; margin: 0px; padding: 0px; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 40px; width: 100%; height: auto; aspect-ratio: 560 / 315;" frameborder="0" src="https://speakerdeck.com/player/4eeda4cc2011471d91e325c7df7dbaff?slide=38" title="ModuleNotFoundErrorの傾向と対策:仕組みから学ぶImport / Unpacking ModuleNotFoundError" allowfullscreen="true" data-ratio="1.7777777777777777"></iframe>
+
+:file:`site-packages` が ``sys.path`` に入っているから 🏃‍♂️
+------------------------------------------------------------
+
+.. code-block:: shell
+
+    % python3.12 -m site
+    sys.path = [
+    <略>
+    '/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages',
+    ]
+
+.. https://docs.python.org/ja/3/library/site.html#command-line-interface
+
+🥟パッケージをインストールする、とは
+--------------------------------------------------
+
+* パッケージインデックス（主にPyPI）から
+* distribution packageの **実体のアーカイブファイル** をコピーし
+* マシンの **site-packagesに配置** する（解凍などの詳細は今回は省略）
 
 仮想環境とは
 ======================================================================
@@ -56,19 +133,48 @@ PyPI
 * サードパーティの `virtualenv <https://virtualenv.pypa.io/en/latest/index.html>`__
 * virtualenvが先にあり、人気を受けて標準に入った（`PEP 405 <https://peps.python.org/pep-0405/>`__）
 
-なぜ仮想環境が必要なのか
+仮想環境はこんなディレクトリ
 --------------------------------------------------
 
-* 仮想環境を使わないとき :file:`site-packages` が1つしかない
-* 同名ライブラリのバージョン違いが共存できない
+.. literalinclude:: virtualenv-tree.txt
+    :language: txt
 
-Pythonでは開発プロジェクトごとに依存パッケージを分けよう
+シンボリックリンク！
+--------------------------------------------------
+
+.. literalinclude:: virtualenv-tree.txt
+    :language: txt
+    :emphasize-lines: 7-9
+
+:file:`.venv/lib/python3.12/` ができるのが嬉しい（後述）
 ------------------------------------------------------------
 
-* プロジェクトごとに仮想環境を用意する
-* プロジェクトごとの :file:`site-packages`
+.. literalinclude:: virtualenv-tree.txt
+    :language: txt
+    :emphasize-lines: 10-11
 
-.. 仮想環境以外のアプローチもあります
+なぜ仮想環境が必要なのか
+======================================================================
+
+* 仮想環境を使わないとすると :file:`site-packages` が **グローバルの1つ** のみ
+* 同名ライブラリのバージョン違いが共存できない🙀
+
+📌Pythonでは開発プロジェクトごとに依存パッケージを分けよう
+------------------------------------------------------------
+
+* **プロジェクトごとに仮想環境** を用意する
+* ＝プロジェクトごとの :file:`site-packages`
+
+その他の方法（本トークのスコープ外）🏃‍♂️
+--------------------------------------------------
+
+* Anaconda
+
+  * `2023年6月 stapy#94 <https://startpython.connpass.com/event/272159/>`__ で取り上げ
+
+* Docker
+
+  * `Dev Containers時代のPython開発環境のあり方 <https://2023-apac.pycon.jp/timetable?id=M8QP3X>`__ （PyCon APAC 2023）
 
 仮想環境の仕組み
 --------------------------------------------------
@@ -78,17 +184,47 @@ Pythonでは開発プロジェクトごとに依存パッケージを分けよ�
 .. code-block:: shell
 
     $ source .venv/bin/activate
-    $ python -V
+    (.venv) $ python -V
     Python 3.12.3
-    $ .venv/bin/python -V  # PATHが更新されていて、これが見つかっている
+    (.venv) $ .venv/bin/python -V  # PATHが更新されていて、これが見つかっている
     Python 3.12.3
-    $ type python
+    (.venv) $ type python
     python is /.../.venv/bin/python
+
+.. revealjs-break::
+
+* :command:`pip install` で仮想環境の :file:`site-packages` にインストールされる
+
+.. code-block:: shell
+
+    (.venv) % python -m pip show httpx
+
+    Location: /.../.venv/lib/python3.12/site-packages
+
+.. revealjs-break::
+
+* ``import`` でも仮想環境の :file:`site-packages` が参照される
+
+.. code-block:: shell
+
+    (.venv) % python -m site
+    sys.path = [
+    <略>
+    '/.../.venv/lib/python3.12/site-packages',
+    ]
+
+仮想環境の考え方
+======================================================================
+
+* 使い捨て（disposable）
+* 移動やコピーはしない（同じ仮想環境を都度作る）
+
+`venv --- Creation of virtual environments <https://docs.python.org/ja/3/library/venv.html>`__ （Python 3.12で更新された感）
 
 環境を再現するには
 --------------------------------------------------
 
-``pip freeze`` と ``pip install``
+:command:`pip freeze` と ``pip install``
 
 .. revealjs-break::
 
@@ -107,17 +243,57 @@ Pythonでは開発プロジェクトごとに依存パッケージを分けよ�
 * freeze：動作する環境に入っているライブラリのバージョンを列挙
 * install：指定されたバージョンのライブラリをインストール
 
-依存パッケージには2種類ある
+依存パッケージには **2種類** ある
+======================================================================
+
+:direct: 私たちが :command:`pip install` で指定
+:transitive: directな依存が依存するパッケージ
+
+用語は `The maze of Python dependency management <https://blog.frankel.ch/maze-python-dependency-management/>`__ から
+
+httpxを例に、2種類の依存
 --------------------------------------------------
 
-* direct
-* transitive
+.. code-block:: shell
 
-.. directをpip installする。transitiveが入ってくる
+    $ python -m pip install httpx  # directの依存
+
+    Installing collected packages: sniffio, idna, h11, certifi, httpcore, anyio, httpx
+    Successfully installed anyio-4.3.0 certifi-2024.2.2 h11-0.14.0 httpcore-1.0.5 httpx-0.27.0 idna-3.7 sniffio-1.3.1
 
 :command:`pip freeze` の小さな課題
 --------------------------------------------------
 
-* transitiveの依存の削除が大変
+* directな依存もtransitiveな依存も1つの :file:`requirements.txt` にまとまる
+* **transitiveな依存の削除** が大変
 
-.. TODO もっと例を入れよう
+:file:`requirements.txt` からの削除が大変
+--------------------------------------------------
+
+.. code-block:: shell
+
+    % # 前提として、Python 3.11で作った仮想環境を有効化しています
+    % python -m pip install transformers
+    $ python -m pip freeze > requirements.txt
+    % python -m pip install rouge-score
+    $ python -m pip freeze > requirements.txt
+
+rouge-scoreが不要になった
+--------------------------------------------------
+
+* :command:`pip uninstall rouge-score` ではrouge-scoreの依存は削除されない
+* rouge-scoreの依存も1つ1つ ``pip uninstall`` が必要
+
+全部uninstallしていいわけではない
+--------------------------------------------------
+
+* rouge-scoreの依存には、**transformersが依存** するパッケージも存在する
+* プロジェクトでtransitiveな依存のうち、**rouge-scoreしか依存していないものを洗い出して** 消したい
+* :file:`requirements.txt` をバージョン管理していたらたやすいのかも（えてして忘れがち）
+
+🥟仮想環境とは
+--------------------------------------------------
+
+* ディレクトリ。**プロジェクト用の site-packages** を設ける
+* ``pip freeze`` して **都度作る** 方法がチュートリアルでは案内される
+* **transitiveな依存** の管理が私にはツライ
