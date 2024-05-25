@@ -1,19 +1,32 @@
 pip-toolsの提案
 ======================================================================
 
+1. pip-toolsの紹介
+2. pip-toolsのインストールに関して ``pipx``
+
 仮想環境 ❤️ pip-tools
 
 transitiveな依存の管理のツラさをどう解決するか
 --------------------------------------------------
 
 * PoetryやPipenvなどの **強力** なパッケージ管理機能を持ったツール👍
-* ひねくれたnikkie「そこまで持ち出さなくてもできないかな」（これらのツールの全部の機能を使うわけじゃないし）
+* ひねくれたnikkie「そこまで持ち出さなくてもできないかな」（これらのツールの機能全部を使うわけじゃないし）
 
 そこで、**pip-tools**
 --------------------------------------------------
 
 * Ryeが使っていて知った（後述）
 * **transitiveな依存の管理** をうまく解決しているように感じる（本発表で提案）
+
+参考：サーベイあります（4月のstapy）
+--------------------------------------------------
+
+.. raw:: html
+
+    <iframe width="800" height="480" src="https://ftnext.github.io/2024-slides/stapy-april/python-virtual-environment-basic.html#/13"
+        title="Python開発環境 基礎 @みんなのPython勉強会#103 (2024/04)"></iframe>
+
+`登壇報告 | みんなのPython勉強会#103 にてPythonで仮想環境にライブラリをインストールするんだと（ただそれだけを）話しました <https://nikkie-ftnext.hatenablog.com/entry/stapy-103-python-virtual-environment-basic-talk>`__
 
 pip-tools
 ======================================================================
@@ -49,6 +62,22 @@ https://pypi.org/project/pip-tools/
     rouge-score
     % pip-compile
 
+生成された :file:`requirements.txt` （一部）
+--------------------------------------------------
+
+.. code-block:: txt
+
+    nltk==3.8.1
+        # via rouge-score
+    rouge-score==0.1.2
+        # via -r requirements.in
+    six==1.16.0
+        # via rouge-score
+    tqdm==4.66.4
+        # via
+        #   nltk
+        #   transformers
+
 2️⃣ :command:`pip-sync`
 --------------------------------------------------
 
@@ -65,10 +94,18 @@ https://pypi.org/project/pip-tools/
 2. :command:`pip-compile` で :file:`requirements.txt` を自動生成
 3. :command:`pip-sync` で仮想環境を :file:`requirements.txt` と同期
 
-再掲
+pip-toolsの賢いところ
 --------------------------------------------------
 
-.. image:: ../_static/pyconkyushu/pip-tools-overview.svg
+* チュートリアルの ``python -m pip freeze`` はインストールした結果をダンプする
+* pip-toolsは、仮想環境に入れる **前** にライブラリの組合せを算出（``pip-compile``）
+
+:command:`pip-compile-multi` 🏃‍♂️
+------------------------------------------------------------
+
+* ``pip install awesomelib[extra]``
+* **extraごと** に ``pip-compile`` できる
+* 詳しくは `pip-compile-multi体験記：小さく分けたrequirementsファイルたちを元に、環境をlockして管理できる！ <https://nikkie-ftnext.hatenablog.com/entry/pip-compile-multi-first-step>`__
 
 transitiveな依存の管理の課題に対して
 ======================================================================
@@ -118,7 +155,9 @@ dependabotが教えてくれる
 
 * 直近で「requestsを **2.32.0以上** にしよう」
 * `Session object does not verify requests after making first request with verify=False (Severity Moderate) <https://github.com/psf/requests/security/advisories/GHSA-9wx4-h78v-vm56>`__
-* requestsは、transitiveな依存にあたる
+* requestsは、transitiveな依存にあたる（directな依存も同様手順）
+
+.. directな例 https://github.com/ftnext/2024-slides/commit/6350bf8a93c9fabd36c03650cea8895dfe6b4b0e
 
 特定のパッケージの **バージョンを上げる** ワークフロー
 ------------------------------------------------------------
@@ -137,21 +176,24 @@ https://github.com/ftnext/2024-slides/commit/62eb18134e95704acc9fb21cbd0e86f4371
 * **開発者はdirectな依存だけを指定する**
 * pip-toolsが開発者に代わってtransitiveな依存を管理してくれる
 
+参考 pip-toolsについて（記事版）🏃‍♂️
+------------------------------------------------------------
+
+* `pip-tools体験記：pip-compileで作ったrequirements.txtの通りに環境が同期（pip-sync）する！ <https://nikkie-ftnext.hatenablog.com/entry/pip-tools-first-step-compile-then-sync>`__
+* `pipxで管理するpip-toolsを使って、プロジェクトの仮想環境に依存ライブラリをインストールする（pip-syncの--python-executable引数が必要） <https://nikkie-ftnext.hatenablog.com/entry/pipx-install-example-pip-tools>`__
+
 pip-toolsのインストールについて（の意見）
 ======================================================================
 
 * `README <https://github.com/jazzband/pip-tools/tree/7.4.1?tab=readme-ov-file#installation>`__ では、仮想環境にインストールするよう案内される
 * どのプロジェクトの仮想環境にも入れる？🤔
 
-**pipx** で入れるのを推して参る
+**pipx** で1回だけ入れるのを推して参る
 --------------------------------------------------
 
 .. code-block:: shell
 
     % pipx install pip-tools --python python3.11
-
-今回の環境
---------------------------------------------------
 
 * pipx 1.5.0
 * Python 3.11.7
@@ -169,15 +211,16 @@ pipxって、何よ？
 
 `Installing stand alone command line tools <https://packaging.python.org/en/latest/guides/installing-stand-alone-command-line-tools/>`__
 
-* pip-toolsだけでなく
-* mypyやRuffなどなど
+* pipxが **pip-toolsだけのグローバルな仮想環境** を管理してくれる
+* mypyや `Ruff <https://gihyo.jp/article/2023/03/monthly-python-2303>`__ なども私は ``pipx install`` したい
 
-pipxのインストール
+pipx自体のインストール
 --------------------------------------------------
 
 * macOSは :command:`brew install pipx` 🙋‍♂️
 * Ubuntu 23.04以降で :command:`apt install pipx`
 * :command:`python3 -m pip install --user pipx`
-* :command:`pipx ensurepath` をお忘れなく
+
+📌 :command:`pipx ensurepath` をお忘れなく
 
 https://github.com/pypa/pipx/tree/1.5.0?tab=readme-ov-file#install-pipx
