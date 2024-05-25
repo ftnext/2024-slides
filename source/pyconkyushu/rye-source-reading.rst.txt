@@ -7,18 +7,18 @@ Rye
 ======================================================================
 
 * Pythonも依存パッケージも **両方** 管理する
-* *Rust* のような開発体験（Hatchが近いかも）
+* *Rust* のような開発体験（`Hatch <https://hatch.pypa.io/latest/environment/#dependencies>`__ が近いかも）
 * https://rye.astral.sh/ にインストール手順
 
 Ryeによる開発環境の例
 --------------------------------------------------
 
-* git cloneして
+* ``git clone https://github.com/ftnext/unko-by-rye.git``
 * :command:`rye sync`
 
 た っ た こ れ だ け
 
-リポジトリの構成
+Ryeで管理するPythonプロジェクトの構成
 --------------------------------------------------
 
 .. code-block:: txt
@@ -34,7 +34,7 @@ Pythonの管理
 --------------------------------------------------
 
 .. code-block:: txt
-    :emphasis-lines: 2
+    :emphasize-lines: 2
 
     .
     ├── .python-version  # Pythonのバージョンの記載
@@ -47,7 +47,7 @@ Pythonの管理
 --------------------------------------------------
 
 .. code-block:: txt
-    :emphasis-lines: 3-6
+    :emphasize-lines: 3-6
 
     .
     ├── .python-version
@@ -60,7 +60,7 @@ Pythonの管理
 ======================================================================
 
 * 依存パッケージ管理：virtualenv + pip-tools
-* 最新の 0.34.0 ではpip-toolsに代えてuvがデフォルトに
+* 最新の 0.34.0 ではpip-toolsに代えて `uv <https://gihyo.jp/article/2024/03/monthly-python-2403>`__ がデフォルトに
 
 Rye「開発者は仮想環境を触らないで :command:`rye sync` だけして」
 ======================================================================
@@ -78,7 +78,7 @@ pipのない仮想環境の作り方
 .. code-block:: shell
 
     % python -m venv .venv/no_pip --without-pip
-    % virtualenv .venv/virt_no_pip --no-seed
+    % virtualenv .venv/virt_no_pip --no-seed  # Ryeはこちら
 
 拙ブログ `Q: Pythonではパッケージ管理ツールpipを含まない仮想環境を作ることができる。◯か☓か <https://nikkie-ftnext.hatenablog.com/entry/create-python-virtual-environments-without-pip>`__
 
