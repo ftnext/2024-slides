@@ -45,7 +45,7 @@ Pythonのパッケージ管理の基本をおさえる
 * `パッケージインデックス <https://packaging.python.org/en/latest/glossary/#term-Package-Index>`__
 * distribution packageたちの索引のWebシステム
 
-一例がPyPI（ぱいぴーあい）
+一例が **PyPI** （ぱいぴーあい）
 --------------------------------------------------
 
 * Python Package Index
@@ -55,11 +55,19 @@ Pythonのパッケージ管理の基本をおさえる
 .. https://pip.pypa.io/en/stable/cli/pip_install/#cmdoption-i
     default https://pypi.org/simple
 
+``pip`` が見ている景色
+--------------------------------------------------
+
+.. image:: ../_static/pyconkyushu/simple-sphinx-new-tab-link.png
+    :width: 50%
+
+https://pypi.org/simple/sphinx-new-tab-link
+
 PyPI以外のパッケージインデックスの例 🏃‍♂️
 --------------------------------------------------
 
 * `pip install <https://pip.pypa.io/en/stable/cli/pip_install/#options>`__ の :command:`--index-url` や :command:`--extra-index-url`
-* 指定する例： `CPU環境で動かすPyTorch <https://pytorch.org/get-started/locally/>`__
+* 指定する例： `CPUのみのLinux環境で動かすPyTorch <https://pytorch.org/get-started/locally/>`__
 
 .. code-block:: shell
 
@@ -106,12 +114,21 @@ PyPI以外のパッケージインデックスの例 🏃‍♂️
 
 .. https://docs.python.org/ja/3/library/site.html#command-line-interface
 
+（一瞬 import package の話題でした）
+
 🥟パッケージをインストールする、とは
 --------------------------------------------------
 
 * パッケージインデックス（主にPyPI）から
 * distribution packageの **実体のアーカイブファイル** をコピーし
 * マシンの **site-packagesに配置** する（解凍などの詳細は今回は省略）
+
+合わせてどうぞ（PyCon APAC 2023より）🏃‍♂️
+--------------------------------------------------
+
+.. raw:: html
+
+    <iframe class="speakerdeck-iframe" style="border: 0px; background: rgba(0, 0, 0, 0.1) padding-box; margin: 0px; padding: 0px; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 40px; width: 100%; height: auto; aspect-ratio: 560 / 315;" frameborder="0" src="https://speakerdeck.com/player/e5ca56df71dc4eddbd839ff00839cbbf?slide=14" title="Pythonでのパッケージング： エコシステムの理解と現場での活用 PyCon APAC2023" allowfullscreen="true" data-ratio="1.7777777777777777"></iframe>
 
 仮想環境とは
 ======================================================================
@@ -124,7 +141,7 @@ PyPI以外のパッケージインデックスの例 🏃‍♂️
 
     仮想環境とは、特定のバージョンの Python と幾つかの追加パッケージを含んだ Python インストールを構成するディレクトリです。
 
-`12.1. はじめに（Python チュートリアル 12. 仮想環境とパッケージ） <https://docs.python.org/ja/3/tutorial/venv.html#introduction>`__
+`12.1. はじめに（Python チュートリアル 12. 仮想環境とパッケージ） <https://docs.python.org/ja/3/tutorial/venv.html#introduction>`_
 
 仮想環境を作るツール
 --------------------------------------------------
@@ -158,6 +175,13 @@ PyPI以外のパッケージインデックスの例 🏃‍♂️
 
 * 仮想環境を使わないとすると :file:`site-packages` が **グローバルの1つ** のみ
 * 同名ライブラリのバージョン違いが共存できない🙀
+
+Pythonチュートリアルより
+------------------------------------------------------------
+
+    1つのインストールされたPythonが全てのアプリケーションの要求に対応することは不可能です。
+
+`12.1. はじめに（Python チュートリアル 12. 仮想環境とパッケージ）`_
 
 📌Pythonでは開発プロジェクトごとに依存パッケージを分けよう
 ------------------------------------------------------------
@@ -213,10 +237,17 @@ PyPI以外のパッケージインデックスの例 🏃‍♂️
     '/.../.venv/lib/python3.12/site-packages',
     ]
 
+合わせてどうぞ（aodagさんがstapyで発表）🏃‍♂️
+--------------------------------------------------
+
+.. raw:: html
+
+    <iframe src="https://www.slideshare.net/slideshow/embed_code/key/zYH1LuhGyQ7wlv?startSlide=13" width="597" height="486" frameborder="0"   marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px;   margin-bottom:5px;max-width: 100%;" allowfullscreen></iframe><div style="margin-bottom:5px"><strong><a href="https://www.slideshare.net/slideshow/python77/251065114" title="みんなのPython勉強会#77 パッケージングしよう" target="_blank">みんなのPython勉強会#77 パッケージングしよう</a></strong> from <strong><a href="https://www.slideshare.net/aodag" target="_blank">Atsushi Odagiri</a></strong></div>
+
 仮想環境の考え方
 ======================================================================
 
-* 使い捨て（disposable）
+* 使い捨て（**disposable**）
 * 移動やコピーはしない（同じ仮想環境を都度作る）
 
 `venv --- Creation of virtual environments <https://docs.python.org/ja/3/library/venv.html>`__ （Python 3.12で更新された感）
@@ -224,15 +255,11 @@ PyPI以外のパッケージインデックスの例 🏃‍♂️
 環境を再現するには
 --------------------------------------------------
 
-:command:`pip freeze` と ``pip install``
-
-.. revealjs-break::
+    ``python -m pip freeze`` はインストールされたパッケージ一覧を、``python -m pip install`` が解釈するフォーマットで生成します。
 
 チュートリアル `12.3. pip を使ったパッケージ管理 <https://docs.python.org/ja/3/tutorial/venv.html#managing-packages-with-pip>`__
 
-    ``python -m pip freeze`` はインストールされたパッケージ一覧を、``python -m pip install`` が解釈するフォーマットで生成します。
-
-環境を再現するコマンド
+**環境を再現** するコマンド
 --------------------------------------------------
 
 .. code-block:: shell
@@ -243,11 +270,34 @@ PyPI以外のパッケージインデックスの例 🏃‍♂️
 * freeze：動作する環境に入っているライブラリのバージョンを列挙
 * install：指定されたバージョンのライブラリをインストール
 
+廊下お話しネタ :file:`requirements.txt` という名 🏃‍♂️
+------------------------------------------------------------
+
+* 拙ブログ `Python使いはpip freezeの出力を常にrequirements.txtというファイルに保存する？ 文献を調べたところいくつか流派があるようです <https://nikkie-ftnext.hatenablog.com/entry/various-file-names-of-pip-freeze>`__
+* ツールが強制することのない **慣習** なんですよね
+* （それとは別に、*人力* という点もネック）
+
+:command:`python -m pip freeze`
+--------------------------------------------------
+
+.. code-block:: txt
+
+    % python -m pip freeze
+    anyio==4.3.0
+    certifi==2024.2.2
+    h11==0.14.0
+    httpcore==1.0.5
+    httpx==0.27.0
+    idna==3.7
+    sniffio==1.3.1
+
+``pip install`` したのは ``httpx`` だけ🤔
+
 依存パッケージには **2種類** ある
 ======================================================================
 
 :direct: 私たちが :command:`pip install` で指定
-:transitive: directな依存が依存するパッケージ
+:transitive: directな依存が依存するパッケージ（*used with a direct object* ref: `Oxford辞書 <https://www.oxfordlearnersdictionaries.com/definition/english/transitive>`__）
 
 用語は `The maze of Python dependency management <https://blog.frankel.ch/maze-python-dependency-management/>`__ から
 
@@ -266,6 +316,8 @@ httpxを例に、2種類の依存
 
 * directな依存もtransitiveな依存も1つの :file:`requirements.txt` にまとまる
 * **transitiveな依存の削除** が大変
+
+拙ブログ `Pythonライブラリをpipで管理するとき、uninstallが私にはツラい <https://nikkie-ftnext.hatenablog.com/entry/python-dependency-management-pip-only-uninstall-pain>`__
 
 :file:`requirements.txt` からの削除が大変
 --------------------------------------------------
@@ -290,6 +342,10 @@ rouge-scoreが不要になった
 * rouge-scoreの依存には、**transformersが依存** するパッケージも存在する
 * プロジェクトでtransitiveな依存のうち、**rouge-scoreしか依存していないものを洗い出して** 消したい
 * :file:`requirements.txt` をバージョン管理していたらたやすいのかも（えてして忘れがち）
+
+.. revealjs-break::
+
+.. image:: ../_static/pyconkyushu/transitive-dependencies.drawio.png
 
 🥟仮想環境とは
 --------------------------------------------------
