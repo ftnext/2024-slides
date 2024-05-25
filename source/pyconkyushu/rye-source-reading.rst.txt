@@ -1,0 +1,124 @@
+Ryeの依存パッケージ管理の実装紹介
+======================================================================
+
+Rustは雰囲気で読んでいます（私の技量不足でPythonほど深掘れません）
+
+Rye
+======================================================================
+
+* Pythonも依存パッケージも **両方** 管理する
+* *Rust* のような開発体験（Hatchが近いかも）
+* https://rye.astral.sh/ にインストール手順
+
+Ryeによる開発環境の例
+--------------------------------------------------
+
+* git cloneして
+* :command:`rye sync`
+
+た っ た こ れ だ け
+
+リポジトリの構成
+--------------------------------------------------
+
+.. code-block:: txt
+
+    .
+    ├── .python-version
+    ├── .venv/
+    ├── pyproject.toml
+    ├── requirements.lock
+    └── requirements-dev.lock
+
+Pythonの管理
+--------------------------------------------------
+
+.. code-block:: txt
+    :emphasis-lines: 2
+
+    .
+    ├── .python-version  # Pythonのバージョンの記載
+    ├── .venv/
+    ├── pyproject.toml
+    ├── requirements.lock
+    └── requirements-dev.lock
+
+依存パッケージの管理
+--------------------------------------------------
+
+.. code-block:: txt
+    :emphasis-lines: 3-6
+
+    .
+    ├── .python-version
+    ├── .venv/  # lockファイルと同期した仮想環境
+    ├── pyproject.toml
+    ├── requirements.lock  # pyproject.tomlのdependencies考慮
+    └── requirements-dev.lock
+
+（かつての）Ryeの実装
+======================================================================
+
+* 依存パッケージ管理：virtualenv + pip-tools
+* 最新の 0.34.0 ではpip-toolsに代えてuvがデフォルトに
+
+Rye「開発者は仮想環境を触らないで :command:`rye sync` だけして」
+======================================================================
+
+* プロジェクトの仮想環境 :file:`.venv` に ``pip`` がない
+
+.. code-block:: shell
+
+    % .venv/bin/python -m pip list
+    /.../.venv/bin/python: No module named pip
+
+pipのない仮想環境の作り方
+--------------------------------------------------
+
+.. code-block:: shell
+
+    % python -m venv .venv/no_pip --without-pip
+    % virtualenv .venv/virt_no_pip --no-seed
+
+拙ブログ `Q: Pythonではパッケージ管理ツールpipを含まない仮想環境を作ることができる。◯か☓か <https://nikkie-ftnext.hatenablog.com/entry/create-python-virtual-environments-without-pip>`__
+
+pipのない仮想環境に ``pip-sync`` する **ちょうぜつ**
+======================================================================
+
+* ``PYTHONPATH`` 環境変数
+* 一時ディレクトリにシンボリックリンク
+
+``PYTHONPATH`` 環境変数
+--------------------------------------------------
+
+.. code-block:: shell
+
+    % .venv/no_pip/bin/python -m pip list
+    /.../.venv/no_pip/bin/python: No module named pip
+    % python -m venv .venv/with_pip --upgrade-deps
+    % PYTHONPATH=$PWD/.venv/with_pip/lib/python3.11/site-packages .venv/no_pip/bin/python -m pip list
+    Package    Version
+    ---------- -------
+    pip        24.0
+    setuptools 70.0.0
+
+拙ブログ `Q: Pythonではパッケージ管理ツールpipを含まない仮想環境にパッケージをインストールできる。◯か☓か <https://nikkie-ftnext.hatenablog.com/entry/python-no-pip-virtual-environments-pip-install-with-pythonpath>`__
+
+一時ディレクトリにシンボリックリンク
+--------------------------------------------------
+
+.. code-block:: shell
+
+    % TMPDIR=$(mktemp -d)
+    % ln -s $PWD/.venv/with_pip/lib/python3.11/site-packages/pip $TMPDIR/pip
+    % PYTHONPATH=$TMPDIR .venv/no_pip/bin/python -m pip list
+    % PYTHONPATH=$TMPDIR pip-sync --python-executable .venv/no_pip/bin/python
+    % # pip-sync --python-executable .venv/no_pip/bin/python では「ModuleNotFoundError: No module named 'pip'」
+
+拙ブログ `pipのない仮想環境にもかかわらず、Ryeがpip-syncできる"魔法"を理解する <https://nikkie-ftnext.hatenablog.com/entry/rye-magic-pip-sync-at-no-pip-virtual-environment>`__
+
+🥟Ryeの依存パッケージ管理の実装紹介
+======================================================================
+
+* 仮想環境 + pip-tools + **開発者に触らせない** 工夫
+* pipがない仮想環境でも ``PYTHONPATH`` を使えば、pipがある環境のように操作できる！
