@@ -1,3 +1,9 @@
+:ogp_title: venvによるPython開発環境の管理をpip-toolsでアップデートする提案
+:ogp_event_name: pyconkyushu
+:ogp_slide_name: virtual-environment-with-pip-tools
+:ogp_description: 〜Ryeのソースリーディングより〜 PyCon Kyushu 2024 KAGOSHIMA
+:ogp_image_name: pyconkyushu
+
 ======================================================================
 venvによるPython開発環境の管理をpip-toolsでアップデートする提案
 ======================================================================
