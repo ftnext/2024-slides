@@ -1,3 +1,9 @@
+:ogp_title: MILLION R@G （ミリオンライブ！とRAGの話）
+:ogp_event_name: engineers-anime
+:ogp_slide_name: million-live-and-rag
+:ogp_description: 2024/07 【拡大版】アニメから得た学びを発表会
+:ogp_image_name: engineers-anime-july
+
 ======================================================================
 MILLION **R\@G**
 ======================================================================
