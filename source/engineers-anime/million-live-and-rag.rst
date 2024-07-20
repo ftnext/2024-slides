@@ -244,5 +244,38 @@ nikkieの身に起きた"RAG"
 
     <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/1u4OlClvfSusqtWsi5mxlJ?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
 
+Appendix
+========
+
+拙ブログ `LangChainのRetrievalQAを使い文脈をプロンプトに含めることで、ChatGPTとアニメについておしゃべりしてみる（ムビマス篇） <https://nikkie-ftnext.hatenablog.com/entry/talk-with-chatgpt-about-idol-master-movie-by-langchain>`__
+
+RAGを使わないイメージ
+--------------------------------------------------
+
+.. code:: txt
+
+    Human: もう時間がないんですか
+
+LLMはうまく答えられない（どういう状況で時間がないのか分からないため）
+
+RAGのイメージ
+--------------------------------------------------
+
+.. code:: txt
+
+    System: Use the following pieces of context to answer the users question.
+    If you don't know the answer, just say that you don't know, don't try to make up an answer.
+    ----------------
+    響「うんうん。まだまだ自分ほどじゃないけどな」
+
+    志保「もう時間が無いんです！　今進める人間だけでも進まないと、みんなダメになりますよ！？」
+
+    奈緒「それは今の可奈にはあかんて」
+
+    響「ふふーん、なんくるないさー！」
+    Human: もう時間がないんですか
+
+LLM「はい、志保さんが言っている通り、時間がない状況のようですね。」
+
 EOF
 ===
