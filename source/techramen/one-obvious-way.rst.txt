@@ -1,0 +1,49 @@
+まずはタイトルの one obvious way
+======================================================================
+
+Pythonは使いますか？
+--------------------------------------------------
+
+実務でも🙋‍♂️ 趣味でも🙋‍♀️
+
+Python 30年以上の歴史
+--------------------------------------------------
+
+* 生みの親、`Guidoさん <https://gvanrossum.github.io/>`__ （1990年）
+* 2024年7月時点で最新は `3.12 <https://peps.python.org/pep-0693/>`__。10月に `3.13 <https://peps.python.org/pep-0719/>`__ が出ます
+* ここでは、Python 1 -> **2** へのバージョンアップの話
+
+.. 1990年の根拠 http://neopythonic.blogspot.com/2016/04/kings-day-speech.html
+
+「ミニマリストの言語」だったPython
+--------------------------------------------------
+
+* Python 2.0以降、「Python に Perl のような、野放図な拡張が次々と加えられてしまう？」という声
+* Tim Petersは、Pythonを開発する人向けに「`The Zen of Python <https://peps.python.org/pep-0020/>`__」を書いた（1999年）
+* そこに *one obvious way*
+
+There should be one-- and preferably only one --obvious way to do it.
+----------------------------------------------------------------------------------------------------
+
+:command:`python -m this`
+
+Pythonを野放図に拡張するわけではない
+--------------------------------------------------
+
+* Perlのモットー "There's More Than One Way To Do It." (やり方はひとつじゃない)
+* Pythonは "There's Only One Way To Do It"(**たった一つのやり方**)
+* 参照 `The Zen of Python 解題 - 後編 <https://atsuoishimoto.hatenablog.com/entry/20100926/1285508015>`__ （石本さん）
+
+😈え？ one obvious wayを志向するPythonに依存ライブラリ管理ツールがたっくさんあるんですか？
+----------------------------------------------------------------------------------------------------
+
+* 😇はい！（ノーダメージ）
+* one obvious wayはPython自体の話（Python 2.0時点）
+* IMO：パッケージマネージャは言語機能ではないので、たくさんあってもOK
+
+ℹ️参考情報 🏃‍♂️
+--------------------------------------------------
+
+* `PythonZen & PEP 8 検定試験 <https://pythonzen-pep8-exam.jp/>`__
+* 『`パーフェクトPython［改訂2版］ <https://gihyo.jp/book/2020/978-4-297-11223-3>`__』「1-4　Pythonの禅」
+* 拙ブログ `Pythonのone obvious way 〜The Zen of Pythonを訪ねて〜 <https://nikkie-ftnext.hatenablog.com/entry/the-zen-of-python-one-obvious-way-tour>`__
