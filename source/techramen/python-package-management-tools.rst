@@ -26,3 +26,9 @@ nikkie（にっきー）と申します
   * ♨️ `ばんくしさんによる「ゼロから作る自作 Python Package Manager 入門」がほんとよい！ 写経を積みます <https://nikkie-ftnext.hatenablog.com/entry/vaaaaanquish-python-package-manager-diy-introduction-is-awesome>`__
 
 * :fab:`github` `@ftnext <https://github.com/ftnext>`__ sphinx-new-tab-link などなど
+
+.. include:: one-obvious-way.rst.txt
+
+.. include:: virtual-environments.rst.txt
+
+.. include:: tools-made-with-rust.rst.txt
