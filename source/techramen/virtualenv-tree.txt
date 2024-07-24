@@ -1,0 +1,12 @@
+.venv/
+├── bin/
+│   ├── activate
+│   ├── pip
+│   ├── pip3
+│   ├── pip3.12
+│   ├── python -> python3.12
+│   ├── python3 -> python3.12
+│   └── python3.12 -> /Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12
+├── lib/
+│   └── python3.12/  # <- この下に site-packages
+└── pyvenv.cfg
