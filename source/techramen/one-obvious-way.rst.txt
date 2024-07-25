@@ -1,10 +1,7 @@
 まずはタイトルの one obvious way
 ======================================================================
 
-Pythonは使いますか？
---------------------------------------------------
-
-実務でも🙋‍♂️ 趣味でも🙋‍♀️
+*たったひとつのPythonらしいやり方*
 
 Python 30年以上の歴史
 --------------------------------------------------
@@ -15,11 +12,11 @@ Python 30年以上の歴史
 
 .. 1990年の根拠 http://neopythonic.blogspot.com/2016/04/kings-day-speech.html
 
-「ミニマリストの言語」だったPython
+「ミニマリストの言語」だったPython 1
 --------------------------------------------------
 
-* Python 2.0以降、「Python に Perl のような、野放図な拡張が次々と加えられてしまう？」という声
-* Tim Petersは、Pythonを開発する人向けに「`The Zen of Python <https://peps.python.org/pep-0020/>`__」を書いた（1999年）
+* Python 2.0以降、「Pythonが野放図に拡張されて、Perlのようになってしまう？」という声
+* Tim Petersは、Pythonを開発する人向けに「`The Zen of Python <https://peps.python.org/pep-0020/>`__」（1999年）を書いて回答
 * そこに *one obvious way*
 
 There should be one-- and preferably only one --obvious way to do it.
@@ -31,15 +28,17 @@ Pythonを野放図に拡張するわけではない
 --------------------------------------------------
 
 * Perlのモットー "There's More Than One Way To Do It." (やり方はひとつじゃない)
-* Pythonは "There's Only One Way To Do It"(**たった一つのやり方**)
+* Pythonは "There's Only One Way To Do It." (**たった一つのやり方**)
 * 参照 `The Zen of Python 解題 - 後編 <https://atsuoishimoto.hatenablog.com/entry/20100926/1285508015>`__ （石本さん）
 
 😈え？ one obvious wayを志向するPythonに依存ライブラリ管理ツールがたっくさんあるんですか？
 ----------------------------------------------------------------------------------------------------
 
 * 😇はい！（ノーダメージ）
-* one obvious wayはPython自体の話（Python 2.0時点）
-* IMO：パッケージマネージャは言語機能ではないので、たくさんあってもOK
+* one obvious wayは **Python自体** の話（Python 2.0時点）
+* IMO：パッケージマネージャは言語機能ではないので、たくさんあっても *言語哲学的にはOK* （ユーザとしては？）
+
+.. PythonユーザとしてOKかはこの先をお楽しみに
 
 ℹ️参考情報 🏃‍♂️
 --------------------------------------------------
@@ -47,3 +46,10 @@ Pythonを野放図に拡張するわけではない
 * `PythonZen & PEP 8 検定試験 <https://pythonzen-pep8-exam.jp/>`__
 * 『`パーフェクトPython［改訂2版］ <https://gihyo.jp/book/2020/978-4-297-11223-3>`__』「1-4　Pythonの禅」
 * 拙ブログ `Pythonのone obvious way 〜The Zen of Pythonを訪ねて〜 <https://nikkie-ftnext.hatenablog.com/entry/the-zen-of-python-one-obvious-way-tour>`__
+
+Python環境
+--------------------------------------------------
+
+* `Python処理系をインストール <https://www.python.org/downloads/>`__
+* ``pip`` （サードパーティのライブラリ管理ツール）が使えるようになっている
+* :command:`python -m pip install` としては **いけません**
