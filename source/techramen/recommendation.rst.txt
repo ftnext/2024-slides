@@ -1,0 +1,51 @@
+注目している依存ライブラリ管理ツール
+======================================================================
+
+* Ryeは期待が過度にも見える
+* 私がいま注目しているのは *Hatch*
+
+Hatch
+--------------------------------------------------
+
+* Python実装だが、インストールに **Python環境は不要** （インストーラあり）
+* Python処理系のバージョンを管理できる
+* 仮想環境も管理
+
+Hatchを使ったプロジェクト
+--------------------------------------------------
+
+* 依存ライブラリは :file:`pyproject.toml` に書く（だけ）
+
+.. code-block:: toml
+
+    [project]
+    dependencies = ["kojo-fan-art"]
+
+まるでCargoのよう
+--------------------------------------------------
+
+* 記載した依存をインストールする必要なない
+* **Hatchがインストールした仮想環境を用意** してくれる
+
+.. code-block:: toml
+    :caption: Cargo.toml
+
+    [dependencies]
+
+    [dev-dependencies]
+    assert_cmd = "2"
+
+One more thing
+======================================================================
+
+自作しました
+
+shirabe
+--------------------------------------------------
+
+.. code-block:: shell
+
+    % shirabe alpha .venv
+
+* :file:`requirements.txt` 込みで仮想環境を作る
+* `私がほしいPythonの仮想環境を作るツール shirabe を実験的に始めました🎵 <https://nikkie-ftnext.hatenablog.com/entry/release-shirabe-python-virtual-environment-builder-v0.1.0>`__
