@@ -1,5 +1,6 @@
 # 2024-slides
 
+- [one obvious wayを志向するPythonに依存ライブラリ管理ツールがたっくさんある話 〜Rust製ツールが高速を謳う〜](https://ftnext.github.io/2024-slides/techramen/python-package-management-tools.html#/1) @[TechRAMEN 2024 Conference (2024/07)](https://techramenconf.net/)
 - [MILLION R@G](https://ftnext.github.io/2024-slides/engineers-anime/million-live-and-rag.html) @[【拡大版】アニメから得た学びを発表会 (2024/07)](https://engineers-anime.connpass.com/event/321890/)
 - [venvによるPython開発環境の管理をpip-toolsでアップデートする提案 〜Ryeのソースリーディングより〜](https://ftnext.github.io/2024-slides/pyconkyushu/virtual-environment-with-pip-tools.html#/1) @[PyCon Kyushu 2024 KAGOSHIMA (2024/05)](https://kyushu.pycon.jp/2024/)
 - [『アイの歌声を聴かせて』をきっかけに考え始めた幸せ](https://ftnext.github.io/2024-slides/engineers-anime/sing-a-bit-of-harmony.html#/1) @[エンジニアがアニメから得た学び  (2024/05)](https://engineers-anime.connpass.com/event/314672/)
