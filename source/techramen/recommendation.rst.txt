@@ -15,6 +15,7 @@ Hatchを使ったプロジェクト
 --------------------------------------------------
 
 * 依存ライブラリは :file:`pyproject.toml` に書く（だけ）
+* （このファイルは `PEP 518 <https://peps.python.org/pep-0518/>`__ で導入。普及してきた）
 
 .. code-block:: toml
 
@@ -24,7 +25,7 @@ Hatchを使ったプロジェクト
 まるでCargoのよう
 --------------------------------------------------
 
-* 記載した依存をインストールする必要なない
+* 記載した依存をインストールするためにコマンドを叩く必要はない
 * **Hatchがインストールした仮想環境を用意** してくれる
 
 .. code-block:: toml
@@ -35,17 +36,58 @@ Hatchを使ったプロジェクト
     [dev-dependencies]
     assert_cmd = "2"
 
-One more thing
-======================================================================
+.. revealjs-break::
+    :notitle:
 
-自作しました
+.. list-table::
+    :header-rows: 1
+    :widths: 65 15 20
 
-shirabe
+    * - 項目
+      - Rye
+      - Hatch
+    * - インストールにPythonが
+      - 不要
+      - どちらでも
+    * - Pythonを管理
+      - する
+      - する
+    * - ライブラリ（仮想環境）管理
+      - する
+      - する
+    * - ロックファイル
+      - ばっちり
+      - ゆるめ
+
+.. pyproject.toml には requirements.txt ほど細かく記載しないので、ライブラリのバージョンまで完全に再現させない
+
+ℹ️Hatchの参考情報 🏃‍♂️
 --------------------------------------------------
 
-.. code-block:: shell
+* Python Monthly Topics `最近気になるツール「Hatch」でPythonプロジェクトを管理する <https://gihyo.jp/article/2024/05/monthly-python-2405>`__
+* 拙ブログ `素振りの記：自分だけのクソライブラリ作りを通して、Hatchの機能に触れる <https://nikkie-ftnext.hatenablog.com/entry/practice-python-hatch-with-trivial-library>`__
 
-    % shirabe alpha .venv
+**スクリプト** に限定した仮想環境
+======================================================================
 
-* :file:`requirements.txt` 込みで仮想環境を作る
-* `私がほしいPythonの仮想環境を作るツール shirabe を実験的に始めました🎵 <https://nikkie-ftnext.hatenablog.com/entry/release-shirabe-python-virtual-environment-builder-v0.1.0>`__
+IMO：ちょっとした自動化のPythonスクリプトを書く場合、2024年時点ではRyeやHatchまで持ち出さなくてもよい
+
+pipx (PEP 723 サポート)
+--------------------------------------------------
+
+スクリプトの先頭に **依存ライブラリを示すメタデータ** を書く（だけ）
+
+.. code-block:: python
+
+    # /// script
+    # dependencies = ["openai"]
+    # ///
+
+`PEP 723 – Inline script metadata <https://peps.python.org/pep-0723/>`__
+
+pipx
+--------------------------------------------------
+
+* インストール https://pipx.pypa.io/stable/installation/
+* PEP 723サポート＝ **スクリプトに必要な依存を含む仮想環境をpipxが管理** （開発者を解放🙌）
+* 詳しくはこちらをどうぞ：`Pythonスクリプトのモジュラリティとポータビリティを高めていく <https://tech.uzabase.com/entry/2024/06/07/180442>`__
