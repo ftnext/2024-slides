@@ -25,7 +25,7 @@ nikkie（にっきー）と申します
 
   * ♨️ `ばんくしさんによる「ゼロから作る自作 Python Package Manager 入門」がほんとよい！ 写経を積みます <https://nikkie-ftnext.hatenablog.com/entry/vaaaaanquish-python-package-manager-diy-introduction-is-awesome>`__
 
-* :fab:`github` `@ftnext <https://github.com/ftnext>`__ sphinx-new-tab-link などなど
+* :fab:`twitter` `@ftnext <https://twitter.com/ftnext>`__ ／ :fab:`github` `@ftnext <https://github.com/ftnext>`__ ／ アニメ好き
 
 Pythonは使いますか？
 --------------------------------------------------
@@ -38,6 +38,12 @@ Pythonは使いますか？
 * どんなプログラミング言語でも、ライブラリを活用している
 * 今一番話したい技術の話：Pythonの依存ライブラリ管理の仕組みと状況🍜
 * 馴染みのある言語と比べて楽しんでいただければ
+
+おことわり：nikkieのスタンス
+--------------------------------------------------
+
+* 本トークは小言を言っているように聞こえるかも
+* 私はPythonが好き。手に馴染むし、これからも使い続けるだろうし、 **改善提案もしていく**
 
 .. include:: one-obvious-way.rst.txt
 
@@ -56,7 +62,78 @@ Pythonは使いますか？
 
 .. 担当はshirabe
 
+.. revealjs-break::
+    :notitle:
+
+.. list-table::
+    :header-rows: 1
+
+    * - 項目
+      - 俺たち
+      - Rye
+      - Hatch
+    * - インストールにPythonが
+      - 必要（前提）
+      - 不要
+      - どちらでも
+    * - Pythonを管理
+      - しない
+      - する
+      - する
+    * - ライブラリ（仮想環境）管理
+      - する（人力）
+      - する
+      - する
+    * - 仮想環境の再現
+      - 手順が漏れうる
+      - ばっちり
+      - ゆるめ
+
+One more thing
+======================================================================
+
+**自作** しました
+
+shirabe
+--------------------------------------------------
+
+.. code-block:: shell
+
+    % shirabe alpha .venv
+
+* :file:`requirements.txt` 込みで仮想環境を作る
+* `私がほしいPythonの仮想環境を作るツール shirabe を実験的に始めました🎵 <https://nikkie-ftnext.hatenablog.com/entry/release-shirabe-python-virtual-environment-builder-v0.1.0>`__
+
+.. revealjs-break::
+    :notitle:
+
+.. list-table::
+    :header-rows: 1
+
+    * - 項目
+      - Hatch
+      - shirabe
+    * - インストールにPythonが
+      - どちらでも
+      - 必要
+    * - Pythonを管理
+      - する
+      - しない
+    * - ライブラリ（仮想環境）管理
+      - する（意識しない）
+      - する（意識させる）
+    * - 仮想環境の再現
+      - ゆるめ
+      - ばっちり
+
 ご清聴ありがとうございました
 --------------------------------------------------
 
 したっけね〜👋
+
+【再掲】小言のように聞こえたかもしれませんが、Pythonという言語が好きなので、改善提案もしていきます（shirabe💪）
+
+.. include:: appendix.rst.txt
+
+EOF
+===
