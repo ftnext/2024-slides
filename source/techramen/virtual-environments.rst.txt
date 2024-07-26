@@ -10,7 +10,7 @@ Python環境はおもちですか？ / Is your Python environment a rice cake?
 * そこに依存ライブラリを配置する
 * Pythonで開発する場合、 **まずディレクトリ（仮想環境）を用意する**
 
-他の言語ではツールが配置ディレクトリを作る
+他の言語ではツールが自動で配置ディレクトリを作る
 --------------------------------------------------
 
 * pnpm (:file:`node_modules`)
@@ -19,14 +19,14 @@ Python環境はおもちですか？ / Is your Python environment a rice cake?
 .. pnpm create hono@latest
 .. composer require --dev phpunit/phpunit
 
-Pythonでは **開発者が都度** 作ります
+Pythonでは作っているか **意識** する必要あり
 
 Pythonで依存ライブラリが置かれる場所
 --------------------------------------------------
 
 * **site-packages** というディレクトリ
-* サードパーティのライブラリは `PyPI <https://pypi.org/>`__ （など）にある
-* Python処理系は :file:`site-packages` を1箇所だけ持つ（バージョン違いは上書きし合う😱）
+* `PyPI <https://pypi.org/>`__ （など）からライブラリをダウンロードして配置
+* Python処理系の持つ :file:`site-packages` は1箇所だけ（👉バージョン違いは上書きし合う😱）
 
 仮想環境で **プロジェクトごとのsite-packages** を用意✅
 ------------------------------------------------------------
@@ -48,11 +48,13 @@ Pythonで依存ライブラリが置かれる場所
 .. literalinclude:: virtualenv-tree.txt
     :language: txt
 
+.. _Pythonチュートリアル: https://docs.python.org/ja/3/tutorial/venv.html
+
 仮想環境管理ツール、**俺たち** 😎
 ======================================================================
 
 * Pythonにおいて、仮想環境を扱う方法（の1つ）は **人力** 頼みです
-* `Pythonチュートリアル <https://docs.python.org/ja/3/tutorial/venv.html>`__ などで紹介されており、膾炙しています
+* `Pythonチュートリアル`_ などで紹介されており、膾炙しています
 
 仮想環境のワークフロー
 --------------------------------------------------
@@ -64,10 +66,11 @@ Pythonで依存ライブラリが置かれる場所
 仮想環境の管理に使うツール
 --------------------------------------------------
 
-* 作る：先に紹介した venv（やvirtualenv）
-* ライブラリインストール：pip
+1. 仮想環境を作る：venv（やvirtualenv）
+2. 仮想環境を有効にする：俺たち！
+3. 依存ライブラリをインストール：pip
 
-Pythonチュートリアルに沿っています
+`Pythonチュートリアル`_ に沿っています
 
 仮想環境のワークフロー（コマンド）
 --------------------------------------------------
@@ -78,7 +81,7 @@ Pythonチュートリアルに沿っています
     $ source .venv/bin/activate  # 2
     (.venv) $ python -m pip install openai  # 3
 
-仮想環境の再現（ただし任意）
+仮想環境の再現（*best effort*）
 --------------------------------------------------
 
 1. インストールされたライブラリとバージョンを列挙したファイルを俺たちが作る（人力）
@@ -100,7 +103,9 @@ Pythonチュートリアルに沿っています
 
 .. code-block:: shell
 
-    (.venv) $ python -m pip install -r requirements.txt
+    $ python -m venv .venv2 --upgrade-deps
+    $ source .venv2/bin/activate
+    (.venv2) $ python -m pip install -r requirements.txt
 
 人力のためにゆらぐ
 --------------------------------------------------
@@ -112,15 +117,15 @@ Pythonチュートリアルに沿っています
 --------------------------------------------------
 
 * Python開発者がvenvやpipを操作する場合、順風満帆ではない😫
-* ツラかった例：いくつかをアンインストールし、:file:`requirements.txt` も更新
-* pipではインストールできたバージョンが正義（依存解決が弱め）
+* ツラかった例： `いくつかをアンインストールし <https://nikkie-ftnext.hatenablog.com/entry/python-dependency-management-pip-only-uninstall-pain>`__ 、:file:`requirements.txt` も更新
+* pipはインストールできたバージョンを書き出す（多くのツールは **逆** では？）
 
-でも **小さい部品を組合せ** られてるんだ！
+でも **小さい部品を組合せ** てるんだ！
 --------------------------------------------------
 
 * venvやpipなど、機能ごとに小さなモジュール
-* 組合せて依存ライブラリ管理をする（*レゴブロック* のイメージ）
-* ここまでは、人間がvenvとpipを組合せた例
+* 組合せて依存ライブラリ管理をする
+* ここまでは、**人間がvenvとpipを組合せ** た例
 
 シンプル（≒レゴブロック）
 --------------------------------------------------
@@ -133,7 +138,7 @@ Pythonチュートリアルに沿っています
 --------------------------------------------------
 
 * Pythonに依存ライブラリ管理ツールがたっくさんあるのは、**小さな部品を組合せられる** から
-* 各自が感じる課題を解消する組合せ方のたっくさんの提案（楽してこーぜ）
+* 各自が感じる課題を解消する組合せ方のたっくさんの提案（*楽してこーぜ*）
 * Poetry, Pipenv, PDM, Flit, ... （この後にも登場します）
 
 例：Poetry
@@ -153,7 +158,7 @@ Poetryを使ったプロジェクト
 
 * 依存ライブラリの追加は :command:`poetry add`
 * Poetryはプロジェクトごとに仮想環境を管理（開発者は意識しない）
-* Poetryが :file:`poetry.lock` も管理
+* Poetryが :file:`poetry.lock` も管理（:file:`requirements.txt` と異なり独自仕様）
 
 Poetryを使ったプロジェクトの再現
 --------------------------------------------------
@@ -168,3 +173,30 @@ Poetryを使ったプロジェクトの再現
 * プロジェクトごとにライブラリをインストールするための仕組み
 * 仮想環境管理の代表的な方法は、 **人力**
 * 人力に代わる仮想環境管理ツールがいくつも提案されている
+
+.. revealjs-break::
+    :notitle:
+
+.. list-table:: 仮想環境管理機能の比較
+    :header-rows: 1
+
+    * - 項目
+      - 俺たち
+      - Poetry
+    * - Pythonのバージョン
+      - 管理しない
+      - 管理しない
+    * - ライブラリのバージョン
+      - 仮想環境にインストールして管理
+      - 管理（仮想環境を意識させない）
+    * - 仮想環境の再現
+      - 手順が漏れうる
+      - 完全サポート
+
+ℹ️拙ブログより 仮想環境 🏃‍♂️
+--------------------------------------------------
+
+* `登壇報告 | みんなのPython勉強会#103 にてPythonで仮想環境にライブラリをインストールするんだと（ただそれだけを）話しました <https://nikkie-ftnext.hatenablog.com/entry/stapy-103-python-virtual-environment-basic-talk>`__
+* `俺がPythonのパッケージマネージャなんだ <https://nikkie-ftnext.hatenablog.com/entry/pythonistas-are-part-of-python-package-manager-system>`__
+* `Python仮想環境DASH村。シェルのコマンドだけで作ってみる（あくまで学習目的です） <https://nikkie-ftnext.hatenablog.com/entry/make-python-virtual-environment-with-shell-commands>`__
+* `virtualenvはPython標準ライブラリのvenvを使って仮想環境を作っている <https://nikkie-ftnext.hatenablog.com/entry/python-virtualenv-delegates-to-venv>`__
