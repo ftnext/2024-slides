@@ -1,3 +1,9 @@
+:ogp_title: one obvious wayを志向するPythonに依存ライブラリ管理ツールがたっくさんある話
+:ogp_event_name: techramen
+:ogp_slide_name: python-package-management-tools
+:ogp_description: 〜Rust製ツールが高速を謳う〜 TechRAMEN 2024 Conference 前夜祭
+:ogp_image_name: techramen
+
 ================================================================================
 one obvious wayを志向するPythonに依存ライブラリ管理ツールがたっくさんある話
 ================================================================================
