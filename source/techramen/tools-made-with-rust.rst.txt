@@ -31,7 +31,7 @@ Ryeを使ったプロジェクトの再現
 * 詳しくは https://rye.astral.sh/guide/basics/
 
 RyeはPythonの仮想環境に **提案** している
---------------------------------------------------
+======================================================================
 
 * :file:`requirements.lock` を自動管理
 * 開発者に触らせない
@@ -47,5 +47,35 @@ RyeはPythonの仮想環境に **提案** している
 --------------------------------------------------
 
 * Ryeが作った仮想環境には **pipがない**
-* （仮想環境管理ツール、俺たちで見たような）開発者が仮想環境に追加でインストールができない（※補足あり）
+* （仮想環境管理ツール、俺たちで見たような）開発者が仮想環境に追加でインストールができない
 * 開発者が触れないことで、:file:`requirements.lock` と一致を保てる
+
+.. revealjs-break::
+    :notitle:
+
+.. list-table::
+    :header-rows: 1
+
+    * - 項目
+      - Poetry
+      - Rye
+    * - インストールにPythonが
+      - 必要
+      - 不要
+    * - Pythonを管理
+      - しない
+      - する
+    * - ライブラリ（仮想環境）管理
+      - する
+      - する
+    * - ロックファイル
+      - 独自仕様
+      - ``pip freeze`` 相当
+
+ℹ️拙ブログより Rye 🏃‍♂️
+--------------------------------------------------
+
+* `素振りの記：Ryeに慣れるために、Pythonで自分だけのクソライブラリを作る <https://nikkie-ftnext.hatenablog.com/entry/practice-python-rye-with-trivial-library>`__
+* `pipのない仮想環境にもかかわらず、Ryeがpip-syncできる"魔法"を理解する <https://nikkie-ftnext.hatenablog.com/entry/rye-magic-pip-sync-at-no-pip-virtual-environment>`__
+
+  * この方法を使えば、開発者もRyeの仮想環境にインストールできちゃいます
