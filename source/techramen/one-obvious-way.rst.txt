@@ -15,7 +15,7 @@ Python 30年以上の歴史
 「ミニマリストの言語」だったPython 1
 --------------------------------------------------
 
-* Python 2.0以降、「Pythonが野放図に拡張されて、Perlのようになってしまう？」という声
+* Python 2.0以降、「Pythonが野放図に拡張されて、Perlと区別がつかなくなってしまう？」という声
 * Tim Petersは、Pythonを開発する人向けに「`The Zen of Python <https://peps.python.org/pep-0020/>`__」（1999年）を書いて回答
 * そこに *one obvious way*
 
@@ -50,6 +50,6 @@ Pythonを野放図に拡張するわけではない
 Python環境
 --------------------------------------------------
 
+* Pythonのバージョンと依存ライブラリのバージョンは **分けて管理**
 * `Python処理系をインストール <https://www.python.org/downloads/>`__
-* ``pip`` （サードパーティのライブラリ管理ツール）が使えるようになっている
-* :command:`python -m pip install` としては **いけません**
+* ``pip`` （サードパーティのライブラリ管理ツール）が使えるが、:command:`python -m pip install` としては い け ま せ ん
