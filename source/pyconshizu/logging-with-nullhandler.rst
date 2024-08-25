@@ -1,8 +1,16 @@
+:ogp_title: （ドラフト版）ライブラリ開発者に贈る「ロギングで NullHandler 以外はいけません」
+:ogp_event_name: pyconshizu
+:ogp_slide_name: logging-with-nullhandler
+:ogp_description: PyCon mini Shizuoka 2024
+:ogp_image_name: pyconshizu
+
 .. _ライブラリのためのロギングの設定: https://docs.python.org/ja/3/howto/logging.html#configuring-logging-for-a-library
 
 ======================================================================
 ライブラリ開発者に贈る「ロギングで ``NullHandler`` 以外はいけません」
 ======================================================================
+
+ドラフト版
 
 :Event: PyCon mini Shizuoka 2024
 :Presented: 2024/08/31 nikkie
