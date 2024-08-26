@@ -5,6 +5,7 @@
 :ogp_image_name: pyconshizu
 
 .. _ライブラリのためのロギングの設定: https://docs.python.org/ja/3/howto/logging.html#configuring-logging-for-a-library
+.. _ライブラリ内でロガーに NullHandler 以外のハンドラーを追加する: https://docs.python.org/ja/3/howto/logging-cookbook.html#adding-handlers-other-than-nullhandler-to-a-logger-in-a-library
 
 ======================================================================
 ライブラリ開発者に贈る「ロギングで ``NullHandler`` 以外はいけません」
@@ -48,7 +49,7 @@
 Logging クックブックの「避けるべきパターン」の1つ
 ======================================================================
 
-* `ライブラリ内でロガーに NullHandler 以外のハンドラーを追加する <https://docs.python.org/ja/3/howto/logging-cookbook.html#adding-handlers-other-than-nullhandler-to-a-logger-in-a-library>`__
+* `ライブラリ内でロガーに NullHandler 以外のハンドラーを追加する`_
 
     ハンドラーやフォーマッター、フィルターを追加してログ出力をカスタマイズするのはライブラリ開発者ではなく、アプリケーション開発者の責務です。
 
@@ -59,3 +60,5 @@ Logging クックブックの「避けるべきパターン」の1つ
 2. アプリケーション開発者へ
 
 .. include:: library-logging.rst.txt
+
+.. include:: application-logging.rst.txt
