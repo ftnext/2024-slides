@@ -77,6 +77,11 @@
 
 シングルトンなので都度 ``getLogger`` ！（`避けるべきパターン <https://docs.python.org/ja/3/howto/logging-cookbook.html#using-loggers-as-attributes-in-a-class-or-passing-them-as-parameters>`__ も参照）
 
+.. code-block:: pycon
+
+    >>> logging.getLogger("mylib") is logging.getLogger("mylib")
+    True
+
 ロガーの親子関係
 --------------------------------------------------
 
