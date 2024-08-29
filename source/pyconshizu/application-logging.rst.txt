@@ -1,5 +1,6 @@
 .. _logging.basicConfig(): https://docs.python.org/ja/3/library/logging.html#logging.basicConfig
-.. _Logger.setLevel: https://docs.python.org/ja/3/library/logging.html#logging.Logger.setLevel
+.. _ロギングレベル: https://docs.python.org/ja/3/library/logging.html#logging-levels
+.. _propagate: https://docs.python.org/ja/3/library/logging.html#logging.Logger.propagate
 
 2️⃣アプリケーション開発におけるロギングの実装
 ======================================================================
@@ -9,7 +10,7 @@
 アプリケーション開発者がログ出力を **カスタマイズ**！
 ------------------------------------------------------------
 
-    ハンドラーやフォーマッター、フィルターを追加してログ出力をカスタマイズするのは (略)、アプリケーション開発者の責務です。
+    ハンドラーや (略) を追加してログ出力をカスタマイズするのは (略)、アプリケーション開発者の責務です。
 
 `ライブラリ内でロガーに NullHandler 以外のハンドラーを追加する`_ （再掲）
 
@@ -18,8 +19,6 @@
 
 1. ルートロガーを設定（👈主な話題）
 2. ライブラリのロガーを触る
-
-.. TODO 2はこの記事を案内 https://nikkie-ftnext.hatenablog.com/entry/configure-python-librarys-logger
 
 ルートロガーを設定する
 ======================================================================
@@ -39,18 +38,6 @@
 
 他の要素はドキュメントをどうぞ
 
-.. _ロギングレベル: https://docs.python.org/ja/3/library/logging.html#logging-levels
-
-`ロギングレベル`_ 一覧 🏃‍♂️
---------------------------------------------------
-
-* ``NOTSET``
-* ``DEBUG``
-* ``INFO``
-* ``WARNING``
-* ``ERROR``
-* ``CRITICAL``
-
 ルートロガーのレベルを設定
 --------------------------------------------------
 
@@ -58,7 +45,7 @@
 
     logging.basicConfig(level=logging.WARNING)
 
-* 「*level よりも深刻でないログメッセージは無視されます*」（公式ドキュメント `Logger.setLevel`_）
+* ロガーの持つレベル以上の重要性のイベントがログに記録される（再掲）
 
 フォーマッタ
 --------------------------------------------------
@@ -67,21 +54,35 @@
 
     logging.basicConfig(format="%(levelname)s:%(name)s:%(message)s")
 
-* ハンドラの出力に適用される **書式の設定** （ハンドラがフォーマッタを持つ）
-* 使える属性名は `LogRecord 属性 <https://docs.python.org/ja/3/library/logging.html#logrecord-attributes>`__ に
+* ハンドラは1つのフォーマッタを持つ
+* ハンドラの出力に適用される **書式の設定**
 
-`logging.basicConfig()`_ でルートロガーを設定
+書式設定に使える属性名 🏃‍♂️
 --------------------------------------------------
+
+.. code-block:: python
+
+    format="%(asctime)s | %(levelname)s | %(name)s:%(funcName)s:%(lineno)d - %(message)s"
+
+`LogRecord 属性 <https://docs.python.org/ja/3/library/logging.html#logrecord-attributes>`__
+
+ルートロガーをカスタマイズ
+--------------------------------------------------
+
+アプリケーション開発者 **（ライブラリを使う側）が好きに** 決められます
 
 * ロギングレベル
 * ハンドラ & フォーマッタ
-
-アプリケーション開発者 **（ライブラリを使う側）が好きに** 決められます
 
 ルートロガーを設定してライブラリのログを出力
 ======================================================================
 
 **propagate** （伝播）
+
+ロガーの `propagate`_ 属性
+--------------------------------------------------
+
+    この属性が真と評価された場合、このロガーに記録されたイベントは、このロガーに取り付けられた全てのハンドラに加え、上位 (祖先) ロガーのハンドラにも渡されます。    
 
 ロガーの親子関係（再び）
 --------------------------------------------------
@@ -97,9 +98,11 @@
 propagate（伝播）
 --------------------------------------------------
 
-* ``spam`` ロガーに設定されたロギングレベルは ``WARNING`` とする
-* ``spam`` ロガーの ``warning()`` メソッドが呼ばれた
-* そのログレコードは **親のロガーに伝播** しハンドラへ渡る
+* ``spam`` ロガーのロギングレベル以上のメソッドが呼ばれた
+
+    * 例：ロガーのレベルは ``WARNING`` で、 ``warning()`` メソッドが呼ばれた
+
+* そのログレコードは **親のロガーに伝播** し、親のハンドラにも渡る
 
 📌 ``NullHandler`` + ``basicConfig`` + propagate
 ------------------------------------------------------------
@@ -108,9 +111,12 @@ propagate（伝播）
 * ``mylib`` ロガーのハンドラ（``NullHandler``）が処理（するが出力はない）
 * 親のルートロガーに伝播し、 **ルートロガーのハンドラで処理して出力される**
 
-.. propagateされたログレコードは、親のロガーの **レベルより下でも** 親ロガーのハンドラに渡る
+ドキュメント `propagate`_ の注釈より
+------------------------------------------------------------
 
-あれ？ ライブラリのロガーのレベルって？
+    一般的なシナリオでは、ハンドラをルートロガーに対してのみ接続し、残りは propagate にすべて委ねます。
+
+待って🤚 ライブラリのロガーのレベルって？
 ======================================================================
 
 今一度 **ライブラリ開発者向け** の話になります
@@ -118,12 +124,9 @@ propagate（伝播）
 ``NullHandler`` 以外はいけません（結論・再掲）
 --------------------------------------------------
 
-.. code-block:: python
-
-    import logging
-
-    logger = logging.getLogger("mylib")
-    logger.addHandler(logging.NullHandler())
+.. literalinclude:: ../../samplecode/python-logging/conclusion.py
+    :language: python
+    :lines: 1-4
 
 ライブラリのロガーに **ロギングレベルは設定していない**
 
@@ -144,45 +147,38 @@ propagate（伝播）
 ライブラリのロガーにロギングレベルを設定したいとき
 --------------------------------------------------
 
-* 親をそのまた親へとたどっていき、最初に見つかった ``NOTSET`` 以外のレベルになる、ということ
-* mylibロガーの親 **ルートロガーに設定したレベル** となる！
+* 親をそのまた親へとたどっていき、最初に見つかった ``NOTSET`` 以外のレベルになる、ということ（`ロギングレベル`_）
+* ``mylib`` ロガーは、親の **ルートロガーに設定したレベル** となる！
+
+propagate まとめ🥟 ライブラリのロギング
+======================================================================
+
+.. literalinclude:: ../../samplecode/python-logging/example/mylib.py
+    :language: python
 
 例：ルートロガーのロギングレベルが ``WARNING`` だと出力されない
 ----------------------------------------------------------------------
 
-.. code-block:: python
-    :caption: ライブラリ
-
-    import logging
-
-    logger = logging.getLogger("mylib")
-    logger.addHandler(logging.NullHandler())
-
-    logger.info("想定通り")
-
-.. code-block:: python
-    :caption: アプリケーション
-
-    logging.basicConfig(level=logging.WARNING)
+.. literalinclude:: ../../samplecode/python-logging/example/warning_app.py
+    :language: python
+    :emphasize-lines: 5
 
 例：ルートロガーのロギングレベルが ``DEBUG`` だと **出力される**
 ----------------------------------------------------------------------
 
-.. code-block:: python
+.. literalinclude:: ../../samplecode/python-logging/example/debug_app.py
+    :language: python
+    :emphasize-lines: 5
 
-    import logging
+.. code-block:: txt
 
-    logger = logging.getLogger("mylib")
-    logger.addHandler(logging.NullHandler())
+    INFO:mylib:想定通り
 
-    logger.info("想定通り")
+**違いはルートロガーのロギングレベル**
+--------------------------------------------------
 
-.. code-block:: python
-    :caption: アプリケーション
-
-    logging.basicConfig(level=logging.DEBUG)
-
-ライブラリのコードは同じ。 **違いはルートロガーのロギングレベル**
+* ライブラリのコードは同じ
+* ライブラリを利用するアプリケーションコードでカスタマイズした
 
 まとめ🥟 アプリケーション開発におけるロギングの実装
 ======================================================================
@@ -192,5 +188,28 @@ propagate（伝播）
     logging.basicConfig(level=logging.DEBUG, format="%(levelname)s:%(name)s:%(message)s")
 
 * ライブラリを使う側の都合で、ルートロガーを設定
-* ロガーの親子関係のpropagateで、 **ルートロガーのハンドラでログ出力**
-* ライブラリのロガーはレベル ``NOTSET`` （＝ルートロガーのレベル参照）
+* ライブラリのロガーはルートロガーのレベルを参照し、propagateで **ルートロガーのハンドラでログ出力**
+
+propagateは **親ロガーのレベルによらない** 🏃‍♂️
+--------------------------------------------------
+
+    メッセージは、祖先ロガーのハンドラに直接渡されます - 今問題にしている祖先ロガーのレベルもフィルタも、どちらも考慮されません。
+
+`propagate`_
+
+propagateで祖先ロガーのレベルが考慮されない例 🏃‍♂️
+------------------------------------------------------------
+
+.. literalinclude:: ../../samplecode/python-logging/propagate.py
+    :language: python
+    :lines: 1-11
+
+.. literalinclude:: ../../samplecode/python-logging/propagate.py
+    :language: txt
+    :lines: 14
+
+ライブラリのロガーを触ってログ出力をカスタマイズ 🏃‍♂️
+------------------------------------------------------------
+
+* アプリケーションコードで ``getLogger("mylib")`` し、レベル・ハンドラ・フォーマッタを設定
+* 拙ブログ `Pythonのライブラリに用意されたロガーを設定してログを出力する（httpxを例に） <https://nikkie-ftnext.hatenablog.com/entry/configure-python-librarys-logger>`__
