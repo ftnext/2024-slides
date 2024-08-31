@@ -1,4 +1,4 @@
-:ogp_title: （ドラフト版）ライブラリ開発者に贈る「ロギングで NullHandler 以外はいけません」
+:ogp_title: ライブラリ開発者に贈る「ロギングで NullHandler 以外はいけません」
 :ogp_event_name: pyconshizu
 :ogp_slide_name: logging-with-nullhandler
 :ogp_description: PyCon mini Shizuoka 2024
@@ -8,16 +8,18 @@
 .. _ライブラリ内でロガーに NullHandler 以外のハンドラーを追加する: https://docs.python.org/ja/3/howto/logging-cookbook.html#adding-handlers-other-than-nullhandler-to-a-logger-in-a-library
 .. _Logger.setLevel: https://docs.python.org/ja/3/library/logging.html#logging.Logger.setLevel
 
-.. TODO 公式ドキュメントへのリンクを示すemojiを導入
-
 ======================================================================
 ライブラリ開発者に贈る「ロギングで ``NullHandler`` 以外はいけません」
 ======================================================================
 
+.. revealjs-break::
+    :notitle:
+
+* 2024/08/31に `PyCon mini Shizuoka 2024 <https://shizuoka.pycon.jp/2024>`__ が開催予定でしたが、`台風10号のために延期 <https://x.com/PyconShizu/status/1828772017220550694>`__ となりました
+* 発表準備をしていたので、手元で収録して公開しています（振替開催版は別に用意します）
+
 ライブラリ開発者に贈る「ロギングで ``NullHandler`` 以外はいけません」
 ======================================================================
-
-ドラフト版
 
 :Event: PyCon mini Shizuoka 2024（**延期**）
 :Presented: 2024/08/31 nikkie
@@ -25,7 +27,7 @@
 お前、誰よ
 ======================================================================
 
-* nikkie ／ :fab:`github` `@ftnext <https://github.com/ftnext>`__ ／ `ブログ <https://nikkie-ftnext.hatenablog.com/>`__ 連続650日突破
+* nikkie ／ :fab:`github` `@ftnext <https://github.com/ftnext>`__ ／ `ブログ <https://nikkie-ftnext.hatenablog.com/>`__ 連続 **650** 日突破
 * 機械学習エンジニア・自然言語処理（`We're hiring! <https://hrmos.co/pages/uzabase/jobs/1829077236709650481>`__）
 * Python歴は6年。PyConで登壇多数
 
@@ -48,8 +50,7 @@
 ======================================================================
 
 * あなたはPythonで ``import`` して使いたいコードを書いています（例：ライブラリ）
-* その中で **ロギング** をしたいです
-* どう実装しますか？
+* その中で **ロギング** 、どう実装しますか？
 
 結論：「``NullHandler`` 以外はいけません」
 --------------------------------------------------
@@ -58,9 +59,16 @@
     :language: python
     :lines: 1-4
 
-公式ドキュメント「`ライブラリのためのロギングの設定`_」
+公式ドキュメント📄「`ライブラリのためのロギングの設定`_」
 
-メッセージ（Takeaway）
+すべて公式 **ドキュメント** に書いてあります！
+--------------------------------------------------
+
+* しかし、観測範囲ではPython使いに気づかれていない印象...😫
+* 📄の付いたリンクは、公式ドキュメントへのリンク
+* （別のemoji：🏃‍♂️は本編では飛ばします）
+
+本トークのメッセージ（Takeaway）
 --------------------------------------------------
 
 * ライブラリ開発者は *ロガー* を用意し、 *何もしないハンドラ* を設定しよう
@@ -68,10 +76,28 @@
 
 斜体はこのトークで解説します
 
+これらはオススメしません（ぶっぶー🙅‍♂️） 🏃‍♂️
+--------------------------------------------------
+
+.. code-block:: python
+
+    logging.basicConfig()
+
+.. code-block:: python
+
+    logging.warning()
+
+.. code-block:: python
+
+    logger = logging.getLogger("mylib")
+    logger.addHandler(logging.StreamHandler())
+
+``import`` して使いたいコードでの話です
+
 Logging クックブックの「避けるべきパターン」の1つ
 ======================================================================
 
-* `ライブラリ内でロガーに NullHandler 以外のハンドラーを追加する`_
+* `ライブラリ内でロガーに NullHandler 以外のハンドラーを追加する`_ 📄
 
     (略) ログ出力をカスタマイズするのはライブラリ開発者ではなく、アプリケーション開発者の責務です。
 
@@ -82,8 +108,37 @@ Logging クックブックの「避けるべきパターン」の1つ
 2. アプリケーション開発者へ
 3. 落ち穂拾い
 
-.. おことわり？ 限定的
-
 .. include:: library-logging.rst.txt
 
 .. include:: application-logging.rst.txt
+
+.. include:: gleanings.rst.txt
+
+まとめ🌯 ライブラリ開発者に贈る「ロギングで ``NullHandler`` 以外はいけません」
+================================================================================
+
+.. revealjs-break::
+    :notitle:
+
+.. literalinclude:: ../../samplecode/python-logging/conclusion.py
+    :language: python
+    :lines: 1-4
+
+📣ライブラリのユーザが自由にロギングをカスタマイズできるようにしよう
+
+* そのための ``NullHandler``
+* propagateを使って、 **ユーザが設定するルートロガーのハンドラでログ出力**
+
+メッセージ（Takeaway）再掲 🏃‍♂️
+--------------------------------------------------
+
+* ライブラリ開発者はロガーを用意し、 **何もしないハンドラを設定** しよう
+* アプリケーション開発者はルートロガーを設定し、 **propagateを利用してログを表示** しよう
+
+ご清聴ありがとうございました
+--------------------------------------------------
+
+Enjoy Python logging❤️
+
+EOF
+===
