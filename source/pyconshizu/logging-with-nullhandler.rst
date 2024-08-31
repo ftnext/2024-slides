@@ -140,5 +140,7 @@ Logging クックブックの「避けるべきパターン」の1つ
 
 Enjoy Python logging❤️
 
+.. include:: appendix.rst.txt
+
 EOF
 ===

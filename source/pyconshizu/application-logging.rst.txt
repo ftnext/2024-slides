@@ -152,6 +152,12 @@ propagate（伝播）
 * 親をそのまた親へとたどっていき、最初に見つかった ``NOTSET`` 以外のレベルになる、ということ（`ロギングレベル`_ 📄）
 * ``mylib`` ロガーは、親の **ルートロガーに設定したレベル** となる！
 
+拙ブログより ロギングレベル ``NOTSET`` 🏃‍♂️
+--------------------------------------------------
+
+* `自作のPythonライブラリでloggingを使うとき、ロガーにsetLevelしない？ ログレベルNOTSETのロガーの動きを理解する <https://nikkie-ftnext.hatenablog.com/entry/python-configuring-logging-for-library-log-level-notset>`__
+* `Pythonの対話モードで確認できるロガーのレベルは、ロガーが持つレベルそのものではなく、実効（effective）レベル <https://nikkie-ftnext.hatenablog.com/entry/python-logger-repr-effective-level>`__
+
 propagate まとめ🥟 ライブラリのロギング
 ======================================================================
 
