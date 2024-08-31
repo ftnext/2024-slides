@@ -1,5 +1,6 @@
 # 2024-slides
 
+- [ライブラリ開発者に贈る「ロギングで NullHandler 以外はいけません」](https://ftnext.github.io/2024-slides/pyconshizu/logging-with-nullhandler.html#/2) [YouTube (2024/08)](https://youtu.be/UZWE7OjIWII?si=fyd2cgroLs1QKWET)
 - [one obvious wayを志向するPythonに依存ライブラリ管理ツールがたっくさんある話 〜Rust製ツールが高速を謳う〜](https://ftnext.github.io/2024-slides/techramen/python-package-management-tools.html#/1) @[TechRAMEN 2024 Conference (2024/07)](https://techramenconf.net/)
 - [MILLION R@G](https://ftnext.github.io/2024-slides/engineers-anime/million-live-and-rag.html) @[【拡大版】アニメから得た学びを発表会 (2024/07)](https://engineers-anime.connpass.com/event/321890/)
 - [venvによるPython開発環境の管理をpip-toolsでアップデートする提案 〜Ryeのソースリーディングより〜](https://ftnext.github.io/2024-slides/pyconkyushu/virtual-environment-with-pip-tools.html#/1) @[PyCon Kyushu 2024 KAGOSHIMA (2024/05)](https://kyushu.pycon.jp/2024/)
