@@ -1,6 +1,7 @@
 .. _logging.getLogger(...): https://docs.python.org/ja/3/library/logging.html#logging.getLogger
 .. _基本 logging チュートリアル: https://docs.python.org/ja/3/howto/logging.html#basic-logging-tutoriala
 .. _上級ロギングチュートリアル: https://docs.python.org/ja/3/howto/logging.html#advanced-logging-tutorial
+.. _ハンドラ（上級ロギングチュートリアル）: https://docs.python.org/ja/3/howto/logging.html#handlers
 
 1️⃣ライブラリ開発におけるロギングの実装
 ======================================================================
@@ -204,7 +205,7 @@
 * 1つのロガーが **0個以上のハンドラを持つ**
 * ハンドラはログレコードを出力先に振り分ける
 
-`ハンドラ（上級ロギングチュートリアル） <https://docs.python.org/ja/3/howto/logging.html#handlers>`__ 📄
+`ハンドラ（上級ロギングチュートリアル）`_ 📄
 
 ログメッセージの流れ 🏃‍♂️
 --------------------------------------------------
