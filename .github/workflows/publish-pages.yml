@@ -14,10 +14,14 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - id: sitepackages
+        run: echo "path=$(python -c 'import site; print(site.getsitepackages()[0])')" >> $GITHUB_OUTPUT
       - name: Install dependencies
         run: |
           python -m pip install -U pip
           pip install -r requirements.txt
+      - name: Arrange Reveal.js plugin
+        run: ./prepare_copycode.sh ${{ steps.sitepackages.outputs.path }}/sphinx_revealjs/themes/sphinx_revealjs/static/revealjs4/plugin/
       - name: Build slide
         run: |
           make revealjs
