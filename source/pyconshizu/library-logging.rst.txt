@@ -18,8 +18,8 @@
 
     logging.getLogger("mylib").addHandler(logging.NullHandler())
 
-先行発表：loggingの構成要素（`アーカイブ <https://youtu.be/ahaslerbm_g?si=uymzSa4NdoeyqRcU>`__）
-----------------------------------------------------------------------------------------------------
+先行発表：loggingの構成要素（:icon-link:`🎥 <https://youtu.be/ahaslerbm_g?si=uymzSa4NdoeyqRcU>`）
+--------------------------------------------------------------------------------------------------------------
 
 .. https://2021.pycon.jp/time-table/?id=272259
 
