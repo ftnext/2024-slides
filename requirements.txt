@@ -48,7 +48,7 @@ sphinx==7.2.6
     #   sphinxcontrib-extdevhelper-kasane
 sphinx-design==0.5.0
     # via -r requirements.in
-sphinx-new-tab-link==0.4.0
+sphinx-new-tab-link==0.6.0
     # via -r requirements.in
 sphinx-revealjs==2.9.3
     # via -r requirements.in
