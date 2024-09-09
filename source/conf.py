@@ -24,6 +24,7 @@ extensions = [
     "custom_translator",
     "sphinx_new_tab_link",
     "sphinxcontrib.budoux",
+    "sphinx_revealjs_copycode",
 ]
 
 templates_path = ['_templates']
