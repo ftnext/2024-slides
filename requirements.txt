@@ -51,6 +51,10 @@ sphinx-design==0.5.0
 sphinx-new-tab-link==0.6.0
     # via -r requirements.in
 sphinx-revealjs==2.9.3
+    # via
+    #   -r requirements.in
+    #   sphinx-revealjs-copycode
+sphinx-revealjs-copycode==0.1.0
     # via -r requirements.in
 sphinxcontrib-applehelp==1.0.8
     # via sphinx
