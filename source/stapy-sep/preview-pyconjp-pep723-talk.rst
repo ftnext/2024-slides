@@ -1,3 +1,9 @@
+:ogp_title: プレビュー版：PEP 723（Inline script metadata）が拓く世界
+:ogp_event_name: stapy-sep
+:ogp_slide_name: preview-pyconjp-pep723-talk
+:ogp_description: Pythonスクリプトに必要な仮想環境をツールにおまかせできるんです！ みんなのPython勉強会#108 LT
+:ogp_image_name: stapy-sep
+
 =============================================================================================================
 PEP 723（Inline script metadata）が拓く世界。Pythonスクリプトに必要な仮想環境をツールにおまかせできるんです！
 =============================================================================================================
