@@ -1,5 +1,6 @@
 # 2024-slides
 
+- [プレビュー版：PEP 723（Inline script metadata）が拓く世界。Pythonスクリプトに必要な仮想環境をツールにおまかせできるんです！](https://ftnext.github.io/2024-slides/stapy-sep/preview-pyconjp-pep723-talk.html#/1) @[みんなのPython勉強会#108 (2024/09)](https://startpython.connpass.com/event/328822/)
 - [ライブラリ開発者に贈る「ロギングで NullHandler 以外はいけません」](https://ftnext.github.io/2024-slides/pyconshizu/logging-with-nullhandler.html#/2) [YouTube (2024/08)](https://youtu.be/UZWE7OjIWII?si=fyd2cgroLs1QKWET)
 - [one obvious wayを志向するPythonに依存ライブラリ管理ツールがたっくさんある話 〜Rust製ツールが高速を謳う〜](https://ftnext.github.io/2024-slides/techramen/python-package-management-tools.html#/1) @[TechRAMEN 2024 Conference (2024/07)](https://techramenconf.net/)
 - [MILLION R@G](https://ftnext.github.io/2024-slides/engineers-anime/million-live-and-rag.html) @[【拡大版】アニメから得た学びを発表会 (2024/07)](https://engineers-anime.connpass.com/event/321890/)
