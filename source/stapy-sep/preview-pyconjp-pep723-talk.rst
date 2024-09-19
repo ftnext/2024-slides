@@ -28,6 +28,7 @@ PEP 723（Inline script metadata）が拓く世界。Pythonスクリプトに必
 
 * PEP＝ `Python Enhancement Proposal <https://docs.python.org/ja/3/glossary.html#term-PEP>`__ （Pythonの機能提案文書） 
 * PEPの一覧をJSON形式で取得できると知ったのでやってみたい
+* https://peps.python.org/api/peps.json
 
 このライブラリを使おうかな
 --------------------------------------------------
@@ -48,12 +49,10 @@ PEPの一覧をJSON形式で取得するスクリプト
 スクリプト動かす前に仮想環境作ろう！
 --------------------------------------------------
 
-.. TODO Python 3.12で最新化
-
 .. code-block:: shell
 
     $ python -V
-    Python 3.12.2
+    Python 3.12.6
     $ python -m venv .venv --upgrade-deps
     $ .venv/bin/python -m pip install httpx rich
     $ .venv/bin/python example.py
@@ -61,24 +60,7 @@ PEPの一覧をJSON形式で取得するスクリプト
 仮想環境で実行したスクリプトの出力
 --------------------------------------------------
 
-.. TODO 画像のほうがいいかも
-
-.. code-block:: txt
-
-    [
-    │   ('1', 'PEP Purpose and Guidelines'),
-    │   ('2', 'Procedure for Adding New Modules'),
-    │   ('3', 'Guidelines for Handling Bug Reports'),
-    │   ('4', 'Deprecation of Standard Modules'),
-    │   ('5', 'Guidelines for Language Evolution'),
-    │   ('6', 'Bug Fix Releases'),
-    │   ('7', 'Style Guide for C Code'),
-    │   ('8', 'Style Guide for Python Code'),
-    │   ('9', 'Sample Plaintext PEP Template'),
-    │   ('10', 'Voting Guidelines')
-    ]
-
-テキストは緑色で表示されていることでしょう
+.. image:: ../_static/pyconjp/run_script_in_venv.png
 
 実は、**私たちが仮想環境を作らなくてもいい** んです！
 ======================================================================
@@ -107,6 +89,7 @@ Inline script metadataをサポートするツールで実行
 --------------------------------------------------
 
 .. code-block:: txt
+    :emphasize-lines: 2-3
 
     % uv run example.py
     Reading inline script metadata from: example.py
@@ -128,8 +111,8 @@ Inline script metadataをサポートするツールで実行
 ======================================================================
 
 * Pythonスクリプトを書くとき、**Inline script metadataをぜひ使って** みて！
-* スクリプトが依存するライブラリをコメントとして書くだけ
 * 開発者が仮想環境の管理から解放されます！
+* スクリプトが依存するライブラリをコメントとして書き、サポートしたツールを使うだけ
 
 続きは9/27(金)のPyCon JP 2024にて
 --------------------------------------------------
