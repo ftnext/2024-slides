@@ -46,7 +46,20 @@ PEPの一覧をJSON形式で取得するスクリプト
     :lines: 4-9
     :caption: example.py
 
-スクリプト動かす前に仮想環境作ろう！
+スクリプトができたからといって実行すると
+--------------------------------------------------
+
+.. code-block:: shell
+
+    $ python example.py 
+    Traceback (most recent call last):
+      File "/.../example.py", line 1, in <module>
+        import httpx
+    ModuleNotFoundError: No module named 'httpx'
+
+**ライブラリのインストール** が必要です
+
+仮想環境にライブラリをインストールしてから動かす
 --------------------------------------------------
 
 .. code-block:: shell
