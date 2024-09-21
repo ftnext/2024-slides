@@ -1,0 +1,126 @@
+.. _PEP 723: https://peps.python.org/pep-0723/
+
+`PEP 723`_ が拓く世界
+======================================================================
+
+Inline script metadata
+
+.. TODO PEPの概要（誰がいつ提案？） メーリス見る？
+
+提案経緯（Motivationより）
+======================================================================
+
+* 単一ファイルのPythonスクリプトは日常的
+* テキストが書ければ共有できる（メール、URL、チャット）
+* では、スクリプトの実行に必要な情報は？
+
+スクリプトの実行に必要な情報
+--------------------------------------------------
+
+* スクリプトを実行するPythonのバージョン（新しい書き方をしているかも）
+* スクリプトが依存するライブラリ（``import`` 文）
+
+ツール向けに定義する **標準的な仕組みはなかった**
+
+提案💡 Inline script metadata
+--------------------------------------------------
+
+* スクリプトの実行に必要な情報＝スクリプトのメタデータ
+* **スクリプトの中に** （inline） ツール向けの **メタデータを書こう**
+
+Inline script metadataのユースケース
+--------------------------------------------------
+
+* スクリプトを実行する **ツールが読み取る** 🌟🌟
+* 単一スクリプトからPythonプロジェクトへ移行しやすく
+* スクリプトの依存を手動で管理しない 🌟🌟
+
+Inline script metadataの書き方
+======================================================================
+
+.. code-block:: python
+
+    # /// script
+    # dependencies = [
+    #   "requests<3",
+    #   "rich",
+    # ]
+    # requires-python = ">=3.11"
+    # ///
+
+`How to Teach This (PEP 723) <https://peps.python.org/pep-0723/#how-to-teach-this>`__
+
+Inline script metadataは、スクリプト冒頭のコメント
+------------------------------------------------------------
+
+* 始まり ``# /// script``
+* 終わり ``# ///``
+* 間もコメントとして（``# ...``）書く
+
+2つのメタデータ
+--------------------------------------------------
+
+* dependencies
+* requires-python
+
+dependencies
+--------------------------------------------------
+
+* スクリプト実行時の依存ライブラリを書く
+* `PEP 508 <https://peps.python.org/pep-0508/#examples>`__ の書き方でバージョン指定
+
+.. code-block:: python
+
+    # /// script
+    # dependencies = ["requests<3", "rich"]
+    # ///
+
+requires-python
+--------------------------------------------------
+
+* スクリプトを実行できるPythonのバージョン
+* `PEP 440のversion specifier <https://peps.python.org/pep-0440/#version-specifiers>`__ で指定
+
+.. code-block:: python
+
+    # /// script
+    # requires-python = ">=3.11"
+    # ///
+
+`PEP 723`_ の仕様や実装
+======================================================================
+
+より深く見ていきます
+
+導入されたのは ``TYPE`` 付きのメタデータ
+--------------------------------------------------
+
+.. code-block:: python
+
+    # /// TYPE
+    # 
+    # ///
+
+* ``TYPE`` が ``script`` のとき、inline script metadata
+* （追加の ``TYPE`` を提案できるかも！？）
+
+inline script metadataには ``[tool]`` も書ける
+------------------------------------------------------------
+
+* :file:`pyproject.toml` でおなじみ ``[tool]`` テーブル（`PEP 518 <https://peps.python.org/pep-0518/#tool-table>`__）
+* inline script metadataにも書けます！（後ほど登場）
+
+実装例
+------------------------------------------------------------
+
+* **正規表現** でパースする
+
+.. code-block:: python
+
+    REGEX = r'(?m)^# /// (?P<type>[a-zA-Z0-9-]+)$\s(?P<content>(^#(| .*)$\s)+)^# ///$'
+
+`Reference Implementation (PEP 723) <https://peps.python.org/pep-0723/#reference-implementation>`__
+
+.. TODO 読み解きスライド？
+    (?m) https://docs.python.org/ja/3/library/re.html#re.M
+    (?P<name>...)
