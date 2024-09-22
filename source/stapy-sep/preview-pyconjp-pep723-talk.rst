@@ -95,8 +95,14 @@ Inline script metadataをサポートするツールで実行
 .. code-block:: shell
 
     $ pipx run example.py
-    $ # または
+
+.. code-block:: shell
+
     $ uv run example.py
+
+.. code-block:: shell
+
+    $ hatch run example.py
 
 ツールが仮想環境を用意して実行！
 --------------------------------------------------
