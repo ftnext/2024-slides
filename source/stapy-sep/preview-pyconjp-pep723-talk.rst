@@ -104,6 +104,10 @@ Inline script metadataをサポートするツールで実行
 
     $ hatch run example.py
 
+.. code-block:: shell
+
+    $ pdm run example.py
+
 ツールが仮想環境を用意して実行！
 --------------------------------------------------
 
