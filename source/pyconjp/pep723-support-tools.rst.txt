@@ -1,0 +1,260 @@
+世界に漕ぎ出すツール
+======================================================================
+
+* pipx
+* uv
+* Hatch
+
+pipx
+======================================================================
+
+* :fab:`github` `pypa/pipx <https://github.com/pypa/pipx>`__
+* Python Packaging User Guide `スタンドアローンのコマンドラインツールをインストールする <https://packaging.python.org/ja/latest/guides/installing-stand-alone-command-line-tools/>`__ で紹介
+* 2024/01 `1.4.2 <https://github.com/pypa/pipx/releases/tag/1.4.2>`__ でPEP 723の ``dependencies`` をサポート
+
+.. https://github.com/pypa/pipx/pull/1180
+
+pipxの利用シーン
+--------------------------------------------------
+
+* コマンドラインツールの例 `Ruff <https://github.com/astral-sh/ruff>`__ （リンター 兼 フォーマッタ）
+* プロジェクトごとの仮想環境に都度インストールしてもよいが、**グローバルにインストールしてシステムのどこからでも使える** 方が便利
+
+pipx自体のインストール
+--------------------------------------------------
+
+* https://pipx.pypa.io/stable/installation/
+* 私は ``brew`` で入れました
+
+.. code-block:: shell
+
+    $ python3 -m pip install --user pipx
+    $ python3 -m pipx ensurepath  # お忘れなく
+
+脱線 :command:`pipx install` 🏃‍♂️
+--------------------------------------------------
+
+* ``pipx install ruff``
+* Ruffがシステムのどこからでも使える
+* pipxは **Ruff用の仮想環境** を作って管理
+
+もともとの :command:`pipx run`
+--------------------------------------------------
+
+* Pythonアプリケーションの1回限りの実行
+* `cookiecutter <https://github.com/cookiecutter/cookiecutter>`__ で1回だけ使う（``pipx install`` の選択肢）
+
+.. TODO 自作テンプレートを実行してみよう
+
+.. https://pipx.pypa.io/stable/#walkthrough-running-an-application-in-a-temporary-virtual-environment
+
+``pipx run <script.py>``
+--------------------------------------------------
+
+.. https://pipx.pypa.io/stable/docs/#pipx-run
+
+スクリプトが渡せるように！
+
+.. code-block:: python
+
+    # /// script
+    # dependencies = ["rich"]
+    # ///
+
+    import rich
+    rich.print("[blue]This worked!")
+
+`Inline run dependencies in pipx 1.4.2 <https://iscinumpy.dev/post/pep723/>`__
+
+.. TODO 画像で示す
+
+🥟pipxとPEP 723
+--------------------------------------------------
+
+* pipx 1.4.2 から :command:`pipx run` がinline script metadataもサポート（**dependenciesのみ**）
+* pipx自体はPython製コマンドラインツールを、システムを汚さずにグローバルにインストールするためのツール
+
+  * *PyPIアプリストア計画*
+
+.. TODO URLのサポートを追加できるかも
+
+uv
+======================================================================
+
+* :fab:`github` `astral-sh/uv <https://github.com/astral-sh/uv>`__
+* Rustで実装した高速なpipとしてスタート
+* 2024/08 `0.3.0 <https://github.com/astral-sh/uv/releases/tag/0.3.0>`__ で **Pythonプロジェクト管理ツール** に劇的進化。PEP 723サポートも
+
+uv自体のインストール
+--------------------------------------------------
+
+* https://docs.astral.sh/uv/getting-started/installation/
+
+.. code-block:: shell
+
+    $ curl -LsSf https://astral.sh/uv/install.sh | sh
+
+ほか、``cargo`` や ``brew`` などでも入ります
+
+:command:`uv run <command>`
+--------------------------------------------------
+
+* uvで管理している **プロジェクトの環境でコマンドを実行** できる
+
+    * uvはプロジェクトに仮想環境 :file:`.venv` を作り、依存をインストール
+
+.. code-block:: shell
+
+    $ uv run -- flask run -p 5000
+
+https://docs.astral.sh/uv/guides/projects/#running-commands
+
+``uv run <script.py>``
+--------------------------------------------------
+
+* プロジェクトに配置したスクリプトを :command:`uv run` で実行できる
+* プロジェクトの仮想環境で実行
+
+.. code-block:: shell
+
+    $ uv run example.py
+
+* :command:`uv run python <script.py>` と等価（`Reference <https://docs.astral.sh/uv/reference/cli/#uv-run>`__ より）
+
+``uv run <プロジェクト外のscript.py>``
+--------------------------------------------------
+
+* uvで管理している **プロジェクトの外にあるスクリプトも実行できる**
+* `Guides: Running scripts <https://docs.astral.sh/uv/guides/scripts/>`__
+* inline script metadataがあれば、隔離した、短期間限りの仮想環境をuvが作って実行
+* metadataは ``dependencies`` ・ ``requires-python`` 両方をサポート
+
+.. 「If the script contains inline dependency metadata, it will be installed into an isolated, ephemeral environment.」
+    https://docs.astral.sh/uv/reference/cli/#uv-run
+
+metadataでuv向けのtool設定
+--------------------------------------------------
+
+.. code-block:: python
+    :emphasize-lines: 5-6
+
+    # /// script
+    # dependencies = [
+    #   "httpx",
+    # ]
+    # [tool.uv]
+    # exclude-newer = "2023-10-16T00:00:00Z"
+    # ///
+
+uvは ``exclude-newer`` より前のライブラリバージョンで依存解決
+
+uvはmetadataを **書く** ぞ！
+--------------------------------------------------
+
+.. code-block:: shell
+
+    $ touch empty.py
+    $ uv add --script empty.py httpx rich
+    Updated `empty.py`
+
+TODO 書かれたmetadata
+
+.. （脱線）uvは基本最新化しようとする
+
+.. （pyproject.tomlの通りの環境でコマンドを実行する。inline script metadataがあれば隔離した環境を作る）
+
+.. （TODO この環境、再利用されてそうに思われる）
+
+🥟pipxとPEP 723
+--------------------------------------------------
+
+* uv 0.3.0 から :command:`uv run` がスクリプト実行もサポート（inline script metadataを考慮）
+* スクリプトのmetadataも編集できる
+* IMO：uv自体はPythonプロジェクトの管理が主眼。プロジェクトとは無関係なスクリプトの実行もできている
+
+.. uvx 🏃‍♂️
+
+Hatch
+======================================================================
+
+* :fab:`github` `pypa/hatch <https://github.com/pypa/hatch>`__
+* Pythonプロジェクト管理ツール。手厚い
+* 2024/05 `1.10.0 <https://hatch.pypa.io/latest/blog/2024/05/02/hatch-v1100/>`__ で :command:`hatch run` がPEP 723サポート
+
+Hatch自体のインストール
+--------------------------------------------------
+
+* https://hatch.pypa.io/latest/install/
+* macOS・Windows向けインストーラ
+* pipやpipx、brewなどでも入ります
+
+もともとの :command:`hatch run`
+--------------------------------------------------
+
+* :file:`pyproject.toml` に *env* ごとに定義した *script* を実行する
+
+.. code-block:: toml
+
+    [tool.hatch.envs.types.scripts]
+    check = "mypy --install-types --non-interactive {args:src/unko tests}"
+
+.. code-block:: shell
+
+    $ hatch run types:check  # types envのcheck script実行
+
+``hatch run <script.py>``
+--------------------------------------------------
+
+* `How to run Python scripts <https://hatch.pypa.io/latest/how-to/run/python-scripts/>`__
+* :file:`pyproject.toml` のscriptだけでなく、**Pythonファイルのパスを渡して実行できる** ようになった！
+* metadataは ``dependencies`` ・ ``requires-python`` 両方をサポート
+
+metadataでHatch向けのtool設定
+--------------------------------------------------
+
+Hatchのインストーラとして（uvではなく）pipを使う
+
+.. code-block:: python
+
+    # /// script
+    # ...
+    # [tool.hatch]
+    # installer = "pip"
+    # ///
+
+.. https://hatch.pypa.io/latest/how-to/run/python-scripts/#environment-configuration
+
+🥟HatchとPEP 723
+--------------------------------------------------
+
+* Hatch 1.10.0 から :command:`hatch run` がスクリプト実行もサポート（inline script metadataを考慮）
+* IMO：Hatch自体はPythonプロジェクトの管理が主眼。プロジェクトとは無関係なスクリプトの実行もサポートした
+
+ほかにも 🏃‍♂️
+======================================================================
+
+* PDM 2024/06 `2.16.0 <https://github.com/pdm-project/pdm/releases/tag/2.16.0>`__ 〜
+
+  * https://pdm-project.org/en/latest/usage/scripts/#single-file-scripts
+
+* `pip-run <https://github.com/jaraco/pip-run?tab=readme-ov-file#script-declared-dependencies>`__
+
+PEP 723サポートの動き 🏃‍♂️
+--------------------------------------------------
+
+* pip `#12891 <https://github.com/pypa/pip/issues/12891>`__
+
+  * ``pip install --script script.py`` でmetadataのライブラリをインストールしたい（プルリク待ち）
+
+* poetryやpipenvはリポジトリを検索しても見つけられず😢（情報求ム）
+
+まとめ🌯 世界に漕ぎ出すツール
+======================================================================
+
+* pipx: metadataはdependenciesのみサポート
+* uv: Pythonファイルを渡すと **コマンド** ``python script.py`` として実行。toolテーブルで設定可能
+* hatch: Pythonファイルが渡せるようになった。toolテーブルで設定可能
+
+.. TODO 比較表にする？
+
+.. 時系列で見たサポート追加（ブログ？）
