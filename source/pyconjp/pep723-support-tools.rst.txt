@@ -5,7 +5,26 @@
 * uv
 * Hatch
 
-.. TODO サポートしているメタデータの表？
+ここがポイント！
+--------------------------------------------------
+
+* :command:`pipx run`
+* :command:`uv run`
+* :command:`hatch run`
+
+バージョン情報 🏃‍♂️
+--------------------------------------------------
+
+.. code-block:: shell
+
+    $ pipx --version
+    1.7.1
+    $ uv --version
+    uv 0.4.12 (Homebrew 2024-09-18)
+    $ hatch --version
+    Hatch, version 1.12.0
+
+.. TODO なるべく最新で
 
 pipx
 ======================================================================
@@ -159,7 +178,15 @@ uvはmetadataを **書く** ぞ！
     $ uv add --script empty.py httpx rich
     Updated `empty.py`
 
-TODO 書かれたmetadata
+.. code-block:: python
+
+    # /// script
+    # requires-python = ">=3.12"
+    # dependencies = [
+    #     "httpx",
+    #     "rich",
+    # ]
+    # ///
 
 .. （脱線）uvは基本最新化しようとする
 
@@ -182,6 +209,9 @@ Hatch
 * :fab:`github` `pypa/hatch <https://github.com/pypa/hatch>`__
 * Pythonプロジェクト管理ツール。手厚い
 * 2024/05 `1.10.0 <https://hatch.pypa.io/latest/blog/2024/05/02/hatch-v1100/>`__ で :command:`hatch run` がPEP 723サポート
+
+.. TODO Hatch vs uv (IMO) 🏃‍♂️
+    詳しくは廊下でコンテンツ
 
 Hatch自体のインストール
 --------------------------------------------------
@@ -232,6 +262,55 @@ Hatchのインストーラとして（uvではなく）pipを使う
 * Hatch 1.10.0 から :command:`hatch run` がスクリプト実行もサポート（inline script metadataを考慮）
 * IMO：Hatch自体はPythonプロジェクトの管理が主眼。プロジェクトとは無関係なスクリプトの実行もサポートした
 
+まとめ🌯 世界に漕ぎ出すツール
+======================================================================
+
+* pipx: metadataはdependenciesのみサポート
+* uv: Pythonファイルを渡すと **コマンド** ``python script.py`` として実行。toolテーブルで設定可能
+* hatch: Pythonファイルが渡せるようになった。toolテーブルで設定可能
+
+サポートしているmetadata
+--------------------------------------------------
+
+.. list-table::
+    :header-rows: 1
+
+    * - \\
+      - dependencies
+      - requires-python
+      - ``[tool]``      
+    * - pipx
+      - ✅
+      - 未
+      - 未
+    * - uv
+      - ✅
+      - ✅
+      - ✅
+    * - Hatch
+      - ✅
+      - ✅
+      - ✅
+
+サポート状況の時系列 🏃‍♂️
+--------------------------------------------------
+
+.. list-table::
+    :header-rows: 1
+
+    * - 時期
+      - ツール
+      - バージョン
+    * - 2024/01
+      - pipx
+      - 1.4.2
+    * - 2024/05
+      - Hatch
+      - 1.10.0
+    * - 2024/08
+      - uv
+      - 0.3.0
+
 ほかにも 🏃‍♂️
 ======================================================================
 
@@ -249,14 +328,3 @@ PEP 723サポートの動き 🏃‍♂️
   * ``pip install --script script.py`` でmetadataのライブラリをインストールしたい（プルリク待ち）
 
 * poetryやpipenvはリポジトリを検索しても見つけられず😢（情報求ム）
-
-まとめ🌯 世界に漕ぎ出すツール
-======================================================================
-
-* pipx: metadataはdependenciesのみサポート
-* uv: Pythonファイルを渡すと **コマンド** ``python script.py`` として実行。toolテーブルで設定可能
-* hatch: Pythonファイルが渡せるようになった。toolテーブルで設定可能
-
-.. TODO 比較表にする？
-
-.. 時系列で見たサポート追加（ブログ？）
