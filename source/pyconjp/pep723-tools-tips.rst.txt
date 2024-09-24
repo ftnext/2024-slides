@@ -9,13 +9,30 @@ inline script metadataをサポートしたツールを使っての学び
 
 2点共有
 
-一度動いたスクリプトを他の開発者に渡しやすい
+inline script metadataより前
+--------------------------------------------------
+
+* スクリプト
+* 依存ライブラリを示す必要あり
+
+.. code-block:: shell
+
+    $ .venv/bin/python -m pip freeze > requirements.lock 
+
+他の開発者にスクリプトを渡す
+--------------------------------------------------
+
+* スクリプトの受け渡しより **仮想環境の再現が手間**
+* スクリプトだけでなく、:file:`requirements.txt` や環境構築コマンドをまとめた :file:`Makefile` も共有したことも
+* ここがinline script metadataで変わった
+
+一度動いたスクリプトを他の開発者に渡しやすい🙌
 --------------------------------------------------
 
 * **スクリプトだけ渡せばOK**！（仮想環境の作り方の共有不要）
 * 常時ペアプロ + 頻繁に交代という環境では、ペアを交代してスクリプトの続きを書くのもやりやすい（仮想環境の構築が不要なので）
 
-簡単に依存ライブラリを追加できる
+簡単に依存ライブラリを追加できる🍰
 --------------------------------------------------
 
 * スクリプト用の仮想環境を使っていたときは、追加した依存ライブラリの共有が億劫
@@ -34,12 +51,23 @@ inline script metadataをサポートしたツール向けtips
 * 途中まで書いて対話モードに入る
 * データを見ながら続きを書き進める
 
+.. code-block:: python
+
+    import httpx
+
+    resp = httpx.get("https://peps.python.org/api/peps.json")
+    data = resp.json()
+
 :command:`python -i`
 --------------------------------------------------
 
     (略) スクリプトかコマンドを実行した後にインタラクティブモードに入ります。（`1. コマンドラインと環境 <https://docs.python.org/ja/3/using/cmdline.html#cmdoption-i>`__）
 
-* uvは ``uv run python -i script.py`` が可能（渡しているのが **コマンド** なので）
+.. code-block:: shell
+
+    (.venv) $ python -i script.py
+    >>> type(data)
+    <class 'dict'>
 
 環境変数 ``PYTHONINSPECT``
 --------------------------------------------------
@@ -49,7 +77,10 @@ inline script metadataをサポートしたツール向けtips
 .. code-block:: shell
 
     $ PYTHONINSPECT=1 pipx run script.py
+    $ PYTHONINSPECT=1 uv run script.py
     $ PYTHONINSPECT=1 hatch run script.py
+
+.. TODO pipxだけ注意
 
 エディタの補完を受けたい
 ======================================================================
