@@ -60,17 +60,20 @@ pipx自体のインストール
 脱線 :command:`pipx install` 🏃‍♂️
 --------------------------------------------------
 
-* ``pipx install ruff``
+* ``pipx install ruff`` （``pip install`` の代わりに）
 * Ruffがシステムのどこからでも使える
 * pipxは **Ruff用の仮想環境** を作って管理（システムは汚さない）
 
 もともとの :command:`pipx run`
 --------------------------------------------------
 
-* Pythonアプリケーションの **1回限りの実行**
-* `cookiecutter <https://github.com/cookiecutter/cookiecutter>`__ で1回だけ使う（``pipx install`` の選択肢）
+* PyPIにあるツールを指定して **1回限りの実行**
+* `cookiecutter <https://github.com/cookiecutter/cookiecutter>`__ で1回だけ使う（``pipx install`` の代替案）
 
-.. TODO 自作テンプレートを実行してみよう
+.. code-block:: shell
+
+    $ # ref: https://sourcery.ai/blog/python-best-practices/
+    $ pipx run cookiecutter https://github.com/ftnext/cookiecutter-develop-pypackage --checkout 0.2.3
 
 .. https://pipx.pypa.io/stable/#walkthrough-running-an-application-in-a-temporary-virtual-environment
 
@@ -93,7 +96,7 @@ pipx自体のインストール
 `Inline run dependencies in pipx 1.4.2 <https://iscinumpy.dev/post/pep723/>`__
 
 🥟pipx、お試しあれ！
---------------------------------------------------
+======================================================================
 
 * https://pipx.pypa.io/stable/installation/
 * :command:`pipx run <script.py>`
@@ -104,7 +107,20 @@ pipx自体のインストール
     # dependencies = ["requests<3", "rich"]
     # ///
 
-.. TODO URLのサポートを追加できるかも
+``pipx run`` は **URL** もサポート！ 🏃‍♂️
+--------------------------------------------------
+
+.. code-block:: shell
+
+    $ pipx run https://gist.githubusercontent.com/ftnext/162898df3011883380f89771b647adde/raw/818fa20479eb9187d9efacb4d291bc959a21cf3a/put_mask.py -h
+
+`世界一かわいいを作る <https://nikkie-ftnext.hatenablog.com/entry/cutest-girl-kotone-with-python>`__ スクリプト
+
+pipx 関連エントリ 🏃‍♂️
+--------------------------------------------------
+
+* 拙ブログ `PEP 723をサポートしたpipx runについて共同でブログ記事を書きました。仮想環境から解放されたスクリプト開発！ <https://nikkie-ftnext.hatenablog.com/entry/announcement-uzabase-tech-blog-filetype-and-pipx-run>`__
+* 弊社ブログ `Pythonスクリプトのモジュラリティとポータビリティを高めていく <https://tech.uzabase.com/entry/2024/06/07/180442>`__
 
 uv
 ======================================================================
@@ -207,7 +223,7 @@ uvはmetadataを **書く** ぞ！
 .. （脱線）uvは基本最新化しようとする
 
 🥟uv、お試しあれ！
---------------------------------------------------
+======================================================================
 
 * https://docs.astral.sh/uv/getting-started/installation/
 * :command:`uv run <script.py>`
@@ -219,13 +235,26 @@ uvはmetadataを **書く** ぞ！
     # dependencies = ["httpx", "rich"]
     # ///
 
-.. uvx 🏃‍♂️
+:command:`uvx` (= ``uv tool run``) 🏃‍♂️
+--------------------------------------------------
+
+* `Guides: Using tools <https://docs.astral.sh/uv/guides/tools/>`__
+* ``pipx run`` 的な機能
+
+    The uvx command invokes a tool without installing it.
+
+uv 拙ブログ関連エントリ 🏃‍♂️
+--------------------------------------------------
+
+* `uv 0.3.0リリース、Pythonプロジェクト管理ツールのすがた！ uv、お前、Ryeを屠るのか... <https://nikkie-ftnext.hatenablog.com/entry/uv-0.3.0-release-awesome-future-python-project-package-manager>`__
+* `uvはinline script metadataを書ける！ Guidesの「Running scripts」を読んだメモ <https://nikkie-ftnext.hatenablog.com/entry/uv-guides-running-scripts-add-inline-script-metadata>`__
+* `uv 0.4.0 リリースノートより、Pythonプロジェクトの扱いの変更。再配布可能にするかを--appや--libフラグで指定する <https://nikkie-ftnext.hatenablog.com/entry/uv-0.4.0-specify-distributable-flag-app-or-lib>`__
 
 Hatch
 ======================================================================
 
 * :fab:`github` `pypa/hatch <https://github.com/pypa/hatch>`__
-* Pythonプロジェクト管理ツール。手厚い
+* Pythonプロジェクト管理ツール
 * 2024/05 `1.10.0 <https://hatch.pypa.io/latest/blog/2024/05/02/hatch-v1100/>`__ で :command:`hatch run` がPEP 723サポート
 
 IMO: Hatch vs uv 🏃‍♂️
@@ -281,7 +310,7 @@ Hatchのインストーラとして（uvではなく）pipを使う
 .. https://hatch.pypa.io/latest/how-to/run/python-scripts/#environment-configuration
 
 🥟Hatch、お試しあれ
---------------------------------------------------
+======================================================================
 
 * https://hatch.pypa.io/latest/install/
 * :command:`hatch run <script.py>`
@@ -292,6 +321,12 @@ Hatchのインストーラとして（uvではなく）pipを使う
     # requires-python = ">=3.11"
     # dependencies = ["httpx", "rich"]
     # ///
+
+Hatch 参考 🏃‍♂️
+--------------------------------------------------
+
+* Python Monthly Topics `最近気になるツール「Hatch」でPythonプロジェクトを管理する <https://gihyo.jp/article/2024/05/monthly-python-2405>`__
+* 拙ブログ `Hatchはv1.10からinline script metadataをサポートしています！ <https://nikkie-ftnext.hatenablog.com/entry/hatch-v1.10-supports-inline-script-metadata>`__
 
 まとめ🌯 世界に漕ぎ出すツール
 ======================================================================
