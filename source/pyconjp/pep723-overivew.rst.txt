@@ -1,9 +1,10 @@
 .. _PEP 723: https://peps.python.org/pep-0723/
+.. _Inline script metadata (Python Packaging User Guide): https://packaging.python.org/en/latest/specifications/inline-script-metadata/
 
 `PEP 723`_ が拓く世界
 ======================================================================
 
-`Inline script metadata <https://packaging.python.org/en/latest/specifications/inline-script-metadata/>`__
+`Inline script metadata (Python Packaging User Guide)`_
 
 提案経緯（PEPのMotivationより）
 ======================================================================
@@ -56,7 +57,7 @@ Inline script metadataは、スクリプト冒頭の **コメント**
 
     # /// script  <-- 始まり
     # dependencies = [
-    #   "requests<3",  <-- 間もPython処理系にはコメント
+    #   "requests<3",  <-- 間の部分もPython処理系にとってはコメント
     #   "rich",
     # ]
     # requires-python = ">=3.11"
@@ -127,6 +128,13 @@ inline script metadataには ``[tool]`` も書ける
 * :file:`pyproject.toml` でおなじみ ``[tool]`` テーブル（`PEP 518 <https://peps.python.org/pep-0518/#tool-table>`__）
 * inline script metadataにも書けます！（後ほど登場）
 
+.. code-block:: toml
+
+    [tool.pytest.ini_options]
+    addopts = "-ra -q"
+
+.. https://docs.pytest.org/en/stable/reference/customize.html#pyproject-toml
+
 実装例
 ------------------------------------------------------------
 
@@ -149,6 +157,7 @@ inline script metadataには ``[tool]`` も書ける
 PEP 723を実装しました💪 🏃‍♂️
 ------------------------------------------------------------
 
+* :fab:`github` `ftnext/pep723 <https://github.com/ftnext/pep723>`__
 * inline script metadataの dependencies を見て一時的な仮想環境で実行
 * 皆さんが使うならこの後紹介するツールをぜひ🧰
 
