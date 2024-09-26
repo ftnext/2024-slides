@@ -3,14 +3,12 @@
 `PEP 723`_ が拓く世界
 ======================================================================
 
-Inline script metadata
+`Inline script metadata <https://packaging.python.org/en/latest/specifications/inline-script-metadata/>`__
 
-.. TODO PEPの概要（誰がいつ提案？） メーリス見る？
-
-提案経緯（Motivationより）
+提案経緯（PEPのMotivationより）
 ======================================================================
 
-* 単一ファイルのPythonスクリプトは日常的
+* 単一ファイルの **Pythonスクリプトは日常的**
 * テキストが書ければ共有できる（メール、URL、チャット）
 * では、スクリプトの実行に必要な情報は？
 
@@ -54,20 +52,23 @@ Inline script metadataは、スクリプト冒頭の **コメント**
 ------------------------------------------------------------
 
 .. code-block:: python
+    :emphasize-lines: 1,7
 
     # /// script  <-- 始まり
-    #
-    #
-    # （後述） <-- 間もコメントとして書く
-    #
-    # 
-    # /// <-- 終わり
+    # dependencies = [
+    #   "requests<3",  <-- 間もPython処理系にはコメント
+    #   "rich",
+    # ]
+    # requires-python = ">=3.11"
+    # ///  <-- 終わり
 
 2つのメタデータ
 --------------------------------------------------
 
 * dependencies
 * requires-python
+
+`TOML <https://toml.io/ja/>`__ 形式
 
 dependencies
 --------------------------------------------------
@@ -106,7 +107,7 @@ requires-python
 `PEP 723`_ の仕様や実装
 ======================================================================
 
-より深く見ていきます
+もう少しだけ深く見ていきます
 
 導入されたのは ``TYPE`` 付きのメタデータ
 --------------------------------------------------
@@ -137,9 +138,19 @@ inline script metadataには ``[tool]`` も書ける
 
 `Reference Implementation (PEP 723) <https://peps.python.org/pep-0723/#reference-implementation>`__
 
-.. TODO 読み解きスライド？
-    (?m) https://docs.python.org/ja/3/library/re.html#re.M
-    (?P<name>...)
+正規表現の読み解き 🏃‍♂️
+------------------------------------------------------------
+
+:`(?m) <https://docs.python.org/ja/3/library/re.html#re.M>`__: マルチラインのフラグ
+:`(?P<name>...) <https://docs.python.org/ja/3/library/re.html#index-18>`__: マッチした部分文字列に ``name`` でアクセス
+
+``content`` はTOMLなので `tomllib <https://docs.python.org/ja/3/library/tomllib.html>`__ で読み込みます
+
+PEP 723を実装しました💪 🏃‍♂️
+------------------------------------------------------------
+
+* inline script metadataの dependencies を見て一時的な仮想環境で実行
+* 皆さんが使うならこの後紹介するツールをぜひ🧰
 
 まとめ🌯 `PEP 723`_ が拓く世界
 ======================================================================
