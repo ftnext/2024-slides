@@ -80,7 +80,11 @@ inline script metadataをサポートしたツール向けtips
     $ PYTHONINSPECT=1 uv run script.py
     $ PYTHONINSPECT=1 hatch run script.py
 
-.. TODO pipxだけ注意
+拙ブログ関連エントリ 🏃‍♂️
+--------------------------------------------------
+
+* `inline script metadataをサポートしたツールでスクリプトを実行したときにもPythonの対話モードに入りたい！ 環境変数 PYTHONINSPECT が有効か調査しました <https://nikkie-ftnext.hatenablog.com/entry/pep723-inline-script-metadata-tools-support-pythoninspect-envvar-or-not>`__
+* `pipx runとPYTHONINSPECT環境変数の補足：仮想環境を作るときは環境変数を指定できない <https://nikkie-ftnext.hatenablog.com/entry/pipx-run-hang-pythoninspect-and-venv-creation>`__
 
 2️⃣エディタの補完を受けたい
 ======================================================================
@@ -113,6 +117,11 @@ VS Codeで「:guilabel:`Select Interpreter`」
 * :guilabel:`Enter interpreter path...` に ``sys.executable`` の値を設定！
 
 .. image:: ../_static/pyconjp/vscode_selected_tool_venv_interpreter.png
+
+拙ブログ関連エントリ 🏃‍♂️
+--------------------------------------------------
+
+* `pipx runするスクリプトを書く中でも、VS Codeによる補完のサポートを受ける <https://nikkie-ftnext.hatenablog.com/entry/pipx-run-with-vscode-completion-setting>`__
 
 まとめ🌯 拓かれた世界で（学びとtips）
 ======================================================================
