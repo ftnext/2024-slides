@@ -1,3 +1,9 @@
+:ogp_title: PEP 723（Inline script metadata）が拓く世界
+:ogp_event_name: pyconjp
+:ogp_slide_name: pep723-inline-script-metadata-world
+:ogp_description: Pythonスクリプトに必要な仮想環境をツールにおまかせできるんです！ （PyCon JP 2024）
+:ogp_image_name: pyconjp
+
 =============================================================================================================
 PEP 723（Inline script metadata）が拓く世界。Pythonスクリプトに必要な仮想環境をツールにおまかせできるんです！
 =============================================================================================================
