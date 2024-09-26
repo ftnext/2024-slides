@@ -178,15 +178,7 @@ uvはmetadataを **書く** ぞ！
     $ uv add --script empty.py httpx rich
     Updated `empty.py`
 
-.. code-block:: python
-
-    # /// script
-    # requires-python = ">=3.12"
-    # dependencies = [
-    #     "httpx",
-    #     "rich",
-    # ]
-    # ///
+.. literalinclude:: uv_added_script.py
 
 .. （脱線）uvは基本最新化しようとする
 
