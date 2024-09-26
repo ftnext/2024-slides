@@ -151,14 +151,5 @@ inline script metadataには ``[tool]`` も書ける
 inline script metadataの書き方
 ------------------------------------------------------------
 
-.. code-block:: python
-
-    # /// script
-    # # スクリプト実行時の依存ライブラリ
-    # dependencies = ["requests<3", "rich"]
-    #
-    # # スクリプトを実行できるPythonのバージョン
-    # requires-python = ">=3.11"
-    #
-    # # ツールごとの [tool] テーブルも書ける
-    # ///
+.. literalinclude:: metadata_introduction.py
+    :language: python
