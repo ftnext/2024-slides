@@ -23,12 +23,10 @@
 
     $ pipx --version
     1.7.1
-    $ uv --version
-    uv 0.4.12 (Homebrew 2024-09-18)
+    % uv --version
+    uv 0.4.16 (Homebrew 2024-09-24)
     $ hatch --version
     Hatch, version 1.12.0
-
-.. TODO なるべく最新で
 
 pipx
 ======================================================================
