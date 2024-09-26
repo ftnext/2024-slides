@@ -8,27 +8,35 @@ PEP 723（Inline script metadata）が拓く世界。Pythonスクリプトに必
 :Event: PyCon JP 2024 ``#pyconjp_1``
 :Presented: 2024/09/27 nikkie
 
-突然ですが、LTします
+突然ですが、**LT** します
 ======================================================================
 
-* 5分で粗く伝えます
-* 5分後、ほかのトークに行っても大丈夫👍
+* 粗い要点✨ を5分で伝えます
+* その後25分間、*2周目* です
 
 .. include:: summary-lt.rst.txt
 
-お前、誰よ
+この後は丁寧に話す2周目です
+------------------------------------------------------------
+
+* inline script metadata 知ってた or 使っている方？ 🙋‍♂️
+* もしかして、今日初めて聞きました？ 🙋
+
+並列トークも魅力的なので、ほかへ行っても大丈夫👍
+
+（申し遅れました）お前、誰よ
 ======================================================================
 
 * nikkie ／ :fab:`github` `@ftnext <https://github.com/ftnext>`__ ／ `ブログ <https://nikkie-ftnext.hatenablog.com/>`__ 連続 **670** 日突破
 * 機械学習エンジニア・自然言語処理（`We're hiring! <https://hrmos.co/pages/uzabase/jobs/1829077236709650481>`__）
-* Python歴は6年。PyConで登壇多数
+* Python歴6年。PyConで登壇や小さなOSS（`sphinx-new-tab-link <https://github.com/ftnext/sphinx-new-tab-link>`__）
 
 .. image:: ../_static/uzabase-white-logo.png
 
 親の顔より見た、スクリプトと仮想環境
 ------------------------------------------------------------
 
-* 仕事やPyCon JPスタッフ・みんなのPython勉強会スタッフで数々の **自動化** スクリプト
+* 仕事や `PyCon JPスタッフ <https://github.com/ftnext/python-as-pyconjp-staff>`__ ・ `みんなのPython勉強会 <https://startpython.connpass.com/>`__ （ポスターあります）スタッフで数々の **自動化** スクリプト
 * **機械学習** も :file:`ipynb` ではなく、Pythonスクリプトで
 
 そんな私には、**PEP 723が劇的**！！ 皆さんにも伝えたい・享受してほしい！
@@ -60,6 +68,39 @@ PEP 723（Inline script metadata）が拓く世界。Pythonスクリプトに必
 
 .. include:: pep723-tools-tips.rst.txt
 
-.. 使ってくれますか？（画像）
+まとめ🌯 PEP 723（Inline script metadata）が拓く世界
+======================================================================
 
-.. IMO: こういった本もざっくり変わるのでは
+* まさに「Pythonスクリプトに必要な仮想環境をツールにおまかせできるんです！」
+* **タイトル回収** に膝を打っていただけたら嬉しいです（嬉しいフィードバック：「PEP 723、天才ですね」）
+
+Pythonスクリプトに必要な仮想環境をツールにおまかせできるんです！
+----------------------------------------------------------------------
+
+* 開発者は **inline script metadata** を書く
+* サポートしたツール（pipx, uv, hatch, pdm など）でスクリプトを実行
+
+.. code-block:: python
+
+    # /// script
+    # requires-python = ">=3.11"
+    # dependencies = ["httpx", "rich"]
+    # ///
+
+IMO: スクリプトを書くPython本で採用してほしす🏃‍♂️
+------------------------------------------------------------
+
+* 提言：ノンプログラマー向けのPythonで自動化本（例：『`退屈なことはPythonにやらせよう <https://www.oreilly.co.jp/books/9784873119274/>`__』）、かなり楽になるのでは？
+* 例えばuvを採用。inline script metadata + :command:`uv run` で **自動化の実装だけに集中** できると思います
+
+📣著者に届け（スクリプトだけ書きたい方の環境構築、ちょっとでも楽になれ）
+
+ご清聴ありがとうございました
+--------------------------------------------------
+
+Enjoy Python scripting❤️
+
+🥹🥹🥹 使ってくれますか？ 🥹🥹🥹
+
+EOF
+===
