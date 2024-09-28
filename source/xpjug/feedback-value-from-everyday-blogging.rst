@@ -1,3 +1,9 @@
+:ogp_title: 1日1エントリにもがく中で見えてきたXPの「フィードバック」の価値
+:ogp_event_name: xpjug
+:ogp_slide_name: feedback-value-from-everyday-blogging
+:ogp_description: XP祭り2024
+:ogp_image_name: xpjug
+
 ======================================================================
 1日1エントリにもがく中で見えてきたXPの「フィードバック」の価値
 ======================================================================
