@@ -1,3 +1,9 @@
+:ogp_title: 関数の引数の型ヒントをカイゼンするFlake8 pluginを作りました！！
+:ogp_event_name: stapy-oct
+:ogp_slide_name: introduction-flake8-kotoha
+:ogp_description: みんなのPython勉強会#109 LT
+:ogp_image_name: stapy-oct
+
 ======================================================================
 関数の引数の型ヒントをカイゼンするFlake8 pluginを作りました！！
 ======================================================================
