@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+
+<html lang="ja" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>テストコードが書けるようになって「変更したけど壊してないかな」という不安を解消しませんか？〜テスト駆動開発の世界のクイックツアーも添えて〜</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/dist/reveal.css?v=ba26b9ed" />
+    <link rel="stylesheet" href="../_static/revealjs4/dist/theme/black.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/plugin/highlight/zenburn.css?v=83d5745d" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/common.css?v=c1f4a920" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ftnext">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://ftnext.github.io/2024-slides/phpkansai/practice-test-code.html">
+    <meta property="og:title" content="テストコードが書けるようになって「変更したけど壊してないかな」という不安を解消しませんか？">
+    <meta property="og:description" content="〜テスト駆動開発の世界のクイックツアーも添えて〜 2024/02 PHPカンファレンス関西">
+    <meta property="og:image" content="https://ftnext.github.io/2024-slides/_static/ogps/phpkansai.png">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section>
+<h1 style="word-break: keep-all; overflow-wrap: break-word;">テストコードが書けるようになって「変更したけど壊してないかな」という不安を解消しませんか？〜テスト駆動開発の世界のクイックツアーも添えて〜</h1>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">テストコードが書けるようになって「変更したけど壊してないかな」という不安を解消しませんか？</h2>
+<p>〜テスト駆動開発の世界のクイックツアーも添えて〜</p>
+<p>PHPカンファレンス関西2024 2/11 nikkie</p>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">はーいほーーー！！</h2>
+<p>㊗️6年ぶりの開催（スタッフの方々、ありがとうございます！！👏❤️）</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">関西のPHPerの皆さん、こんにちは</h3>
+<ul class="simple">
+<li><p>心中お察しします。「「初手奇声！？！？」」</p></li>
+<li><p>これ以上空気が凍ることはないはずです。 <strong>気づきのアウトプット、お気軽に</strong> <code class="docutils literal notranslate"><span class="pre">#phpkansai</span></code></p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">導入：「良いコードを書くための心得」のトークです</h2>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">PHPカンファレンス関西 <strong>優遇テーマ</strong></h3>
+<blockquote>
+<div><p>初心者PHPer向けのトーク</p>
+<p>良いコードを書くための心得</p>
+</div></blockquote>
+<p><a class="reference external" href="https://note.com/phpcon_kansai/n/ne767b757ee88" rel="noopener noreferrer" target="_blank">PHPカンファレンス関西2024の採択方法を公開します</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">良いコードとは？（IMO）</h3>
+<ul class="simple">
+<li><p>前提として、ユーザに <strong>価値</strong> を届けるコード</p></li>
+<li><p>＝良い <em>振る舞い</em> のコード</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">私は良い <em>構造</em> のコードにもこだわりたい！</h3>
+<ul class="simple">
+<li><p><strong>変更しやすい</strong> コード（まさしく"ソフト"ウェア）</p></li>
+<li><p>プログラミング言語の <strong>機能</strong> を引き出したコード（道具をうまく使う）</p></li>
+<li><p>「<em>動作するきれいなコード</em>」（ケント・ベック）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">大事なのは、より良く <strong>していく</strong></h3>
+<ul class="simple">
+<li><p>つよつよになれば一発で良いコードが書けると思っていた。幻想なのかも</p></li>
+<li><p>いまの方向性：より変更しやすく／より言語機能を使うように <strong>実装を改善</strong> していく</p></li>
+<li><p>不安「変更したけど壊してないかな」（今回の話）</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">申し遅れました。にっきーと申します（「お前、誰よ」）</h2>
+<ul class="simple">
+<li><p>nikkie ／ <span class="fab fa-twitter"></span> <a class="reference external" href="https://twitter.com/ftnext" rel="noopener noreferrer" target="_blank">@ftnext</a> ／ <span class="fab fa-github"></span> <a class="reference external" href="https://github.com/ftnext" rel="noopener noreferrer" target="_blank">@ftnext</a></p></li>
+<li><p>ソフトウェア開発 2016年〜（歴8年）</p></li>
+<li><p>2019年〜 株式会社ユーザベースのデータサイエンティスト。 <strong>Python</strong> ・機械学習（<a class="reference external" href="https://hrmos.co/pages/uzabase/jobs/1829077236709650481" rel="noopener noreferrer" target="_blank">We're hiring!</a>）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">変更しやすいコードに情熱を持ったPython使いです</h3>
+<ul class="simple">
+<li><p>プライベート：1日1エントリ <a class="reference external" href="https://nikkie-ftnext.hatenablog.com/" rel="noopener noreferrer" target="_blank">https://nikkie-ftnext.hatenablog.com/</a></p></li>
+<li><p>テストコードは業務や趣味でPythonで書いて <strong>4年半</strong> 程度🐍</p></li>
+<li><p>PHPのコードにもっといい書き方あったらぜひ教えてください🙏🔰</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><strong>テストコード</strong> についての発表です</h3>
+<ul class="simple">
+<li><p>今日初めてテストコードに入門するという方？🙋‍♂️</p></li>
+<li><p>テストコードは書いたことがなくて全然OK👌</p></li>
+<li><p>プログラミング言語を超えた <strong>考え方</strong> をお伝えできればと思います</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">聴きに来てくださってありがとうございます</h3>
+<blockquote>
+<div><p>今できないことがあっても大丈夫。これからできるようになればいい</p>
+</div></blockquote>
+<p>アニメ ミリオンライブ！ 第9話より（<a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/million-live-anime-story-9-we-can-change-to-do-it" rel="noopener noreferrer" target="_blank">感想ブログ</a>）</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">動作環境</h3>
+<ul class="simple">
+<li><p>PHP 8.3.2</p></li>
+<li><p>PHPUnit</p>
+<ul>
+<li><p>PHAR: 10.5.10 / 11.0.2</p></li>
+<li><p>Composer: 10.5.10</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">お品書き：2部構成</h2>
+<ol class="arabic simple">
+<li><p>テストコード入門</p></li>
+<li><p>テストの世界のクイックツアー</p></li>
+</ol>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><strong>入門</strong> して行ってください！</h3>
+<ol class="arabic simple">
+<li><p>テストコード入門</p></li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li><p>テストコードが初めての方が「<strong>書いてみよう</strong>」と思っていただけたら嬉しいです</p></li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li><p>テストの世界のクイックツアー</p></li>
+</ol>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">先の世界も垣間見ましょう</h3>
+<ol class="arabic simple">
+<li><p>テストコード入門</p></li>
+<li><p>テストの世界のクイックツアー</p></li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li><p>「今はまだわからないところもあるけれど、 <strong>こんな世界</strong> があるのか〜」</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">1部：テストコード入門</h2>
+<ol class="arabic simple">
+<li><p>テストコードが書けるメリット</p></li>
+<li><p>PHPUnitでテストの書き方</p></li>
+</ol>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">テストコードが書けるメリット</h2>
+<p>1部 1/2章</p>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">壊してないかなという <strong>不安</strong> に向き合う</h2>
+<ul class="simple">
+<li><p>良いコード（変更しやすい、言語の機能を引き出している）に近づけていく</p></li>
+<li><p>例：全霊をかけたコードだが、よりよい書き方を知って書き換える</p></li>
+<li><p>変更するたびに、 <strong>壊していないか</strong> 不安</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">例：FizzBuzz</h3>
+<pre data-id="fizzbuzz"><code class="php" data-noescape="" data-trim="">&lt;?php
+function fizzbuzz($number)
+{
+    if ($number % 3 == 0 and $number % 5 == 0) {
+        return "FizzBuzz";
+    } elseif ($number % 3 == 0) {
+        return "Fizz";
+    } elseif ($number % 5 == 0) {
+        return "Buzz";
+    } else {
+        return "$number";
+    }
+}
+
+// echo fizzbuzz(3) . "\n";
+// echo fizzbuzz("5") . "\n";
+</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">型を書く（PHPの機能をもっと使う）</h3>
+<pre data-id="id17"><code class="php" data-line-numbers="2,3" data-noescape="" data-trim="">&lt;?php
+declare(strict_types=1);
+function fizzbuzz(int $number): string
+{
+    if ($number % 3 == 0 and $number % 5 == 0) {
+        return "FizzBuzz";
+    } elseif ($number % 3 == 0) {
+        return "Fizz";
+    } elseif ($number % 5 == 0) {
+        return "Buzz";
+    } else {
+        return "$number";
+    }
+}
+
+// echo fizzbuzz(3) . "\n";
+// echo fizzbuzz("5") . "\n";  // TypeError
+</code></pre>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">書き換えで振る舞いを変えていないだろうか？</h2>
+<p><strong>不安</strong> に対処する3つのアプローチ</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">(A) 祈る 🙏</h3>
+<ul class="simple">
+<li><p>🙏🙏「どうか変わっていませんように」🙏🙏</p></li>
+<li><p>振る舞いを変えていないか不安だが、 <em>何も確認はしない</em></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">(B) 手で動作確認 ✋</h3>
+<ul class="simple">
+<li><p>例えば対話的に <code class="docutils literal notranslate"><span class="pre">fizzbuzz</span></code> 関数を実行（<strong class="command">php -a</strong>）</p></li>
+</ul>
+<pre data-id="b"><code class="php" data-noescape="" data-trim="">php &gt; require 'fizzbuzz.php';
+php &gt; echo fizzbuzz(15);
+FizzBuzz</code></pre>
+<ul class="simple">
+<li><p>安心できるが、 <em>関数の数が増えて</em> いくと現実的ではなさそう</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">参考：PHPの対話シェル 🏃‍♂️ (skip)</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.php.net/manual/ja/features.commandline.interactive.php" rel="noopener noreferrer" target="_blank">https://www.php.net/manual/ja/features.commandline.interactive.php</a></p></li>
+<li><p><a class="reference external" href="https://speakerdeck.com/kotomin_m/hazimetenophpkomandorainopusiyon-phpkai-fa-wojin-yoritiyotutole-sikusuru?slide=8" rel="noopener noreferrer" target="_blank">はじめてのPHPコマンドラインオプション</a> （ことみんさん。PHPカンファレンス沖縄2023）で知りました</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">(C) コードを書いて動作確認 🤖</h3>
+<ul class="simple">
+<li><p>この発表の本題</p></li>
+<li><p>「手で動作確認」の <strong>自動化</strong> （テストコードを書く）</p></li>
+<li><p>プログラムで使う部品のコードは、プログラムを書いて動作確認するという考え方（ref: ちょうぜつ本）</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">テストコードの世界へようこそ🎉</h2>
+<p>初見だと独特と感じる <strong>用語</strong> を紹介</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">テストケース</h3>
+<ul class="simple">
+<li><p>1つ1つのテストのこと</p></li>
+<li><p>テストコードがある＝複数のテストケースがある</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">実行結果</h3>
+<p>テストケースをすべて実行すると</p>
+<ul class="simple">
+<li><p><strong>pass</strong> （全て通る・成功）</p></li>
+<li><p>fail （1つでも失敗・落ちる）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">テストにおける <em>値</em> の呼び方</h3>
+<ul class="simple">
+<li><p>テスト対象（の関数やメソッド）を実行した値: <strong>actual</strong> value</p></li>
+<li><p>期待結果: <strong>expected</strong> value</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">呼び方を反映した変数名</h3>
+<pre data-id="id23"><code class="php" data-noescape="" data-trim="">php &gt; $actual = fizzbuzz(15);  // fizzbuzz関数がテスト対象
+php &gt; $expected = "FizzBuzz";
+php &gt; var_dump($actual === $expected);
+bool(true)</code></pre>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">テストコードがあると</h2>
+<table class="docutils align-default" id="id75">
+<caption><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">$actual</span> <span class="pre">===</span> <span class="pre">$expected</span></code> を <strong>簡単に確認</strong> できる</span></caption>
+<tbody>
+<tr class="row-odd"><td><p>actual</p></td>
+<td><p>expected</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">fizzbuzz(3)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">"Fizz"</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">fizzbuzz(5)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">"Buzz"</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">fizzbuzz(15)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">"FizzBuzz"</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">不安は退屈に変わる</h3>
+<ul class="simple">
+<li><p>実装中、仕様を満たす <strong>動作するコード</strong> であると確認できる🙌</p></li>
+<li><p>書き換える際も、おかしくしていたら気付ける 🙌（<em>回帰テスト</em>）</p></li>
+<li><p>ただし、このトークで扱うテストコードとは <strong>開発者のためのテスト</strong> （QAのテストとは別）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">書くコードは増えている、けれど</h3>
+<ul class="simple">
+<li><p>実装に加えてテストコードも書く</p></li>
+<li><p>でも、デメリット <strong>&lt;&lt; メリット</strong> だと思うので、書いていく（書ける方を増やしたい！）</p></li>
+</ul>
+</section>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">🥟テストコードは良いコードを書く力をつける下地（N=1）</h2>
+<ul class="simple">
+<li><p>テストコードを書くだけでは良いコードにはならない</p></li>
+<li><p><strong>テストコードは良いコードに近づけるのを助けてくれる</strong></p>
+<ul>
+<li><p>新しく知った文法を試して書き換えるとき、 誤って振る舞いを変えてしまっても気づける</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">PHPUnitでテストを書こう</h2>
+<p>1部 2/2章：先のfizzbuzz関数のテストを書いてみましょう</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><strong>PHPUnit</strong></h3>
+<ul class="simple">
+<li><p>PHPでテストコードを書くためのライブラリ</p></li>
+<li><p><a class="reference external" href="https://phpunit.de/" rel="noopener noreferrer" target="_blank">https://phpunit.de/</a></p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">PHPUnitをインストール</h2>
+<ul class="simple">
+<li><p>Composer</p></li>
+<li><p>PHAR</p></li>
+</ul>
+<p>どちらかをやればいいです</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Composerでインストール</h3>
+<ul class="simple">
+<li><p><strong class="command">composer require --dev phpunit/phpunit</strong></p></li>
+<li><p>ちょうぜつ本 など</p></li>
+</ul>
+<pre data-id="composer"><code class="txt" data-noescape="" data-trim="">.
+├── composer.json
+├── composer.lock
+└── vendor/
+    └── bin/
+        └── phpunit</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">PHARでインストール</h3>
+<ul class="simple">
+<li><p>PHPUnitのドキュメントで推している</p></li>
+<li><p><a class="reference external" href="https://docs.phpunit.de/en/10.5/installation.html#manual-download-of-phar" rel="noopener noreferrer" target="_blank">https://docs.phpunit.de/en/10.5/installation.html#manual-download-of-phar</a></p></li>
+</ul>
+<pre data-id="phar"><code class="txt" data-noescape="" data-trim="">.
+└── tools/
+    └── phpunit</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">tips: Composerではautoload 🏃‍♂️ (skip)</h3>
+<p><code class="docutils literal notranslate"><span class="pre">require_once</span></code> をカッコよく書けます</p>
+<div class="literal-block-wrapper docutils container" id="id76">
+<div class="code-block-caption"><span class="caption-text">composer.json 参考例</span></div>
+<pre><code class="json" data-noescape="" data-trim="">{
+    "autoload": {
+        "psr-4": {"FizzBuzz\\": "src/"}
+    },
+    "autoload-dev": {
+        "psr-4": {"FizzBuzz\\": "tests/"}
+    }
+}</code></pre>
+</div>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">phpunitコマンドの使い方</h3>
+<ul class="simple">
+<li><p><strong class="command">vendor/bin/phpunit</strong></p></li>
+<li><p>（PHARを配置した場合 <strong class="command">tools/phpunit</strong>）</p></li>
+</ul>
+<pre data-id="id29"><code class="txt" data-noescape="" data-trim="">Usage:
+  phpunit [options] &lt;directory|file&gt; ...</code></pre>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">PHPUnitで書くテストは <strong>3</strong> ステップ</h2>
+<ol class="arabic simple">
+<li><p>テストコードのファイルを作る</p></li>
+<li><p>クラスを書く</p></li>
+<li><p>テストケースとしてメソッドを書く</p></li>
+</ol>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Step1 ファイル作成</h3>
+<p><a class="reference external" href="https://docs.phpunit.de/en/10.5/installation.html#manual-download-of-phar" rel="noopener noreferrer" target="_blank">https://docs.phpunit.de/en/10.5/installation.html#manual-download-of-phar</a></p>
+<pre data-id="step1"><code class="txt" data-noescape="" data-trim="">.
+├── src/
+│   └── fizzbuzz.php
+├── tests/
+│   └── fizzbuzzTest.php
+└── vendor/</code></pre>
+<p>（Composerでインストールした場合で進めます。PHARでも動作確認しています）</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">テストを書くファイル</h3>
+<ul class="simple">
+<li><p><code class="file docutils literal notranslate"><span class="pre">tests</span></code> ディレクトリに配置</p></li>
+<li><p>ファイル名は <strong>*Test.php</strong></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">phpunit</span></code> コマンドにディレクトリのパスが指定されたときに探されるファイル</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Step2 クラスを書く</h3>
+<ul class="simple">
+<li><p>PHPUnitが提供する <strong>TestCaseクラスを継承</strong> したクラスを書く</p></li>
+<li><p>クラス名は <strong>*Test</strong></p></li>
+</ul>
+<pre data-id="step2"><code class="php" data-noescape="" data-trim="">use PHPUnit\Framework\TestCase;
+
+class FizzbuzzTest extends TestCase
+{
+}</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Step3 テストケースとしてメソッドを書く (1/2)</h3>
+<p><strong>testで始まる</strong> メソッド名</p>
+<pre data-id="step3-1-2"><code class="php" data-noescape="" data-trim="">class FizzbuzzTest extends TestCase
+{
+    public function test_3の倍数のときはFizzを返す(): void
+    {
+    }
+}</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Step3 テストケースとしてメソッドを書く (2/2)</h3>
+<p><code class="docutils literal notranslate"><span class="pre">fizzbuzz(3)</span></code> と呼び出した返り値は、文字列 <code class="docutils literal notranslate"><span class="pre">"Fizz"</span></code> と型と値が同じ（と表明）</p>
+<pre data-id="step3-2-2"><code class="php" data-noescape="" data-trim="">class FizzbuzzTest extends TestCase
+{
+    public function test_3の倍数のときはFizzを返す(): void
+    {
+        $this-&gt;assertSame(fizzbuzz(3), "Fizz");
+    }
+}</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">今回はassertSameが適切。assertEqualsではない</h3>
+<pre data-id="assertsameassertequals"><code class="php" data-noescape="" data-trim="">php &gt; var_dump("1" === "1");  // assertSame
+bool(true)
+php &gt; var_dump("1" == 1);  // assertEquals
+bool(true)
+php &gt; var_dump("1" === 1);  // assertSameなら誤りに気づける
+bool(false)</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><code class="docutils literal notranslate"><span class="pre">Test</span></code> Attributeでもよい 🏃‍♂️ (skip)</h3>
+<p><a class="reference external" href="https://docs.phpunit.de/en/10.5/attributes.html#appendixes-attributes-test" rel="noopener noreferrer" target="_blank">https://docs.phpunit.de/en/10.5/attributes.html#appendixes-attributes-test</a></p>
+<pre data-id="test-attribute-skip"><code class="php" data-noescape="" data-trim="">use PHPUnit\Framework\Attributes\Test;
+
+class FizzbuzzTest extends TestCase
+{
+    // 関数名は3で始められないので、_を付けています（他のやり方もあると思います）
+    #[Test]
+    public function _3の倍数のときはFizzを返す(): void
+    {
+    }
+}</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">日本語テストメソッド 🏃‍♂️ (skip)</h3>
+<ul class="simple">
+<li><p>IMO：関数名は <strong>日本語を使ってもよい</strong> と思います</p></li>
+<li><p><a class="reference external" href="https://speakerdeck.com/panda_program/unit-testing-for-beginners-at-php-conference-japan-2022?slide=41" rel="noopener noreferrer" target="_blank">実践！ユニットテスト入門（PHPカンファレンス2022）</a></p></li>
+<li><p><a class="reference external" href="https://t-wada.hatenablog.jp/entry/design-for-testability#%E3%83%9D%E3%82%A4%E3%83%B3%E3%83%88-%E6%97%A5%E6%9C%AC%E8%AA%9E%E3%83%86%E3%82%B9%E3%83%88%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89" rel="noopener noreferrer" target="_blank">現在時刻が関わるユニットテストから、テスト容易性設計を学ぶ</a></p></li>
+</ul>
+</section>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">🥟PHPUnitで書くテストは3ステップ</h2>
+<ol class="arabic simple">
+<li><p>テストコードのファイルを作る（<code class="file docutils literal notranslate"><span class="pre">*Test.php</span></code>）</p></li>
+<li><p>クラスを書く（<code class="docutils literal notranslate"><span class="pre">*Test</span></code>）</p></li>
+<li><p>テストケースとしてメソッドを書く（<code class="docutils literal notranslate"><span class="pre">test*</span></code>）</p></li>
+</ol>
+<p><a class="reference external" href="https://docs.phpunit.de/en/10.5/writing-tests-for-phpunit.html#asserting-return-values" rel="noopener noreferrer" target="_blank">https://docs.phpunit.de/en/10.5/writing-tests-for-phpunit.html#asserting-return-values</a></p>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">テスト実行</h2>
+<ul class="simple">
+<li><p><strong class="command">vendor/bin/phpunit tests</strong></p></li>
+<li><p>（PHARを配置した場合 <strong class="command">tools/phpunit tests</strong>）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">passしたとき</h3>
+<pre data-id="pass"><code class="txt" data-noescape="" data-trim="">Runtime:       PHP 8.3.2
+
+.                                                                   1 / 1 (100%)
+
+Time: 00:00, Memory: 22.77 MB
+
+OK (1 test, 1 assertion)</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">failしたとき（わざと落とした）</h3>
+<pre data-id="fail"><code class="txt" data-noescape="" data-trim="">Runtime:       PHP 8.3.2
+
+F                                                                   1 / 1 (100%)
+
+Time: 00:00.001, Memory: 22.77 MB
+
+There was 1 failure:
+
+1) fizzbuzz\FizzbuzzTest::test_3の倍数のときはFizzを返す
+Failed asserting that two strings are identical.
+--- Expected
++++ Actual
+@@ @@
+-'3'
++'Fizz'
+
+/.../tests/fizzbuzzTest.php:16
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.</code></pre>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">テストコードの構成要素</h2>
+<pre data-id="id32"><code class="php" data-noescape="" data-trim="">$this-&gt;assertSame(fizzbuzz(3), "Fizz");</code></pre>
+<ul class="simple">
+<li><p>関数に <strong>ある値を入力したときの出力</strong> を検証した</p></li>
+<li><p><em>3A</em> という見方を導入</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">3A</h3>
+<ul class="simple">
+<li><p>Arrange 準備</p></li>
+<li><p>Act 実行</p></li>
+<li><p>Assert 検証</p></li>
+</ul>
+<p><a class="reference external" href="https://xp123.com/articles/3a-arrange-act-assert/" rel="noopener noreferrer" target="_blank">https://xp123.com/articles/3a-arrange-act-assert/</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">3Aで見るPHPUnit</h3>
+<p>1ステップ1行になるように書き直しています</p>
+<pre data-id="aphpunit"><code class="php" data-noescape="" data-trim="">
+class FizzbuzzTest extends TestCase
+{
+    public function test_3の倍数のときはFizzを返す(): void
+    {
+        $number = 3;
+        $actual = fizzbuzz($number);
+        $expected = "Fizz";
+        $this-&gt;assertSame($actual, $expected);
+    }
+</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Arrange</h3>
+<p>テストの <strong>準備</strong> （データの用意など）</p>
+<pre data-id="arrange"><code class="php" data-line-numbers="5" data-noescape="" data-trim="">
+class FizzbuzzTest extends TestCase
+{
+    public function test_3の倍数のときはFizzを返す(): void
+    {
+        $number = 3;
+        $actual = fizzbuzz($number);
+        $expected = "Fizz";
+        $this-&gt;assertSame($actual, $expected);
+    }
+</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Act</h3>
+<p>テスト対象を <strong>実行</strong> （呼び出す）</p>
+<pre data-id="act"><code class="php" data-line-numbers="6" data-noescape="" data-trim="">
+class FizzbuzzTest extends TestCase
+{
+    public function test_3の倍数のときはFizzを返す(): void
+    {
+        $number = 3;
+        $actual = fizzbuzz($number);
+        $expected = "Fizz";
+        $this-&gt;assertSame($actual, $expected);
+    }
+</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Assert</h3>
+<p>実行結果が期待値と等しいかを <strong>検証</strong></p>
+<pre data-id="assert"><code class="php" data-line-numbers="7,8" data-noescape="" data-trim="">
+class FizzbuzzTest extends TestCase
+{
+    public function test_3の倍数のときはFizzを返す(): void
+    {
+        $number = 3;
+        $actual = fizzbuzz($number);
+        $expected = "Fizz";
+        $this-&gt;assertSame($actual, $expected);
+    }
+</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">第4のA：Annihilate 🏃‍♂️ (skip)</h3>
+<ul class="simple">
+<li><p>クリーンアップ</p></li>
+<li><p>『<a class="reference external" href="https://www.oreilly.co.jp/books/9784814400171/" rel="noopener noreferrer" target="_blank">ロバストPython</a>』第21章より</p></li>
+</ul>
+</section>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">🥟テストコードの構成要素：3A</h2>
+<ul class="simple">
+<li><p>Arrange テストの <strong>準備</strong></p></li>
+<li><p>Act テスト対象の <strong>実行</strong></p></li>
+<li><p>Assert 実行結果と期待値の <strong>検証</strong></p></li>
+</ul>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">tips✨ <strong>パラメタ化</strong> テスト</h2>
+<div class="literal-block-wrapper docutils container" id="id77">
+<div class="code-block-caption"><span class="caption-text">題材</span></div>
+<pre><code class="php" data-noescape="" data-trim="">public function test_3の倍数のときはFizzを返す(): void
+{
+}</code></pre>
+</div>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">3の倍数ならFizz</h3>
+<p><code class="docutils literal notranslate"><span class="pre">$number</span></code> の <strong>取りうる値は複数</strong></p>
+<ul class="simple">
+<li><p>3</p></li>
+<li><p>6</p></li>
+<li><p>9</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">個別にテストの関数を書く？</h3>
+<pre data-id="id35"><code class="php" data-noescape="" data-trim="">public function test_3の倍数のときはFizzを返す_3の場合(): void
+{
+}
+
+public function test_3の倍数のときはFizzを返す_6の場合(): void
+{
+}</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><strong>テストメソッドに引数</strong> （パラメタ）を渡せたら！</h3>
+<pre data-id="id36"><code class="php" data-noescape="" data-trim="">class FizzbuzzTest extends TestCase
+{
+    // $numberに3や6を渡せたら
+    public function test_3の倍数のときはFizzを返す($number): void
+    {
+        $this-&gt;assertSame(fizzbuzz($number), "Fizz");
+    }
+}</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">PHPUnitでは <strong>Data Provider</strong> でできます！</h3>
+<pre data-id="phpunit-data-provider"><code class="php" data-noescape="" data-trim="">use PHPUnit\Framework\Attributes\DataProvider;
+
+class FizzBuzzParametrizedTest extends TestCase
+{
+    public static function provide_3の倍数(): array
+    {
+        return [[3], [6]];
+    }
+
+    #[DataProvider("provide_3の倍数")]
+    public function test_3の倍数のときはFizzを返す(int $number): void
+    {
+        $this-&gt;assertSame(fizzbuzz($number), "Fizz");
+    }
+}
+</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Data Provider</h3>
+<ul>
+<li><p><a class="reference external" href="https://docs.phpunit.de/en/10.5/writing-tests-for-phpunit.html#data-providers" rel="noopener noreferrer" target="_blank">https://docs.phpunit.de/en/10.5/writing-tests-for-phpunit.html#data-providers</a></p>
+<blockquote>
+<div><div class="line-block">
+<div class="line">A data provider method must be public and static.</div>
+<div class="line">It must return a value that is iterable, either an array or an object that implements the Traversable interface.</div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Data Providerの例</h3>
+<pre data-id="id37"><code class="php" data-noescape="" data-trim="">    public static function provide_3の倍数(): array
+    {
+        return [[3], [6]];
+    }
+
+    #[DataProvider("provide_3の倍数")]
+    public function test_3の倍数のときはFizzを返す(int $number): void
+</code></pre>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">$number</span></code> に、3、6と順次渡る</p></li>
+<li><p>ドキュメントには1回あたり複数の変数を渡す例あり</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">1つの関数、複数のテストケース</h3>
+<p><strong>個別に書いたのと同じ</strong> 結果が得られる</p>
+<pre data-id="id38"><code class="txt" data-noescape="" data-trim="">% tools/phpunit tests/parametrizedTest.php
+PHPUnit 10.5.10 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.3.2
+
+..                                                                  2 / 2 (100%)
+
+Time: 00:00.001, Memory: 22.77 MB
+
+OK (2 tests, 2 assertions)</code></pre>
+</section>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">🌯1部「テストコード入門」まとめ</h2>
+<ul class="simple">
+<li><p>テストは <strong>良いコードに近づけていく助け</strong> になります</p></li>
+<li><p><strong>PHPUnitでテストを書く方法</strong> を紹介（3A）</p></li>
+<li><p>Data Providerによるパラメタ化テスト</p></li>
+</ul>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">お品書き：2部構成</h2>
+<ol class="arabic simple">
+<li><p>テストコード入門</p></li>
+<li><p><strong>テストの世界のクイックツアー</strong></p></li>
+</ol>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">閑話休題🍵 PHP触ってみて💭</h3>
+<ul class="simple">
+<li><p>文末の <strong>セミコロン</strong> 忘れがち</p></li>
+<li><p><strong>実行時に型を保証</strong> 、いいな〜（Pythonの型は添えるだけ。実行時は無視）</p></li>
+<li><p>デファクトスタンダードのテストライブラリ！（Pythonには複数候補があります。参考『<a class="reference external" href="https://gihyo.jp/book/2022/978-4-297-12576-9" rel="noopener noreferrer" target="_blank">Python実践レシピ</a>』）</p></li>
+</ul>
+</section>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">2部：テストの世界のクイックツアー</h2>
+<ol class="arabic simple">
+<li><p>モック</p></li>
+<li><p>テスト駆動開発</p></li>
+</ol>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">発展的話題：「モック」</h2>
+<p>2部 1/2章</p>
+<p>いまは分からなかったとしても大丈夫</p>
+<p>繰り返し挑んで、 <strong>少しずつ理解</strong> していけばいいんです</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">別の処理を呼び出す実装のテストコード</h3>
+<ul class="simple">
+<li><p>全ての処理を通したテストも書ける</p></li>
+<li><p>別の処理が <strong>HTTP通信</strong> のような場合どうするか？</p></li>
+<li><p>-&gt; <em>モック</em> （後述する <em>広義</em>）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">モック（mock）</h3>
+<ul class="simple">
+<li><p><strong>偽物</strong>、模造品（ウィズダム英和辞典）</p></li>
+<li><p>画面の"モック"アップ</p></li>
+<li><p>テストコードの文脈では、 <em>広義</em> と <em>狭義</em> がある（『<a class="reference external" href="http://xunitpatterns.com/" rel="noopener noreferrer" target="_blank">xUnit Test Patterns</a>』）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">広義のモック</h3>
+<ul class="simple">
+<li><p><strong>Test Doubles</strong> を指して「モック」</p></li>
+<li><p>テスト用の <strong>代役</strong></p></li>
+<li><p>テスト対象の関数やメソッドの実装の中で依存するものの代役</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">参考：『xUnit Test Patterns』における整理</h3>
+<p>具体的な代役にはいろいろある</p>
+<figure class="align-default">
+<img alt="../_images/xutp-test-doubles.gif" src="../_images/xutp-test-doubles.gif"/>
+</figure>
+<p>元 <a class="reference external" href="http://xunitpatterns.com/Types%20Of%20Test%20Doubles.gif" rel="noopener noreferrer" target="_blank">http://xunitpatterns.com/Types%20Of%20Test%20Doubles.gif</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">スタブ（Stub）</h3>
+<ul class="simple">
+<li><p>テスト対象から呼び出す処理が <strong>実際に動かないように</strong> スタブにする</p></li>
+<li><p>例：HTTP通信処理をスタブにする</p>
+<ul>
+<li><p>サービスが落ちていなくても異常系のレスポンスが返った（テスト対象に入力された）ことにできる</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Mock Object</h3>
+<ul class="simple">
+<li><p>狭義のモック</p></li>
+<li><p>スタブのように、テスト対象から呼び出す処理を実際に動かないようにできる</p></li>
+<li><p>加えて、テスト対象が <strong>モックを期待通り使っているかをassert</strong> できる</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">例：HTTP通信を呼び出すコードにテストを書きたい</h3>
+<pre data-id="http"><code class="php" data-noescape="" data-trim="">function foo(HttpCommunication $communication): void
+{
+    echo "foo start\n";
+
+    $status_code = $communication-&gt;communicate();
+
+    echo "foo end\n";
+}
+</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">例：HTTP通信</h3>
+<pre data-id="id46"><code class="php" data-noescape="" data-trim="">class HttpCommunication
+{
+    public function communicate(): int
+    {
+        $status_code = 200;  // ダミーの値
+        echo "HTTP通信をしています...\n";
+        return $status_code;
+    }
+}
+</code></pre>
+<p>モックにするためにクラスで実装</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Test Doublesを使って書いたテストコード</h3>
+<pre data-id="test-doubles"><code class="php" data-noescape="" data-trim="">    public function test_モックを使うテストの例(): void
+    {
+        $mocked_communication = $this-&gt;createMock(HttpCommunication::class);
+        $mocked_communication-&gt;expects($this-&gt;once())
+            -&gt;method("communicate")
+            -&gt;with()
+            -&gt;willReturn(200);
+
+        foo($mocked_communication);
+    }
+</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">こんなときにTest Doublesを使っています</h3>
+<ul class="simple">
+<li><p>外部と通信する関数（通信エラーでテストが落ちうる）</p></li>
+<li><p>時間のかかる関数（テストの実行時間が伸びる）</p></li>
+<li><p>出力が変わる関数（例：random）</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">🥟モック（Test Doubles）</h2>
+<ul class="simple">
+<li><p>テストにおける <strong>代役</strong> （具体はStubやMock Object）</p></li>
+<li><p>例えば、外部と通信する処理はモックする</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">モックをもっと知りたい方へ 🏃‍♂️ (skip)</h3>
+<ul class="simple">
+<li><p>ちょうぜつ本 6章</p></li>
+<li><p>再学習:PHPUnitでモックを使ってテストしよう</p>
+<ul>
+<li><p><a class="reference external" href="https://youtu.be/qhPJrxEkiHA?si=Zvl5qenUbAuaCjG3" rel="noopener noreferrer" target="_blank">アーカイブ</a> ・ <a class="reference external" href="https://speakerdeck.com/ha1t/let-tested-using-a-mock-with-phpunit" rel="noopener noreferrer" target="_blank">スライド</a></p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">テスト駆動開発</h2>
+<p>2部 2/2章：テストコードが書けるようになると開く扉の中の世界のご紹介</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">TDD: Test Driven Development</h3>
+<ul class="simple">
+<li><p>開発手法の1つ。テストが開発を駆動（<em>運転</em>）</p></li>
+<li><p>考案者 ケント・ベック（『<a class="reference external" href="https://www.ohmsha.co.jp/book/9784274217883/" rel="noopener noreferrer" target="_blank">テスト駆動開発</a>』）</p></li>
+<li><p><strong>開発者のためのテスト</strong> を使って、開発を進めていく（再掲：QAのテストとは別）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">ケント・ベックの定義</h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>自動化されたテストが失敗したときのみ、新しいコードを書く。</p></li>
+<li><p>重複を除去する。</p></li>
+</ul>
+</div></blockquote>
+<p>2つのルール 『テスト駆動開発』Kindle の位置No.33-34</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">TDDはサイクル♻️</h3>
+<ul class="simple">
+<li><p>Red -&gt; Green -&gt; Refactor</p></li>
+<li><p><strong>何度も何度も</strong> 回す</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Red🟥</h3>
+<ul class="simple">
+<li><p><strong>まずテストコードを書く</strong></p></li>
+<li><p>テストファーストと呼ばれる</p></li>
+<li><p>実装はないので、もちろんテストは落ちる（fail）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Green🟩</h3>
+<ul class="simple">
+<li><p>実装する（後述）</p></li>
+<li><p>テストが通るようになる（pass）</p></li>
+<li><p><strong>テストを通すのを最優先</strong> （「動作する」コード）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Refactor</h3>
+<ul class="simple">
+<li><p>テストが通っている状態でリファクタリングを実施して「 <strong>動作するきれいなコード</strong> 」にする</p>
+<ul>
+<li><p>例：重複を除去する</p></li>
+</ul>
+</li>
+<li><p>実装だけでなくテストコードもリファクタリング対象</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">TDDのイメージ</h2>
+<p>何もないところからfizzbuzz関数を実装します</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">TODOリスト</h3>
+<pre data-id="todo"><code class="markdown" data-noescape="" data-trim="">- [ ] 数をそのまま文字列に変換する
+- [ ] 3の倍数のときは数の代わりに「Fizz」に変換する
+- [ ] 5の倍数のときは数の代わりに「Buzz」に変換する
+- [ ] 15の倍数のときは数の代わりに「FizzBuzz」に変換する</code></pre>
+<p>必要になりそうなテストのリスト</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">数をそのまま文字列に変換する って何だ？</h3>
+<div class="literal-block-wrapper docutils container" id="id78">
+<div class="code-block-caption"><span class="caption-text">具体例を追加した</span></div>
+<pre><code class="markdown" data-noescape="" data-trim="">- [ ] 数をそのまま文字列に変換する
+  - [ ] 1を渡すと文字列1を返す
+- [ ] 3の倍数のときは数の代わりに「Fizz」に変換する
+- [ ] 5の倍数のときは数の代わりに「Buzz」に変換する
+- [ ] 15の倍数のときは数の代わりに「FizzBuzz」に変換する</code></pre>
+</div>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">1を渡すと文字列1を返す テスト 🟥</h3>
+<pre data-id="id54"><code class="php" data-noescape="" data-trim="">class FizzbuzzTest extends TestCase
+{
+    public function test_1を渡すと文字列1を返す(): void
+    {
+        $this-&gt;assertSame(fizzbuzz(1), "1");
+    }
+}</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">1を渡すと文字列1を返す 実装 🟩</h3>
+<pre data-id="id55"><code class="php" data-noescape="" data-trim="">function fizzbuzz(int $number): string
+{
+    return "1";
+}</code></pre>
+<ul class="simple">
+<li><p><strong>仮実装</strong> と呼ばれる</p></li>
+<li><p>作ったテストを間違えていない確認</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">リファクタリング？</h3>
+<ul class="simple">
+<li><p>重複があるか？ ーなし</p></li>
+<li><p>Red -&gt; Green -&gt; Refactorの1サイクル終了♻️</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">実装を一般化したい！ TODO追加</h3>
+<div class="literal-block-wrapper docutils container" id="id79">
+<div class="code-block-caption"><span class="caption-text">別の具体例を追加</span></div>
+<pre><code class="markdown" data-noescape="" data-trim="">- [ ] 数をそのまま文字列に変換する
+  - [x] 1を渡すと文字列1を返す
+  - [ ] 2を渡すと文字列2を返す
+- [ ] 3の倍数のときは数の代わりに「Fizz」に変換する
+- [ ] 5の倍数のときは数の代わりに「Buzz」に変換する
+- [ ] 15の倍数のときは数の代わりに「FizzBuzz」に変換する</code></pre>
+</div>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">2を渡すと文字列2を返す テスト 🟥</h3>
+<pre data-id="id58"><code class="php" data-noescape="" data-trim="">class FizzbuzzTest extends TestCase
+{
+    public function test_2を渡すと文字列2を返す(): void
+    {
+        $this-&gt;assertSame(fizzbuzz(2), "2");
+    }
+}</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">2を渡すと文字列2を返す 実装 🟩</h3>
+<pre data-id="id59"><code class="php" data-noescape="" data-trim="">function fizzbuzz(int $number): string
+{
+    return "$number";
+}</code></pre>
+<p>仮実装から一般化された実装へ（「<em>三角測量</em>」）</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">リファクタリング？</h3>
+<ul class="simple">
+<li><p>重複があるか？</p></li>
+<li><p>Data Providerを検討できる</p></li>
+<li><p>発展：具体例を1つずつ追加し、仮実装から一般化した場合、テストケースとして片方消せる</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">これの何がいいの？</h3>
+<ul class="simple">
+<li><p>初見の私「茶番では？」</p></li>
+<li><p><strong>完全にコントロール</strong> している状態</p></li>
+<li><p>テストも実装も間違えていない。不安は退屈に変わっている</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">もっと知りたい方へ</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.youtube.com/watch?v=Q-FJ3XmFlT8&amp;t=1145s" rel="noopener noreferrer" target="_blank">t-wadaさんのライブコーディング</a> をどうぞ</p></li>
+<li><p><strong>リズム</strong> がつかめるのでオススメ（<a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/tddbc-2020-online-archive-twada-keynote-live-coding-log" rel="noopener noreferrer" target="_blank">視聴ログ（拙ブログ）</a>）</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;"><strong>小さい</strong> テスト駆動開発</h2>
+<p>私はこのスタイルに行き着きつつあります</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">小さいは、正義！</h3>
+<ul class="simple">
+<li><p>お見せしたテスト駆動開発は、テストコードをバーっと書き上げた。その後実装をバーっと書く</p></li>
+<li><p>もっと <em>小さいステップ</em> でできます（参考：『Clean Craftsmanship』第2章）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Uncle Bob流</h3>
+<p>TODOの1つの単位で、Red -&gt; Green を <strong>何度も行き来</strong> する</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">require</span></code> できないからRed🟥。ファイルを置いてGreen🟩</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fizzbuzz</span></code> 関数を呼び出すけれどそもそもないからRed🟥。用意だけしてGreen🟩</p></li>
+</ul>
+</section>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">デモをする（左右に開いて）</h2>
+<ul class="simple">
+<li><p>環境構築の確認</p></li>
+<li><p>テストを書く（requireできない）</p></li>
+<li><p>関数を呼び出せないを解決</p></li>
+<li><p>該当するメソッド</p></li>
+</ul>
+<p>Python版：<a class="reference external" href="https://ftnext.github.io/small-technical-2023/" rel="noopener noreferrer" target="_blank">https://ftnext.github.io/small-technical-2023/</a></p>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">テストコードが書けるようになって「変更したけど壊してないかな」という不安を解消しませんか？</h2>
+<ul class="simple">
+<li><p>主張：好きとか嫌いとかはいい、 <strong>テストコードを書く</strong> んだ</p></li>
+<li><p>不安「変更したけど壊してないかな」は、退屈「テストが通っているから大丈夫」に変わります</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">ご清聴ありがとうございました。おおきに！</h3>
+<blockquote>
+<div><p>今できないことがあっても大丈夫。これからできるようになればいい</p>
+</div></blockquote>
+<p>アニメ ミリオンライブ！ 第9話より</p>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">参考資料</h2>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">参考書籍</h3>
+<ul>
+<li><p>『<a class="reference external" href="https://gihyo.jp/book/2022/978-4-297-13234-7" rel="noopener noreferrer" target="_blank">ちょうぜつソフトウェア設計入門</a>』（第6章）</p></li>
+<li><p>『<a class="reference external" href="https://www.ohmsha.co.jp/book/9784274217883/" rel="noopener noreferrer" target="_blank">テスト駆動開発</a>』（Kent Beck）</p>
+<blockquote>
+<div><p>テストは不安を退屈に変える賢者の石だ。（第25章）</p>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">PyConで話した内容のPHP版でした</h3>
+<iframe height="480" src="https://ftnext.github.io/2023-slides/pyconapac/practice-test-code.html#/1" title="好きとか嫌いとかはいい、練習してテストを書けるようになるんだ" width="800"></iframe></section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">PHPカンファレンスのアーカイブより</h3>
+<ul class="simple">
+<li><p>PHPカンファレンス沖縄2023「<a class="reference external" href="https://fortee.jp/phpcon-okinawa-2023/proposal/0512a121-2983-4c60-90f3-651c7e7f79fd" rel="noopener noreferrer" target="_blank">素朴で考慮漏れのある PHP コードをテストコードとともに補強していく</a>」</p></li>
+<li><p>PHPカンファレンス2022 <a class="reference external" href="https://fortee.jp/phpcon-2022/proposal/41cd9cd5-7d1f-4659-b31f-d31545d286aa" rel="noopener noreferrer" target="_blank">実践！ユニットテスト入門</a></p></li>
+<li><p>PHPerKaigi 2019 <a class="reference external" href="https://fortee.jp/phperkaigi-2019/proposal/46cab64f-35c7-483d-9ca0-bb04204f8f54" rel="noopener noreferrer" target="_blank">「質」の良いユニットテストを書くためのプラクティス</a></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">t-wadaさん関連🦁</h3>
+<ul class="simple">
+<li><p>開発者のためのテスト <a class="reference external" href="https://gihyo.jp/dev/serial/01/tdd/0003" rel="noopener noreferrer" target="_blank">https://gihyo.jp/dev/serial/01/tdd/0003</a></p>
+<ul>
+<li><p><a class="reference external" href="https://gihyo.jp/dev/serial/01/tdd" rel="noopener noreferrer" target="_blank">［動画で解説］和田卓人の“テスト駆動開発”講座</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference external" href="https://speakerdeck.com/twada/working-with-legacy-code-the-true-record?slide=69" rel="noopener noreferrer" target="_blank">品質をあげるのはプログラミング</a></p>
+<ul>
+<li><p><a class="reference external" href="https://twop.agile.esm.co.jp/what-do-we-need-for-growth-of-future-65c43b5a8fe2" rel="noopener noreferrer" target="_blank">『健全なビジネスの継続的成長のためには健全なコードが必要だ』対談 （６）</a></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">テスト駆動開発のはじめ方参考🔰</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://agilejourney.uzabase.com/entry/2022/06/16/101000" rel="noopener noreferrer" target="_blank">「1人アジャイル」から始める、アジャイル開発導入のススメ</a></p></li>
+<li><p><a class="reference external" href="https://agilejourney.uzabase.com/entry/2023/11/30/103000" rel="noopener noreferrer" target="_blank">テスト駆動開発のはじめの一歩｜t_wadaさんに聞く1人で始める自動テストのコツと考え方</a></p></li>
+<li><p><a class="reference external" href="https://speakerdeck.com/ikikko/why-dont-you-write-unit-tests" rel="noopener noreferrer" target="_blank">えっ、まだユニットテスト書いてない現場があるんですか？</a></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">自分のエントリより ちょうぜつ本読書ログ</h3>
+<ul class="simple">
+<li><p>第6章前半 <a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/the-transcendent-book-chapter6-first-half-prepare-learning-tdd" rel="noopener noreferrer" target="_blank">https://nikkie-ftnext.hatenablog.com/entry/the-transcendent-book-chapter6-first-half-prepare-learning-tdd</a></p></li>
+<li><p>6.5 <a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/the-transcendent-book-chapter6-test-first-example-is-bdd" rel="noopener noreferrer" target="_blank">https://nikkie-ftnext.hatenablog.com/entry/the-transcendent-book-chapter6-test-first-example-is-bdd</a></p></li>
+<li><p>6.6 <a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/the-transcendent-book-chapter6-tdd-as-design-method" rel="noopener noreferrer" target="_blank">https://nikkie-ftnext.hatenablog.com/entry/the-transcendent-book-chapter6-tdd-as-design-method</a></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">自分のエントリより 登壇準備中のアウトプット</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/phpunit-docs-test-doubles-refer-xunit-test-patterns" rel="noopener noreferrer" target="_blank">PHPUnitのドキュメントを機にxUnit Test Patternsのサイトを確認し、Test Double・Stub・Mockを整理 〜広義のモックと狭義のモック〜</a></p></li>
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/phpcon-2022-unit-testing-for-beginners-log" rel="noopener noreferrer" target="_blank">#phpcon2022 のトーク「実践！ユニットテスト入門」がとってもよかったです👏 テストを書き始められる5つの知識✨</a></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">自分のエントリより PHP環境構築</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/macos-homebrew-php-composer-dev-require-phpunit" rel="noopener noreferrer" target="_blank">macOSでPHPUnitが流れる環境を作る</a></p></li>
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/phpunit-composer-autoload-error-class-not-found-no-declare-namespace" rel="noopener noreferrer" target="_blank">Composerでautoloadを設定したつもりが、PHPUnitを流すと「Error: Class "..." not found」となって苦しみました（写経し損ねたnamespace）</a></p></li>
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/symbolic-links-enable-to-switch-command-versions" rel="noopener noreferrer" target="_blank">そうか、シンボリックリンクを使えばコマンドのバージョンを切り替えられるのか！（phpunitを例に）</a></p></li>
+</ul>
+</section>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">EOF</h2>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs4/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs4/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs4/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs4/plugin/copycode/copycode.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "history": true, "center": true, "transition": "none", "slideNumber": "c/t", "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealHighlight,RevealNotes,CopyCode,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

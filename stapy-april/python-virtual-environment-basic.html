@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+
+<html lang="ja" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Python開発環境 基礎</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/dist/reveal.css?v=ba26b9ed" />
+    <link rel="stylesheet" href="../_static/revealjs4/dist/theme/black.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/plugin/highlight/zenburn.css?v=83d5745d" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/common.css?v=c1f4a920" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ftnext">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://ftnext.github.io/2024-slides/stapy-april/python-virtual-environment-basic.html">
+    <meta property="og:title" content="Python開発環境 基礎">
+    <meta property="og:description" content="2024/04 みんなのPython勉強会#103">
+    <meta property="og:image" content="https://ftnext.github.io/2024-slides/_static/ogps/stapy-april.png">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section>
+<h1 style="word-break: keep-all; overflow-wrap: break-word;">Python開発環境 <strong>基礎</strong></h1>
+<dl class="field-list simple">
+<dt class="field-odd">Event<span class="colon">:</span></dt>
+<dd class="field-odd"><p>みんなのPython勉強会#103</p>
+</dd>
+<dt class="field-even">Presented<span class="colon">:</span></dt>
+<dd class="field-even"><p>2024/04/25 nikkie</p>
+</dd>
+</dl>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">お前、誰よ（自己紹介）</h2>
+<ul class="simple">
+<li><p>nikkie ／ <span class="fab fa-github"></span> <a class="reference external" href="https://github.com/ftnext" rel="noopener noreferrer" target="_blank">@ftnext</a> ／ <a class="reference external" href="https://nikkie-ftnext.hatenablog.com/" rel="noopener noreferrer" target="_blank">ブログ</a> 連続520日突破</p></li>
+<li><p>ソフトウェアエンジニアリングで突破するデータサイエンティスト（<a class="reference external" href="https://hrmos.co/pages/uzabase/jobs/1829077236709650481" rel="noopener noreferrer" target="_blank">We're hiring!</a>）</p></li>
+<li><p>みんなのPython勉強会 4代目LT王子・スタッフ</p></li>
+</ul>
+<img alt="../_images/uzabase-white-logo.png" src="../_images/uzabase-white-logo.png"/>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">本編で発表は2年ぶり！？</h3>
+<iframe height="480" src="https://ftnext.github.io/2022_slides/stapy_Jun/start_nlp_party_night.html" title="えぬえるぴーや 1ねんせい" width="800"></iframe></section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Pythonを始めたい春に🌸</h3>
+<iframe height="480" src="https://ftnext.github.io/2022_slides/stapy_Apr/python_start_guide.html" title="Start Python Guide ver.202204 すたがい" width="800"></iframe></section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">Python環境はおもちですか？</h2>
+<p>Is your Python environment a ricecake?</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Python環境</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.python.org/" rel="noopener noreferrer" target="_blank">https://www.python.org/</a> からダウンロード 👈</p>
+<ul>
+<li><p>一例 <a class="reference external" href="https://tv.pycon.jp/episode/39.html" rel="noopener noreferrer" target="_blank">PyCon JP TV #39: 開発環境の整え方ライブデモ</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference external" href="https://github.com/pyenv/pyenv" rel="noopener noreferrer" target="_blank">pyenv</a></p></li>
+<li><p>などなど</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">おことわり 1/2</h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">.py</span></code> ファイルを作る方向け</p></li>
+<li><p>「Google ColabやJupyterLabで十分開発できている！」という方には使い所がないかも</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">おことわり 2/2</h3>
+<ul>
+<li><p>Python <strong>3.9</strong> 以上を想定（<a class="reference external" href="https://peps.python.org/pep-0569/#lifespan" rel="noopener noreferrer" target="_blank">3.8は2024年10月でセキュリティアップデート終了</a>）</p></li>
+<li><p>nikkieが経験しているのは、<strong>macOS</strong> とUbuntu</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Windows周りは弱いです（文献で見た知識。補足求ム）</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">Python環境はなぜ動くのですか？</h2>
+<p>少しだけ、シェルの仕組み（※伏線です）</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><strong class="command">python3</strong> コマンドで対話モードに入る</h3>
+<pre data-id="python3"><code class="shell" data-noescape="" data-trim="">$ python3 -q
+&gt;&gt;&gt;</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">呼ばれているコマンド</h3>
+<pre data-id="id9"><code class="shell" data-noescape="" data-trim="">$ /Library/Frameworks/Python.framework/Versions/3.12/bin/python3 -q
+&gt;&gt;&gt;</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">シェルの仕組み</h3>
+<ul class="simple">
+<li><p>環境変数 <code class="docutils literal notranslate"><span class="pre">$PATH</span></code> から <code class="docutils literal notranslate"><span class="pre">python3</span></code> コマンドの実体を探す</p></li>
+<li><p>シェル「<code class="docutils literal notranslate"><span class="pre">python3</span></code> は <code class="docutils literal notranslate"><span class="pre">$PATH</span></code> を見たところ、<code class="file docutils literal notranslate"><span class="pre">/Library/Frameworks/Python.framework/Versions/3.12/bin/python3</span></code> のことっぽいな！」</p></li>
+</ul>
+<p>オススメ <a class="reference external" href="https://speakerdeck.com/os1ma/sieru-tutenani-karagai-metexue-bulinuxnokihon" rel="noopener noreferrer" target="_blank">「シェル」ってなに？から改めて学ぶLinuxのきほん</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">別の例 <strong class="command">ls</strong> コマンド 🏃‍♂️</h3>
+<pre data-id="ls"><code class="shell" data-noescape="" data-trim="">$ which ls
+/bin/ls
+$ type ls
+ls is /bin/ls</code></pre>
+<p><code class="file docutils literal notranslate"><span class="pre">/bin</span></code> も <code class="docutils literal notranslate"><span class="pre">$PATH</span></code> に含まれます</p>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">本題へ：プログラミングでは <strong>ライブラリ</strong> を使う</h2>
+</section>
+<section>
+<iframe allowfullscreen="" frameborder="0" height="486" marginheight="0" marginwidth="0" scrolling="no" src="https://www.slideshare.net/slideshow/embed_code/key/9iS8q5POhRi14T?startSlide=23" style="border:1px solid #CCC; border-width:1px;   margin-bottom:5px;max-width: 100%;" width="597"></iframe><div style="margin-bottom:5px"><strong><a href="https://www.slideshare.net/shimizukawa/suburi-no-susume-at-python-nyumon" target="_blank" title="素振りのススメ at Python入門者の集い">素振りのススメ at Python入門者の集い</a></strong> from <strong><a href="https://www.slideshare.net/shimizukawa" target="_blank">Takayuki Shimizukawa</a></strong></div></section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><a class="reference external" href="https://ja.wikipedia.org/wiki/%E5%B7%A8%E4%BA%BA%E3%81%AE%E8%82%A9%E3%81%AE%E4%B8%8A" rel="noopener noreferrer" target="_blank">巨人の肩の上</a></h3>
+<ul>
+<li><p>「<em>先人の積み重ねた発見に基づいて何かを発見すること</em>」</p></li>
+<li><p>万有引力のアイザック・ニュートン</p>
+<blockquote>
+<div><p>私がかなたを見渡せたのだとしたら、それは巨人の肩の上に立っていたからです。</p>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">巨人の肩に <strong>乗りまくる</strong></h3>
+<ul class="simple">
+<li><p>ライブラリ ＝ 先人の残したコード</p></li>
+<li><p>機械学習では scikit-learn や PyTorch などなど</p></li>
+<li><p>Webアプリ開発では Django や FastAPI などなど</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">📌伝えたい：Pythonではアプリケーションごとにライブラリを分けよう</h2>
+<ul class="simple">
+<li><p>Pythonには豊富な標準ライブラリ</p></li>
+<li><p>今回は <strong>サードパーティ</strong> ライブラリの話（<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code> するもの）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">なぜアプリケーションごとにライブラリを分ける？</h3>
+<blockquote>
+<div><p>1つのインストールされたPythonが全てのアプリケーションの要求に対応することは不可能です。</p>
+</div></blockquote>
+<p><a class="reference external" href="https://docs.python.org/ja/3/tutorial/venv.html#introduction" rel="noopener noreferrer" target="_blank">12.1. はじめに（Python チュートリアル 12. 仮想環境とパッケージ）</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">チュートリアルの例（を補足）</h3>
+<ul class="simple">
+<li><p>あなたはPython 3.12（だけ）をインストールした</p></li>
+<li><p>アプリケーションAとBを開発</p></li>
+<li><p>アプリAの開発では、<code class="docutils literal notranslate"><span class="pre">awesome</span></code> の <strong>1.0</strong> を使う</p></li>
+<li><p>アプリBの開発では、<code class="docutils literal notranslate"><span class="pre">awesome</span></code> の <strong>2.0</strong> を使う</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">分けよう！</h3>
+<ul class="simple">
+<li><p>アプリAの開発環境には、<code class="docutils literal notranslate"><span class="pre">awesome</span></code> の <strong>1.0</strong> をインストール</p></li>
+<li><p>アプリBの開発環境には、<code class="docutils literal notranslate"><span class="pre">awesome</span></code> の <strong>2.0</strong> をインストール</p></li>
+<li><p>分けない場合、バージョン違いが共存できない（後述）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">分ける方法の1つが <strong>仮想環境</strong></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/ja/3/tutorial/venv.html#creating-virtual-environments" rel="noopener noreferrer" target="_blank">12.2. 仮想環境の作成（Python チュートリアル）</a></p></li>
+<li><p><em>私は公式厨なので</em></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">その他の方法（本トークのスコープ外）</h3>
+<ul class="simple">
+<li><p>Anaconda</p>
+<ul>
+<li><p><a class="reference external" href="https://startpython.connpass.com/event/272159/" rel="noopener noreferrer" target="_blank">2023年6月 stapy#94</a> で取り上げ</p></li>
+</ul>
+</li>
+<li><p>Docker</p>
+<ul>
+<li><p><a class="reference external" href="https://2023-apac.pycon.jp/timetable?id=M8QP3X" rel="noopener noreferrer" target="_blank">Dev Containers時代のPython開発環境のあり方</a> （PyCon APAC 2023）</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">仮想環境</h2>
+<p>アプリケーションの開発に必要なライブラリを分ける方法</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">仮想環境って、何よ</h3>
+<ul class="simple">
+<li><p><strong>ディレクトリ</strong></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">仮想環境は <strong>ディレクトリ</strong></h3>
+<blockquote>
+<div><p>仮想環境とは、特定のバージョンの Python と幾つかの追加パッケージを含んだ Python インストールを構成するディレクトリです。</p>
+</div></blockquote>
+<p><a class="reference external" href="https://docs.python.org/ja/3/tutorial/venv.html#introduction" rel="noopener noreferrer" target="_blank">12.1. はじめに（Python チュートリアル 12. 仮想環境とパッケージ）</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">仮想環境を作るツール</h3>
+<ul class="simple">
+<li><p>標準ライブラリの <a class="reference external" href="https://docs.python.org/ja/3/library/venv.html" rel="noopener noreferrer" target="_blank">venv</a></p></li>
+<li><p>サードパーティの <a class="reference external" href="https://virtualenv.pypa.io/en/latest/index.html" rel="noopener noreferrer" target="_blank">virtualenv</a></p></li>
+<li><p>virtualenvが先にあり、人気を受けて標準に入った（<a class="reference external" href="https://peps.python.org/pep-0405/" rel="noopener noreferrer" target="_blank">PEP 405</a>）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">仮想環境を作る</h3>
+<ul class="simple">
+<li><p><strong class="command">python3 -m venv .venv --upgrade-deps</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.venv</span></code> は仮想環境のディレクトリの <strong>名前</strong> （ <em>パス</em> として扱う）</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">tutorial-env</span></code> （チュートリアル）・ <code class="docutils literal notranslate"><span class="pre">venv</span></code></p></li>
+</ul>
+</li>
+</ul>
+<p><a class="reference external" href="https://docs.python.org/ja/3/tutorial/venv.html#creating-virtual-environments" rel="noopener noreferrer" target="_blank">12.2. 仮想環境の作成（Python チュートリアル）</a> （Windowsの方はぜひ）</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">ディレクトリが、作られた！</h3>
+<pre data-id="id26"><code class="txt" data-noescape="" data-trim="">    .venv/
+    ├── bin/
+    │   ├── activate
+    │   ├── pip
+    │   ├── pip3
+    │   ├── pip3.12
+    │   ├── python -&gt; python3.12
+    │   ├── python3 -&gt; python3.12
+    │   └── python3.12 -&gt; /Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12
+    ├── lib/
+    │   └── python3.12/
+    └── pyvenv.cfg
+</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">シンボリックリンク！</h3>
+<pre data-id="id27"><code class="txt" data-line-numbers="7,9" data-noescape="" data-trim="">    .venv/
+    ├── bin/
+    │   ├── activate
+    │   ├── pip
+    │   ├── pip3
+    │   ├── pip3.12
+    │   ├── python -&gt; python3.12
+    │   ├── python3 -&gt; python3.12
+    │   └── python3.12 -&gt; /Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12
+    ├── lib/
+    │   └── python3.12/
+    └── pyvenv.cfg
+</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">あとで出てくる <code class="file docutils literal notranslate"><span class="pre">.venv/lib/python3.12/</span></code></h3>
+<pre data-id="venv-lib-python3-12"><code class="txt" data-line-numbers="10,11" data-noescape="" data-trim="">    .venv/
+    ├── bin/
+    │   ├── activate
+    │   ├── pip
+    │   ├── pip3
+    │   ├── pip3.12
+    │   ├── python -&gt; python3.12
+    │   ├── python3 -&gt; python3.12
+    │   └── python3.12 -&gt; /Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12
+    ├── lib/
+    │   └── python3.12/
+    └── pyvenv.cfg
+</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">有効化するためのスクリプト</h3>
+<pre data-id="id28"><code class="txt" data-line-numbers="1,2,3" data-noescape="" data-trim="">    .venv/
+    ├── bin/
+    │   ├── activate
+    │   ├── pip
+    │   ├── pip3
+    │   ├── pip3.12
+    │   ├── python -&gt; python3.12
+    │   ├── python3 -&gt; python3.12
+    │   └── python3.12 -&gt; /Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12
+    ├── lib/
+    │   └── python3.12/
+    └── pyvenv.cfg
+</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">仮想環境を有効化</h3>
+<ul class="simple">
+<li><p><strong class="command">source .venv/bin/activate</strong></p></li>
+</ul>
+<pre data-id="id29"><code class="shell" data-noescape="" data-trim="">$ python -V
+Python 3.12.3
+$ .venv/bin/python -V  # PATHが更新されていて、これが見つかっている
+Python 3.12.3
+$ type python
+python is /.../.venv/bin/python</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">オススメ：Pythonの「仮想環境」を完全に理解しよう</h3>
+<iframe allowfullscreen="true" class="speakerdeck-iframe" data-ratio="1.75" frameborder="0" src="https://speakerdeck.com/player/0012e2df64654dd88c13d588f1c26abf?slide=5" style="border: 0px; background: rgba(0, 0, 0, 0.1) padding-box; margin: 0px; padding: 0px; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 40px; width: 100%; height: auto; aspect-ratio: 560 / 320;" title="Pythonの「仮想環境」を完全に理解しよう"></iframe></section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">🌯Pythonではアプリケーションごとにライブラリを分けよう</h2>
+<ul class="simple">
+<li><p><strong>仮想環境</strong> を紹介（<em>他の方法もある</em>）</p></li>
+<li><p><strong class="command">python3 -m venv .venv --upgrade-deps</strong></p></li>
+<li><p>アプリケーションごとに、ライブラリをインストールするディレクトリを設ける</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">拙ブログより 🏃‍♂️</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/python-venv-directory-name-202404" rel="noopener noreferrer" target="_blank">Pythonの仮想環境、最近は .venv という名前で作っています</a></p></li>
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/python-venv-upgrade-deps-option" rel="noopener noreferrer" target="_blank">Pythonのvenvの--upgrade-depsオプションは、どこから来てどこへ行くのか</a></p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">パッケージマネージャ</h2>
+<p>ライブラリ（＝パッケージ）は便利だから、インストールしまくろう！</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><code class="docutils literal notranslate"><span class="pre">pip</span></code></h3>
+<ul class="simple">
+<li><p>venvやvirtualenvで作る仮想環境にすでにある</p></li>
+</ul>
+<pre data-id="pip"><code class="txt" data-line-numbers="4" data-noescape="" data-trim="">    .venv/
+    ├── bin/
+    │   ├── activate
+    │   ├── pip
+    │   ├── pip3
+    │   ├── pip3.12
+    │   ├── python -&gt; python3.12
+    │   ├── python3 -&gt; python3.12
+    │   └── python3.12 -&gt; /Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12
+    ├── lib/
+    │   └── python3.12/
+    └── pyvenv.cfg
+</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><strong class="command">pip install</strong></h3>
+<pre data-id="pip-install"><code class="shell" data-noescape="" data-trim="">$ pip install kojo-fan-art
+$ pip install git+https://github.com/ftnext/unko</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code> は何をしているのか</h3>
+<ul class="simple">
+<li><p>＝ライブラリを <em>インストール</em> するとは</p></li>
+<li><p>ライブラリの <strong>実体のコードを取得</strong> し、あなたのPython環境に置く</p>
+<ul>
+<li><p>PyPI <a class="reference external" href="https://pypi.org/" rel="noopener noreferrer" target="_blank">https://pypi.org/</a> やリポジトリ（GitHub）から</p></li>
+</ul>
+</li>
+<li><p>ソースコードが置かれるから <code class="docutils literal notranslate"><span class="pre">import</span></code> できる！</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">例：仮想環境で <strong class="command">pip install httpx</strong></h3>
+<ul class="simple">
+<li><p>実体のコードは <code class="file docutils literal notranslate"><span class="pre">site-packages</span></code> というディレクトリの下にある</p></li>
+</ul>
+<pre data-id="pip-install-httpx"><code class="shell" data-noescape="" data-trim="">$ ls .venv/lib/python3.12/site-packages/httpx</code></pre>
+<p><a class="reference external" href="https://github.com/encode/httpx/tree/0.27.0/httpx" rel="noopener noreferrer" target="_blank">https://github.com/encode/httpx/tree/0.27.0/httpx</a> の内容</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><code class="docutils literal notranslate"><span class="pre">import</span></code> は <code class="file docutils literal notranslate"><span class="pre">site-packages</span></code> を見ている 🏃‍♂️</h3>
+<iframe allowfullscreen="true" class="speakerdeck-iframe" data-ratio="1.7777777777777777" frameborder="0" src="https://speakerdeck.com/player/4eeda4cc2011471d91e325c7df7dbaff?slide=38" style="border: 0px; background: rgba(0, 0, 0, 0.1) padding-box; margin: 0px; padding: 0px; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 40px; width: 100%; height: auto; aspect-ratio: 560 / 315;" title="ModuleNotFoundErrorの傾向と対策:仕組みから学ぶImport / Unpacking ModuleNotFoundError"></iframe></section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">仮に仮想環境を使わなかったら（真似しないでね🙅‍♂️）</h3>
+<pre data-id="id35"><code class="shell" data-noescape="" data-trim="">$ python3 -m pip install httpx</code></pre>
+<p><code class="file docutils literal notranslate"><span class="pre">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages</span></code> にhttpxのコードが置かれる</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">📌環境を分けるとは</h3>
+<ul>
+<li><p>仮想環境は、プロジェクト専用の <code class="file docutils literal notranslate"><span class="pre">site-packages</span></code> を用意している！</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>2つのプロジェクトで同じライブラリのバージョン違いが <strong>共存できる</strong></p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>大元のPython環境には1つの <code class="file docutils literal notranslate"><span class="pre">site-packages</span></code> しかないゆえに共存できない</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">tips✨ <strong class="command">.venv/bin/python -m pip install</strong></h3>
+<ul class="simple">
+<li><p>仮想環境を有効にしなくても、仮想環境にインストールできる</p></li>
+<li><p><strong>仮想環境のPythonを指定</strong> した</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;"><strong class="command">pip</strong> コマンドを使う</h2>
+<p>チュートリアル <a class="reference external" href="https://docs.python.org/ja/3/tutorial/venv.html#managing-packages-with-pip" rel="noopener noreferrer" target="_blank">12.3. pip を使ったパッケージ管理</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><strong class="command">python -m pip</strong></h3>
+<ul>
+<li><p>チュートリアル記載の方法（※nikkieは公式厨）</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>仮想環境を有効にして、単に <strong class="command">pip</strong> でもよい</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>install / uninstall</p></li>
+<li><p>show, list, freeze</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">環境を再現するには</h3>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">freeze</span></code> はインストールされたパッケージ一覧を、<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">install</span></code> が解釈するフォーマットで生成します。</p>
+</div></blockquote>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><strong class="command">python -m pip freeze</strong></h3>
+<pre data-id="python-m-pip-freeze"><code class="shell" data-noescape="" data-trim="">$ python -m pip freeze
+anyio==4.3.0
+certifi==2024.2.2
+h11==0.14.0
+httpcore==1.0.5
+httpx==0.27.0
+idna==3.7
+sniffio==1.3.1</code></pre>
+<p>ライブラリとバージョンの一覧</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">環境を再現するコマンド</h3>
+<pre data-id="id39"><code class="shell" data-noescape="" data-trim="">$ python -m pip freeze &gt; requirements.txt
+$ python -m pip install -r requirements.txt</code></pre>
+<ul class="simple">
+<li><p>freeze：動作する環境に入っているライブラリのバージョンを列挙</p></li>
+<li><p>install：指定されたバージョンのライブラリをインストール</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">思うに、仮想環境は使い捨て</h3>
+<ul class="simple">
+<li><p>仮想環境のディレクトリの名前は変更できない（壊れてしまう）</p></li>
+<li><p><strong>作り直す</strong> （というスタンスが公式と理解した）</p></li>
+</ul>
+<pre data-id="id40"><code class="shell" data-noescape="" data-trim="">$ python3 -m venv .venv --clear --upgrade-deps
+$ .venv/bin/python -m pip install -r requirements.txt</code></pre>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;"><strong class="command">pip</strong> コマンドを使っていくなかで</h2>
+<p>伸びしろが感じられてきます</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">人力 <strong class="command">pip freeze</strong> の功 <strong>罪</strong></h3>
+<ul class="simple">
+<li><p>知らないと環境を再現できない</p></li>
+<li><p>知っていても忘れたら再現できない</p></li>
+<li><p><code class="file docutils literal notranslate"><span class="pre">requirements.txt</span></code> という命名は慣習でしかない（バベルの塔感）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">さらに <code class="file docutils literal notranslate"><span class="pre">requirements.txt</span></code> のメンテが大変</h3>
+<ul class="simple">
+<li><p>ライブラリの追加はまあできる（忘れずに <strong class="command">pip freeze</strong> するだけ）</p></li>
+<li><p>使っていたライブラリの <strong>削除</strong> がツラい（Help wanted!）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">2種類の依存</h3>
+<ul class="simple">
+<li><p>プロジェクトが直接（<strong>direct</strong>）依存</p></li>
+<li><p>直接の依存が依存（<strong>transitive</strong>）しているライブラリ</p></li>
+<li><p>用語は <a class="reference external" href="https://blog.frankel.ch/maze-python-dependency-management/" rel="noopener noreferrer" target="_blank">The maze of Python dependency management</a> から</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">httpxを例に、2種類の依存</h3>
+<pre data-id="httpx2"><code class="shell" data-noescape="" data-trim="">$ python -m pip install httpx  # directの依存
+
+Installing collected packages: sniffio, idna, h11, certifi, httpcore, anyio, httpx
+Successfully installed anyio-4.3.0 certifi-2024.2.2 h11-0.14.0 httpcore-1.0.5 httpx-0.27.0 idna-3.7 sniffio-1.3.1</code></pre>
+<p>httpcore, idna などなどが transitiveの依存</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">指定したライブラリしかuninstallできない</h3>
+<pre data-id="uninstall"><code class="shell" data-noescape="" data-trim="">$ python -m pip uninstall -y httpx</code></pre>
+<p>directの依存だけを指定しても、transitiveの依存は自動でuninstallされない</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">削除がツラいのは、transitiveの依存</h3>
+<ul class="simple">
+<li><p>httpxの依存するhttpcore、他のdirect依存のライブラリで使ってない。消せる！</p></li>
+<li><p>httpxの依存するidna、 <strong>他のdirect依存のライブラリのtransitive依存</strong> だった。消せない！</p></li>
+<li><p>このチェックを1つ1つしていくのが大変😫</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">🌯なぜアプリケーションごとにライブラリを分けるのか</h2>
+<ul class="simple">
+<li><p><code class="file docutils literal notranslate"><span class="pre">site-packages</span></code> というディレクトリ下にインストールされたライブラリを <code class="docutils literal notranslate"><span class="pre">import</span></code> している</p></li>
+<li><p><strong>アプリケーションごとにライブラリのインストール先を分けた</strong> （バージョン違い共存可能に！）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pip</span></code> が最初から使えるが、環境の再現となると伸びしろを感じる</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">拙ブログより 🏃‍♂️</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/various-file-names-of-pip-freeze" rel="noopener noreferrer" target="_blank">Python使いはpip freezeの出力を常にrequirements.txtというファイルに保存する？ 文献を調べたところいくつか流派があるようです</a></p></li>
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/python-dependency-management-pip-only-uninstall-pain" rel="noopener noreferrer" target="_blank">Pythonライブラリをpipで管理するとき、uninstallが私にはツラい</a></p></li>
+</ul>
+</section>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">閑話休題🍵 <a class="reference external" href="https://2024.pycon.jp/" rel="noopener noreferrer" target="_blank">PyCon JP 2024</a></h2>
+<ul class="simple">
+<li><p>9/27(金)-29(日) 有明開催🌈</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">everyone</span> <span class="pre">import</span> <span class="pre">PyConJP</span></code></p></li>
+<li><p>📣 <a class="reference external" href="https://pyconjp.blogspot.com/2024/04/pyconjp2024-cfp.html" rel="noopener noreferrer" target="_blank">発表者募集中！！ 5/31(金)まで</a></p></li>
+</ul>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">pipのペインを解消する種々のツール</h2>
+<ul class="simple">
+<li><p>矢継ぎ早✨に紹介。<strong>気になるものはぜひドキュメントを</strong></p></li>
+<li><p>サンプルは🈁 <a class="reference external" href="https://github.com/ftnext/2024-slides/tree/main/samplecode/python-environments" rel="noopener noreferrer" target="_blank">https://github.com/ftnext/2024-slides/tree/main/samplecode/python-environments</a></p></li>
+<li><p>pip「うう。。俺が弱くて、ごめん。。」</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">仮想環境とpipをラップして <strong>easy</strong> にしたツールたち曰く</h3>
+<ul class="simple">
+<li><p>仮想環境の <strong>管理</strong>、俺達に任せて！！</p></li>
+<li><p>環境の <strong>再現</strong>、簡単にしといたよ！</p></li>
+<li><p>⚠️ライブラリのインストールという観点に限る（もっと色々できます）</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">Poetry</h2>
+<pre data-id="poetry"><code class="shell" data-noescape="" data-trim="">$ poetry --version
+Poetry (version 1.8.2)</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">インストール</h3>
+<pre data-id="id46"><code class="shell" data-noescape="" data-trim="">$ curl -sSL https://install.python-poetry.org | python3 -
+$ # または pipx install poetry</code></pre>
+<p><a class="reference external" href="https://python-poetry.org/docs/#installation" rel="noopener noreferrer" target="_blank">https://python-poetry.org/docs/#installation</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">導入</h3>
+<ul class="simple">
+<li><p>新規プロジェクトは <strong class="command">poetry new</strong> で作成</p></li>
+<li><p>既存プロジェクトには <strong class="command">poetry init</strong> で導入</p></li>
+</ul>
+<p><a class="reference external" href="https://python-poetry.org/docs/basic-usage/#project-setup" rel="noopener noreferrer" target="_blank">https://python-poetry.org/docs/basic-usage/#project-setup</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Poetry「仮想環境の管理は任せて！」</h3>
+<ul class="simple">
+<li><p><strong class="command">poetry add</strong> / remove</p></li>
+<li><p><strong class="command">poetry shell</strong> や <strong class="command">poetry run</strong> で仮想環境を有効にして実行できる</p></li>
+</ul>
+<p><a class="reference external" href="https://python-poetry.org/docs/basic-usage/#using-your-virtual-environment" rel="noopener noreferrer" target="_blank">https://python-poetry.org/docs/basic-usage/#using-your-virtual-environment</a></p>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">Pipenv</h2>
+<pre data-id="pipenv"><code class="shell" data-noescape="" data-trim="">$ pipenv --version
+pipenv, version 2023.12.1</code></pre>
+<p>🔰本発表を気に触ったので、補足大歓迎！</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">インストール</h3>
+<pre data-id="id49"><code class="shell" data-noescape="" data-trim="">$ pipx install pipenv</code></pre>
+<p><a class="reference external" href="https://github.com/pypa/pipenv/tree/v2023.12.1?tab=readme-ov-file#installation" rel="noopener noreferrer" target="_blank">https://github.com/pypa/pipenv/tree/v2023.12.1?tab=readme-ov-file#installation</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">導入</h3>
+<ul class="simple">
+<li><p>新規作成：空ディレクトリで <strong class="command">pipenv --python 3.12</strong></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Pipenv「仮想環境の管理は任せて！」</h3>
+<ul class="simple">
+<li><p><strong class="command">pipenv install</strong> / uninstall</p></li>
+<li><p><strong class="command">pipenv shell</strong> や <strong class="command">pipenv run</strong> で仮想環境を有効にして、コマンドを実行できる</p></li>
+</ul>
+<p><a class="reference external" href="https://pipenv.pypa.io/en/latest/installation.html#installing-packages-for-your-project" rel="noopener noreferrer" target="_blank">https://pipenv.pypa.io/en/latest/installation.html#installing-packages-for-your-project</a></p>
+</section>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">時間ないのに脱線：pipxって、何よ</h2>
+<ul class="simple">
+<li><p>インストールして <em>コマンド</em> で使うライブラリを、隔離した仮想環境にインストールしてくれる（<strong class="command">pipx install</strong>）</p></li>
+<li><p><strong class="command">pipx run</strong> が個人的にメチャ熱い🔥🔥🔥： <a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/henry-schreiner-pipx-supports-pep723-dependencies-metadata" rel="noopener noreferrer" target="_blank">Pythonスクリプトの未来。pipxが部分的にサポートしたInline script metadata（PEP 723）を触る</a></p></li>
+</ul>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">Hatch</h2>
+<pre data-id="hatch"><code class="shell" data-noescape="" data-trim="">$ hatch --version
+Hatch, version 1.9.7</code></pre>
+<p>🔰本発表を気に触ったので、補足大歓迎！</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">インストール</h3>
+<ul class="simple">
+<li><p>インストーラがある</p></li>
+<li><p>または <code class="docutils literal notranslate"><span class="pre">pipx</span> <span class="pre">install</span> <span class="pre">hatch</span></code></p></li>
+</ul>
+<p><a class="reference external" href="https://hatch.pypa.io/latest/install/#installers" rel="noopener noreferrer" target="_blank">https://hatch.pypa.io/latest/install/#installers</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">導入</h3>
+<ul class="simple">
+<li><p>新規プロジェクトは <strong class="command">hatch new</strong> で作成</p></li>
+<li><p>既存プロジェクトには <strong class="command">hatch new --init</strong> で導入</p></li>
+</ul>
+<p><a class="reference external" href="https://hatch.pypa.io/latest/intro/#setup" rel="noopener noreferrer" target="_blank">https://hatch.pypa.io/latest/intro/#setup</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Hatch「<code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code> 書いて」</h3>
+<ul class="simple">
+<li><p>開発者が <code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code> を書く模様</p></li>
+<li><p><strong class="command">hatch shell</strong> や <strong class="command">hatch run</strong> で <code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code> <strong>の通りの仮想環境</strong> でコマンドを実行できる（宣言的だ）</p></li>
+</ul>
+<p><a class="reference external" href="https://hatch.pypa.io/latest/environment/#dependencies" rel="noopener noreferrer" target="_blank">https://hatch.pypa.io/latest/environment/#dependencies</a></p>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">PDM</h2>
+<pre data-id="pdm"><code class="shell" data-noescape="" data-trim="">$ pdm --version
+PDM, version 2.15.1</code></pre>
+<p>🔰本発表を気に触ったので、補足大歓迎！</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">インストール</h3>
+<pre data-id="id54"><code class="shell" data-noescape="" data-trim="">$ curl -sSL https://pdm-project.org/install-pdm.py | python3 -</code></pre>
+<p><a class="reference external" href="https://pdm-project.org/en/stable/#installation" rel="noopener noreferrer" target="_blank">https://pdm-project.org/en/stable/#installation</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">導入</h3>
+<ul class="simple">
+<li><p>新規作成：空ディレクトリで <strong class="command">pdm new</strong></p></li>
+<li><p>却下された <a class="reference external" href="https://peps.python.org/pep-0582/" rel="noopener noreferrer" target="_blank">PEP 582</a> をサポートしており、依存をインストールするディレクトリ <code class="file docutils literal notranslate"><span class="pre">__pypackages__</span></code> を作ることもできる</p></li>
+</ul>
+<p><a class="reference external" href="https://pdm-project.org/en/stable/usage/project/" rel="noopener noreferrer" target="_blank">https://pdm-project.org/en/stable/usage/project/</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">PDM「仮想環境の管理は任せて！」</h3>
+<ul>
+<li><p><strong class="command">pdm add</strong> / remove</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference external" href="https://pdm-project.org/en/stable/usage/dependency/" rel="noopener noreferrer" target="_blank">https://pdm-project.org/en/stable/usage/dependency/</a></p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong class="command">poetry run</strong> で仮想環境を有効にして実行できる</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference external" href="https://pdm-project.org/en/stable/usage/venv/" rel="noopener noreferrer" target="_blank">https://pdm-project.org/en/stable/usage/venv/</a></p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">Rye</h2>
+<pre data-id="rye"><code class="shell" data-noescape="" data-trim="">$ rye --version
+rye 0.33.0
+commit: 0.33.0 (58523f69f 2024-04-24)
+platform: macos (aarch64)
+self-python: not bootstrapped (target: cpython@3.12)
+symlink support: true
+uv enabled: false</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">インストール「<strong>Rust</strong> のように簡単🍰」</h3>
+<pre data-id="rust"><code class="shell" data-noescape="" data-trim="">curl -sSf https://rye-up.com/get | bash</code></pre>
+<p><a class="reference external" href="https://rye-up.com/guide/installation/" rel="noopener noreferrer" target="_blank">https://rye-up.com/guide/installation/</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">導入「Pythonも管理しときますね〜」</h3>
+<ul class="simple">
+<li><p>新規作成：<strong class="command">rye init</strong></p></li>
+<li><p>Ryeで管理してるプロジェクトは <strong class="command">rye sync</strong></p></li>
+</ul>
+<p><a class="reference external" href="https://rye-up.com/guide/basics/" rel="noopener noreferrer" target="_blank">https://rye-up.com/guide/basics/</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">開発者は <strong class="command">rye sync</strong> を叩く</h3>
+<ul class="simple">
+<li><p><strong class="command">rye add</strong> / remove して <strong class="command">rye sync</strong></p></li>
+<li><p><strong class="command">rye run</strong> で仮想環境を有効にして、コマンドを実行できる</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Rye「どう？簡単でしょ？」</h3>
+<ul class="simple">
+<li><p>virtualenvやpip-toolsなどの既存ツールをバンドルして、easyに提供</p></li>
+<li><p>仮想環境 <code class="file docutils literal notranslate"><span class="pre">.venv</span></code> はあるが、開発者が手出しできない（nikkie「simpleなのだろうか？」）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">拙ブログより 🏃‍♂️</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/uv-first-trial-different-implementation-venv" rel="noopener noreferrer" target="_blank">素振りの記：Ryeに慣れるために、Pythonで自分だけのクソライブラリを作る</a></p></li>
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/create-python-virtual-environments-without-pip" rel="noopener noreferrer" target="_blank">Q: Pythonではパッケージ管理ツールpipを含まない仮想環境を作ることができる。◯か☓か</a></p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">uv</h2>
+<pre data-id="uv"><code class="shell" data-noescape="" data-trim="">$ uv --version
+uv 0.1.38</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">uvは、<strong>Rustで再実装</strong> したvenvとpip</h3>
+<ul class="simple">
+<li><p>PythonからRustに変わったことで <strong>高速</strong> に動作（売りにしている）</p></li>
+<li><p>ただし、venvやpipの複製にする気はないと明言（開発者は <em>覚え直し</em> が必要）</p></li>
+<li><p>Ryeはpipの代わりにuvを使える</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">インストール</h3>
+<pre data-id="id60"><code class="shell" data-noescape="" data-trim="">$ curl -LsSf https://astral.sh/uv/install.sh | sh
+$ # または pipx install uv</code></pre>
+<p><a class="reference external" href="https://github.com/astral-sh/uv/tree/0.1.38?tab=readme-ov-file#getting-started" rel="noopener noreferrer" target="_blank">https://github.com/astral-sh/uv/tree/0.1.38?tab=readme-ov-file#getting-started</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">導入：uvで仮想環境を作る</h3>
+<pre data-id="id61"><code class="shell" data-noescape="" data-trim="">$ uv venv</code></pre>
+<ul class="simple">
+<li><p><code class="file docutils literal notranslate"><span class="pre">.venv</span></code> という名前の仮想環境ができる</p></li>
+<li><p>Pythonのvenvやvirtualenvで作った仮想環境とは <strong>互換性がない</strong></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">uv「俺は、速い。あ、環境の再現は <strong>人手</strong> でお願いします」</h3>
+<pre data-id="id62"><code class="shell" data-noescape="" data-trim="">$ uv pip install ...
+$ uv pip freeze &gt; requirements.txt
+$ uv pip sync requirements.txt</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">参考 🏃‍♂️</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://gihyo.jp/article/2024/03/monthly-python-2403" rel="noopener noreferrer" target="_blank">Rust製のPythonパッケージ管理ツール「uv」を使ってみよう</a></p></li>
+<li><p>拙ブログ <a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/uv-first-trial-different-implementation-venv" rel="noopener noreferrer" target="_blank">uvお試し記：uv venvで作った仮想環境でpip installしてはいけません。uv pip installしましょう</a></p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">まとめ🌯 Python開発環境 基礎</h2>
+<ul class="simple">
+<li><p>Pythonでは <strong>アプリケーションごとにライブラリを分けよう</strong></p></li>
+<li><p>仮想環境がアプリケーションごとの <code class="file docutils literal notranslate"><span class="pre">site-packages</span></code> を提供</p></li>
+<li><p>ライブラリのインストール、pipの伸びしろを改善提案するツール群</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><strong>読み替え</strong> しましょう！</h3>
+<ul class="simple">
+<li><p>Python開発環境周りは、新しいツール（具象）がどんどん出てくる（最近はRyeやuv）</p></li>
+<li><p>具象は変化が早い。 <strong>抽象的な考え方</strong> を押さえよう</p></li>
+<li><p>考え方を押さえていれば具象1つ1つを読み替えて、自分の文脈に知見を適用できる</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">1番詳しくなるために <strong>行動</strong> するマインドセット</h3>
+<iframe allowfullscreen="true" class="speakerdeck-iframe" data-ratio="1.7777777777777777" frameborder="0" src="https://speakerdeck.com/player/5143e5b997244961916f5b9de41d02f7?slide=29" style="border: 0px; background: rgba(0, 0, 0, 0.1) padding-box; margin: 0px; padding: 0px; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 40px; width: 100%; height: auto; aspect-ratio: 560 / 315;" title="エンジニア基礎 ウィルゲート2024年度エンジニア新卒研修"></iframe></section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">ご清聴ありがとうございました</h3>
+<p>巨人の肩に乗りまくっていきましょう！</p>
+</section>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs4/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs4/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs4/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs4/plugin/copycode/copycode.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "history": true, "center": true, "transition": "none", "slideNumber": "c/t", "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealHighlight,RevealNotes,CopyCode,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>
