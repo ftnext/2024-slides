@@ -1,5 +1,6 @@
 # 2024-slides
 
+- [関数の引数の型ヒントをカイゼンするFlake8 pluginを作りました！！](https://ftnext.github.io/2024-slides/stapy-oct/introduction-flake8-kotoha.html#/1) @[みんなのPython勉強会#109 (2024/10)](https://startpython.connpass.com/event/331957/)
 - [1日1エントリにもがく中で見えてきたXPの「フィードバック」の価値](https://ftnext.github.io/2024-slides/xpjug/feedback-value-from-everyday-blogging.html#/1) @[XP祭り2024 (2024/09)](https://xpjug.connpass.com/event/326033/)
 - [PEP 723（Inline script metadata）が拓く世界。Pythonスクリプトに必要な仮想環境をツールにおまかせできるんです！](https://ftnext.github.io/2024-slides/pyconjp/pep723-inline-script-metadata-world.html#/1) @[PyCon JP 2024 (2024/09)](https://2024.pycon.jp/ja)
 - [プレビュー版：PEP 723（Inline script metadata）が拓く世界。Pythonスクリプトに必要な仮想環境をツールにおまかせできるんです！](https://ftnext.github.io/2024-slides/stapy-sep/preview-pyconjp-pep723-talk.html#/1) @[みんなのPython勉強会#108 (2024/09)](https://startpython.connpass.com/event/328822/)
