@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+
+<html lang="ja" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>VS Codeで文字列のちょっとした変換ができるんです！</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/dist/reveal.css?v=ba26b9ed" />
+    <link rel="stylesheet" href="../_static/revealjs4/dist/theme/black.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/plugin/highlight/zenburn.css?v=83d5745d" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/common.css?v=c1f4a920" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ftnext">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://ftnext.github.io/2024-slides/vscodeconjp/transform-text-commands.html">
+    <meta property="og:title" content="VS Codeで文字列のちょっとした変換ができるんです！">
+    <meta property="og:description" content="〜実装まで覗くクイックツアー〜 2024/04 VS Code Conference JP">
+    <meta property="og:image" content="https://ftnext.github.io/2024-slides/_static/ogps/vscodeconjp.png">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section>
+<h1 style="word-break: keep-all; overflow-wrap: break-word;">VS Codeで文字列のちょっとした変換ができるんです！</h1>
+<p>〜実装まで覗くクイックツアー〜</p>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">VS Codeで文字列のちょっとした変換ができるんです！</h2>
+<p>〜実装まで覗くクイックツアー〜</p>
+<dl class="field-list simple">
+<dt class="field-odd">Event<span class="colon">:</span></dt>
+<dd class="field-odd"><p>VS Code Conference JP 2024</p>
+</dd>
+<dt class="field-even">Presented<span class="colon">:</span></dt>
+<dd class="field-even"><p>2024/04/20 nikkie</p>
+</dd>
+</dl>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">お前、誰よ（自己紹介）</h2>
+<ul class="simple">
+<li><p>nikkie ／ 毎日 <a class="reference external" href="https://nikkie-ftnext.hatenablog.com/" rel="noopener noreferrer" target="_blank">ブログ</a> 執筆、連続520日突破</p></li>
+<li><p>ソフトウェアエンジニアリングで突破するデータサイエンティスト（<a class="reference external" href="https://hrmos.co/pages/uzabase/jobs/1829077236709650481" rel="noopener noreferrer" target="_blank">We're hiring!</a>）</p></li>
+<li><p>仕事もプライベートも <strong>VS Code</strong> で <strong>Python</strong> と戯れています</p></li>
+</ul>
+<img alt="../_images/uzabase-white-logo.png" src="../_images/uzabase-white-logo.png"/>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">1年ぶりですね</h3>
+<p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/talked-vscode-conference-jp-2023" rel="noopener noreferrer" target="_blank">VS Code Conference Japan 2022 - 2023で15分2本登壇しました</a></p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://ftnext.github.io/2023-slides/vscodeconjp/introduction-easy-refactoring.html" rel="noopener noreferrer" target="_blank">楽々入門！VS Codeで『リファクタリング』</a></p></li>
+<li><p><a class="reference external" href="https://ftnext.github.io/2023-slides/vscodeconjp/awakening-extension.html" rel="noopener noreferrer" target="_blank">Awakening Extension (拡張開発はじまるよ🔰)</a></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">このトークでは（<a class="reference external" href="https://fortee.jp/vscodeconjp-2024/proposal/752a18a4-7a34-4eec-9d7e-4d4169e7ee43" rel="noopener noreferrer" target="_blank">fortee</a>）</h3>
+<ul class="simple">
+<li><p>VS Codeで <strong>文字列のちょっとした変換</strong> をする方法を紹介</p></li>
+<li><p>どのように実装されているか、少しだけ覗いてみよう（<em>実装の話</em>）</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">本題：文字列のちょっとした変換</h2>
+<p>英語の文字列（例えば、Emily Stewart）を <strong>すべて小文字</strong> にしたい</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">手に馴染む言語（Python）でやってました</h3>
+<pre data-id="python"><code class="python" data-noescape="" data-trim="">&gt;&gt;&gt; "Emily Stewart".lower()
+'emily stewart'</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">選択肢は色々ある</h3>
+<pre data-id="id5"><code class="shell" data-noescape="" data-trim="">$ python -c 'print("Emily Stewart".lower())'
+emily stewart
+$ echo 'Emily Stewart' | tr '[:upper:]' '[:lower:]'
+emily stewart</code></pre>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">VS Codeでも、できます！！</h2>
+<ol class="arabic simple">
+<li><p>テキストを選択</p></li>
+<li><p><em>コマンドパレット</em></p></li>
+<li><p><strong>Transform</strong> で始まるコマンドを選択</p></li>
+</ol>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">コマンドパレットとは</h3>
+<p>押してみて！🫵</p>
+<ul class="simple">
+<li><p>Linux または Windowsの方： <kbd class="kbd compound docutils literal notranslate"><kbd class="kbd docutils literal notranslate">Ctrl</kbd> <kbd class="kbd docutils literal notranslate"></kbd>+<kbd class="kbd docutils literal notranslate"></kbd> <kbd class="kbd docutils literal notranslate">Shift</kbd> <kbd class="kbd docutils literal notranslate"></kbd>+<kbd class="kbd docutils literal notranslate"></kbd> <kbd class="kbd docutils literal notranslate">P</kbd></kbd></p></li>
+<li><p>macOSの方： <kbd class="kbd docutils literal notranslate">⇧⌘P</kbd> （＝ <kbd class="kbd compound docutils literal notranslate"><kbd class="kbd docutils literal notranslate">Command</kbd> <kbd class="kbd docutils literal notranslate"></kbd>+<kbd class="kbd docutils literal notranslate"></kbd> <kbd class="kbd docutils literal notranslate">Shift</kbd> <kbd class="kbd docutils literal notranslate"></kbd>+<kbd class="kbd docutils literal notranslate"></kbd> <kbd class="kbd docutils literal notranslate">P</kbd></kbd>）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">デモ</h3>
+<p>VS Codeを操作して、Emily Stewartを小文字にする</p>
+<ul class="simple">
+<li><p>Version: 1.88.1 (Universal)</p></li>
+<li><p>OS: Darwin arm64 21.6.0</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><span class="guilabel">Transform to</span> (1/2)</h3>
+<table class="docutils align-default" id="id33">
+<caption><span class="caption-text">VS Codeで文字列操作</span></caption>
+<tbody>
+<tr class="row-odd"><td><p><span class="guilabel">Lowercase</span></p></td>
+<td><p>emily stewart</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="guilabel">Uppercase</span></p></td>
+<td><p>EMILY STEWART</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="guilabel">Title Case</span></p></td>
+<td><p>Emily Stewart</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><span class="guilabel">Transform to</span> (2/2)</h3>
+<table class="docutils align-default" id="id34">
+<caption><span class="caption-text">VS Codeで文字列操作</span></caption>
+<tbody>
+<tr class="row-odd"><td><p><span class="guilabel">Snake Case</span></p></td>
+<td><p>emily_stewart</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="guilabel">Camel Case</span></p></td>
+<td><p>emilyStewart</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="guilabel">Pascal Case</span></p></td>
+<td><p>EmilyStewart</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="guilabel">Kebab Case</span></p></td>
+<td><p>emily-stewart</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">例：Snake ➡️ Kebab</h3>
+<ul class="simple">
+<li><p><span class="guilabel">Transform to Kebab Case</span></p></li>
+<li><p>sphinx_new_tab_link ➡️ sphinx-new-tab-link</p></li>
+</ul>
+<p><a class="reference external" href="https://github.com/ftnext/sphinx-new-tab-link" rel="noopener noreferrer" target="_blank">自作ライブラリ</a> の開発中にちょっと助かりそう</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">参考資料 🏃‍♂️</h3>
+<p>🏃‍♂️は本編ではスキップします。興味ある方向けです</p>
+<ul class="simple">
+<li><p>ドキュメント <a class="reference external" href="https://code.visualstudio.com/docs/getstarted/tips-and-tricks#_transform-text-commands" rel="noopener noreferrer" target="_blank">Transform text commands</a></p></li>
+<li><p>拙ブログ <a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/vscode-tips-transform-text-commands" rel="noopener noreferrer" target="_blank">テキストのちょっとした変換（全小文字化など）をPythonでやっていたのですが、VS Codeでサクッとtransformできることを知りました</a></p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">コマンドパレットまわりで寄り道</h2>
+<ol class="arabic simple">
+<li><p>Quick Open</p></li>
+<li><p>コマンド</p></li>
+</ol>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">寄り道1️⃣ Quick Openとは</h3>
+<p>押してみて！🫵</p>
+<ul class="simple">
+<li><p>Linux または Windowsの方： <kbd class="kbd compound docutils literal notranslate"><kbd class="kbd docutils literal notranslate">Ctrl</kbd> <kbd class="kbd docutils literal notranslate"></kbd>+<kbd class="kbd docutils literal notranslate"></kbd> <kbd class="kbd docutils literal notranslate">P</kbd></kbd></p></li>
+<li><p>macOSの方： <kbd class="kbd docutils literal notranslate">⇧P</kbd> （＝ <kbd class="kbd compound docutils literal notranslate"><kbd class="kbd docutils literal notranslate">Command</kbd> <kbd class="kbd docutils literal notranslate"></kbd>+<kbd class="kbd docutils literal notranslate"></kbd> <kbd class="kbd docutils literal notranslate">P</kbd></kbd>）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><span class="guilabel">&gt;</span> があるかないか</h3>
+<ul class="simple">
+<li><p>Quick Openで &gt; と打ち込むと、コマンドパレット</p></li>
+<li><p>コマンドパレットで <span class="guilabel">&gt;</span> を消すと、Quick Open</p></li>
+</ul>
+<p>時間に余裕があったら <strong>行き来</strong> するデモ</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">寄り道2️⃣ すべてはコマンド</h3>
+<ul class="simple">
+<li><p>コマンドパレットで <span class="guilabel">Transform to</span> <strong>コマンドを検索・実行</strong> した</p></li>
+<li><p>VS Code拡張開発でもコマンドを実装する</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">昨年の拡張開発の発表資料より</h3>
+<iframe height="480" src="https://ftnext.github.io/2023-slides/vscodeconjp/awakening-extension.html#/12/2" title="Awakening Extension (拡張開発はじまるよ🔰)" width="800"></iframe></section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">拙ブログ 🏃‍♂️</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/vscode-tips-quick-open-command-palette-back-and-forth" rel="noopener noreferrer" target="_blank">つながる操作 VS Code！Quick Openとコマンドパレットはキー入力で行き来できる！</a></p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">🌯まとめ：VS Codeで文字列のちょっとした変換ができるんです！</h2>
+<ol class="arabic simple">
+<li><p>テキストを選択</p></li>
+<li><p>コマンドパレット</p></li>
+<li><p><span class="guilabel">Transform to</span> コマンド</p></li>
+</ol>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">完</h3>
+<p>文字列のちょっとした変換にVS Codeを使ってみてください！</p>
+</section>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">VS Codeで文字列のちょっとした変換ができるんです！</h2>
+<p>〜 <strong>実装まで覗くクイックツアー</strong> 〜</p>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">これらのコマンドはどう実装されている？</h2>
+<ul class="simple">
+<li><p>VS Codeの実装（TypeScript）を見ていくパート</p></li>
+<li><p><strong>コマンドごとにクラスがある</strong></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><code class="docutils literal notranslate"><span class="pre">registerEditorAction()</span></code> 関数</h3>
+<pre data-id="registereditoraction"><code class="typescript" data-noescape="" data-trim="">registerEditorAction(LowerCaseAction);</code></pre>
+<p><a class="reference external" href="https://github.com/microsoft/vscode/blob/1.88.1/src/vs/editor/contrib/linesOperations/browser/linesOperations.ts#L1302-L1320" rel="noopener noreferrer" target="_blank">https://github.com/microsoft/vscode/blob/1.88.1/src/vs/editor/contrib/linesOperations/browser/linesOperations.ts#L1302-L1320</a></p>
+<p>※コマンドパレットで提供される仕組みは、ここっぽいくらいにとどめます</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><span class="guilabel">Transform to</span> コマンドに対応するクラス</h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">UpperCaseAction</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LowerCaseAction</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TitleCaseAction</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SnakeCaseAction</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CamelCaseAction</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PascalCaseAction</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">KebabCaseAction</span></code></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">共通のスーパークラス <code class="docutils literal notranslate"><span class="pre">AbstractCaseAction</span></code></h3>
+<pre data-id="abstractcaseaction"><code class="typescript" data-noescape="" data-trim="">// https://github.com/microsoft/vscode/blob/1.88.1/src/vs/editor/contrib/linesOperations/browser/linesOperations.ts#L1088
+export class LowerCaseAction extends AbstractCaseAction {
+    // 省略
+}</code></pre>
+<ul class="simple">
+<li><p>Caseに関する <strong>抽象</strong> Action</p></li>
+<li><p>サブクラスで具体のActionを実装する（例：小文字にする）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><code class="docutils literal notranslate"><span class="pre">AbstractCaseAction</span></code> までの継承関係 🏃‍♂️</h3>
+<img alt="../_images/InheritanceToAbstractCaseAction.png" src="../_images/InheritanceToAbstractCaseAction.png"/>
+<p><a class="reference external" href="https://scrapbox.io/nikkie-memos/AbstractCaseAction%E3%81%AB%E8%87%B3%E3%82%8B%E7%B6%99%E6%89%BF%E9%96%A2%E4%BF%82" rel="noopener noreferrer" target="_blank">メモ</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><code class="docutils literal notranslate"><span class="pre">AbstractCaseAction</span></code> はGoFの <em>Template Method</em> パターン</h3>
+<pre data-id="abstractcaseaction-gof-template-method"><code class="typescript" data-noescape="" data-trim="">// https://github.com/microsoft/vscode/blob/1.88.1/src/vs/editor/contrib/linesOperations/browser/linesOperations.ts#L1032
+export abstract class AbstractCaseAction extends EditorAction {
+        public run(_accessor: ServicesAccessor, editor: ICodeEditor): void {
+            // 処理の中で _modifyText が呼ばれる
+        }
+
+        protected abstract _modifyText(text: string, wordSeparators: string): string;
+}</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><strong>穴埋め問題</strong> になっている</h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_modifyText</span></code> ： <strong>テキストの変更方法だけ</strong>、具体のCaseのActionで埋めればよい</p></li>
+<li><p>参考 <a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/the-transcendent-book-chapter8-design-patterns-template-method" rel="noopener noreferrer" target="_blank">読書ログ | #ちょうぜつ本 第8章 Template Methodパターン 〜穴埋め問題にする〜</a></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><code class="docutils literal notranslate"><span class="pre">_modifyText()</span></code> の実装を見る</h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LowerCaseAction</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TitleCaseAction</span></code></p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">1️⃣ <code class="docutils literal notranslate"><span class="pre">LowerCaseAction</span></code></h2>
+<ul class="simple">
+<li><p><strong>JavaScriptのメソッド</strong> を使う実装（ <code class="docutils literal notranslate"><span class="pre">UpperCaseAction</span></code> も同様）</p></li>
+<li><p>（私の理解が雑すぎるかもですが、）TypeScriptは型付きのJavaScript</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">テストコードより</h3>
+<p><code class="docutils literal notranslate"><span class="pre">'HELLO</span> <span class="pre">WORLD'</span></code> ➡️ <code class="docutils literal notranslate"><span class="pre">'hello</span> <span class="pre">world'</span></code></p>
+<p><a class="reference external" href="https://github.com/microsoft/vscode/blob/1.88.1/src/vs/editor/contrib/linesOperations/test/browser/linesOperations.test.ts#L677" rel="noopener noreferrer" target="_blank">https://github.com/microsoft/vscode/blob/1.88.1/src/vs/editor/contrib/linesOperations/test/browser/linesOperations.test.ts#L677</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">このメソッドで実装： <code class="docutils literal notranslate"><span class="pre">toLocaleLowerCase()</span></code></h3>
+<blockquote>
+<div><p>呼び出した文字列の値を、ロケールに依存した対応付けに基づいて小文字に変換して返します。</p>
+</div></blockquote>
+<p>MDN <a class="reference external" href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/String/toLocaleLowerCase" rel="noopener noreferrer" target="_blank">String.prototype.toLocaleLowerCase()</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><code class="docutils literal notranslate"><span class="pre">LowerCaseAction</span></code> の <code class="docutils literal notranslate"><span class="pre">_modifyText()</span></code></h3>
+<pre data-id="lowercaseaction-modifytext"><code class="typescript" data-noescape="" data-trim="">// https://github.com/microsoft/vscode/blob/1.88.1/src/vs/editor/contrib/linesOperations/browser/linesOperations.ts#L1098-L1100
+    protected _modifyText(text: string, wordSeparators: string): string {
+            return text.toLocaleLowerCase();
+    }</code></pre>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">2️⃣ <code class="docutils literal notranslate"><span class="pre">TitleCaseAction</span></code></h2>
+<ul class="simple">
+<li><p><strong>正規表現</strong> を使う実装</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SnakeCaseAction</span></code> などなども同様</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">テストコードより</h3>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>入力</p></td>
+<td><p>出力</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">'HELLO</span> <span class="pre">WORLD'</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'Hello</span> <span class="pre">World'</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">'foO\'baR\'BaZ'</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'Foo\'bar\'baz'</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">'\'physician\'s</span> <span class="pre">assistant\''</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'\'Physician\'s</span> <span class="pre">Assistant\''</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p><a class="reference external" href="https://github.com/microsoft/vscode/blob/1.88.1/src/vs/editor/contrib/linesOperations/test/browser/linesOperations.test.ts#L790" rel="noopener noreferrer" target="_blank">https://github.com/microsoft/vscode/blob/1.88.1/src/vs/editor/contrib/linesOperations/test/browser/linesOperations.test.ts#L790</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">正規表現は、これだ！！</h3>
+<pre data-id="id23"><code class="typescript" data-noescape="" data-trim="">new RegExp('(^|[^\\p{L}\\p{N}\']|((^|\\P{L})\'))\\p{L}', 'gmu')</code></pre>
+<p><a class="reference external" href="https://github.com/microsoft/vscode/blob/1.88.1/src/vs/editor/contrib/linesOperations/browser/linesOperations.ts#L1135" rel="noopener noreferrer" target="_blank">https://github.com/microsoft/vscode/blob/1.88.1/src/vs/editor/contrib/linesOperations/browser/linesOperations.ts#L1135</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">正規表現リテラルの作成は <strong>2通り</strong></h3>
+<ul class="simple">
+<li><p>スラッシュで囲む <code class="docutils literal notranslate"><span class="pre">/ab+c/g</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">new</span> <span class="pre">RegExp("ab+c",</span> <span class="pre">"g")</span></code> （👈今回はこちら）</p></li>
+</ul>
+<p>MDN <a class="reference external" href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Guide/Regular_Expressions#%E6%AD%A3%E8%A6%8F%E8%A1%A8%E7%8F%BE%E3%81%AE%E4%BD%9C%E6%88%90" rel="noopener noreferrer" target="_blank">正規表現の作成</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><code class="docutils literal notranslate"><span class="pre">RegExp</span></code> コンストラクタの引数</h3>
+<ul>
+<li><p>第1引数がパターン</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">\\p</span></code> は <code class="docutils literal notranslate"><span class="pre">\p</span></code> の <strong>エスケープ</strong></p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>第2引数がフラグ</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>グローバル検索(g)・複数行の検索(m)・unicode(u)</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">独自クラス <code class="docutils literal notranslate"><span class="pre">BackwardsCompatibleRegExp</span></code> 🏃‍♂️</h3>
+<ul class="simple">
+<li><p>正確には、 <code class="docutils literal notranslate"><span class="pre">RegExp</span></code> を返す <code class="docutils literal notranslate"><span class="pre">BackwardsCompatibleRegExp</span></code> を定義した実装</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RegExp</span></code> インスタンス作成時に例外を送出したら、握りつぶして <code class="docutils literal notranslate"><span class="pre">null</span></code> を返す（＝後方互換）</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">正規表現を使った <code class="docutils literal notranslate"><span class="pre">_modifyText()</span></code></h2>
+<pre data-id="id25"><code class="typescript" data-noescape="" data-trim="">// https://github.com/microsoft/vscode/blob/1.88.1/src/vs/editor/contrib/linesOperations/browser/linesOperations.ts#L1146-L1155
+protected _modifyText(text: string, wordSeparators: string): string {
+    // 省略
+    return text
+            .toLocaleLowerCase()
+            .replace(titleBoundary, (b) =&gt; b.toLocaleUpperCase());
+}</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">正規表現を使った <code class="docutils literal notranslate"><span class="pre">replace()</span></code></h3>
+<ul class="simple">
+<li><p>置換文字列として関数を指定。シグネチャは <code class="docutils literal notranslate"><span class="pre">b</span></code> のみ</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">b</span></code> は <strong>正規表現に一致した文字列</strong></p></li>
+<li><p>キャプチャグループの <code class="docutils literal notranslate"><span class="pre">()</span></code> を（幾重も）含むが、このreplaceでは無視</p></li>
+</ul>
+<p>MDN <a class="reference external" href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/String/replace#%E7%BD%AE%E6%8F%9B%E6%96%87%E5%AD%97%E5%88%97%E3%81%A8%E3%81%97%E3%81%A6%E3%81%AE%E9%96%A2%E6%95%B0%E3%81%AE%E6%8C%87%E5%AE%9A" rel="noopener noreferrer" target="_blank">置換文字列としての関数の指定</a></p>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">正規表現 <code class="docutils literal notranslate"><span class="pre">'(^|[^\\p{L}\\p{N}\']|((^|\\P{L})\'))\\p{L}'</span></code> 🤯</h2>
+<pre data-id="p-l-p-n-p-l-p-l"><code class="javascript" data-noescape="" data-trim="">new RegExp('(^|[^\\p{L}\\p{N}\']|((^|\\P{L})\'))\\p{L}', 'gmu');
+// /(^|[^\p{L}\p{N}']|((^|\P{L})'))\p{L}/gmu</code></pre>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">titleBoundary</span></code> と呼ばれる</p></li>
+<li><p>（再掲） <code class="docutils literal notranslate"><span class="pre">\</span></code> をエスケープするために <code class="docutils literal notranslate"><span class="pre">\\</span></code></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><code class="docutils literal notranslate"><span class="pre">\p{L}</span></code></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Regular_expressions/Unicode_character_class_escape" rel="noopener noreferrer" target="_blank">Unicode文字クラスエスケープ</a></p></li>
+<li><p>一般カテゴリプロパティが <em>L</em> etter の <strong>Unicode文字の集合</strong></p></li>
+<li><p><strong>文字にマッチ</strong> する。記号や空白文字にはマッチしない</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">3つの「または」（ <code class="docutils literal notranslate"><span class="pre">|</span></code> ）</h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">^</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[^\\p{L}\\p{N}\']</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">((^|\\P{L})\')</span></code></p></li>
+</ul>
+<p>これらのあとに <code class="docutils literal notranslate"><span class="pre">\\p{L}</span></code> が続く</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">(1) <code class="docutils literal notranslate"><span class="pre">^</span></code> 入力の先頭</h3>
+<ul class="simple">
+<li><p>mフラグで「<em>改行文字の直後にも一致</em>」</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'(^)\\p{L}'</span></code> は <strong>先頭の文字</strong> に一致（ <code class="docutils literal notranslate"><span class="pre">'hello</span> <span class="pre">world'</span></code> の <code class="docutils literal notranslate"><span class="pre">'h'</span></code> ）</p></li>
+</ul>
+<p>MDN <a class="reference external" href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Guide/Regular_expressions/Assertions#%E5%A2%83%E7%95%8C%E5%9E%8B%E3%81%AE%E3%82%A2%E3%82%B5%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3" rel="noopener noreferrer" target="_blank">境界型のアサーション</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">(2) 文字クラス <code class="docutils literal notranslate"><span class="pre">[^\\p{L}\\p{N}\']</span></code></h3>
+<ul class="simple">
+<li><p>否定の <code class="docutils literal notranslate"><span class="pre">^</span></code></p></li>
+<li><p>「UnicodeでLetterまたはNumber、またはシングルクォート」 <strong>でない</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">([^\\p{L}\\p{N}\'])\\p{L}</span></code> は <code class="docutils literal notranslate"><span class="pre">'hello</span> <span class="pre">world'</span></code> の <code class="docutils literal notranslate"><span class="pre">'</span> <span class="pre">w'</span></code> にマッチ</p></li>
+</ul>
+<p>MDN <a class="reference external" href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Guide/Regular_expressions/Character_classes#%E7%A8%AE%E9%A1%9E" rel="noopener noreferrer" target="_blank">文字クラス 種類</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">(3) <code class="docutils literal notranslate"><span class="pre">((^|\\P{L})\')</span></code></h3>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">\P{L}</span></code> は、 <code class="docutils literal notranslate"><span class="pre">\p{L}</span></code> の否定（すなわち、 <strong>文字でない</strong> ）</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">(^|\\P{L})</span></code> ：先頭、または、文字でない</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><code class="docutils literal notranslate"><span class="pre">((^|\\P{L})\')\\p{L}</span></code> がマッチするもの</h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">'\'physician\'s</span> <span class="pre">assistant\''</span></code> で <code class="docutils literal notranslate"><span class="pre">'\'p'</span></code> にマッチ（先頭の方がマッチ）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'hello</span> <span class="pre">\'world'</span></code> の <code class="docutils literal notranslate"><span class="pre">'</span> <span class="pre">\'w'</span></code> にもマッチ（文字でない方がマッチ）</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">この正規表現の名は <code class="docutils literal notranslate"><span class="pre">titleBoundary</span></code></h2>
+<ul class="simple">
+<li><p>タイトルケースにする上での <strong>境界</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'hello</span> <span class="pre">world'</span></code> であれば、境界に一致する部分文字列は <code class="docutils literal notranslate"><span class="pre">'h'</span></code> と <code class="docutils literal notranslate"><span class="pre">'</span> <span class="pre">w'</span></code></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">🌯要点：タイトルケースの境界部分を大文字にする</h3>
+<ol class="arabic simple">
+<li><p>テキスト全体を <strong>小文字</strong> にする</p></li>
+<li><p>タイトルケースの <strong>境界部分</strong> を <strong>大文字</strong> にする</p></li>
+</ol>
+<pre data-id="id29"><code class="typescript" data-noescape="" data-trim="">// https://github.com/microsoft/vscode/blob/1.88.1/src/vs/editor/contrib/linesOperations/browser/linesOperations.ts#L1152-L1154
+return text
+        .toLocaleLowerCase()
+        .replace(titleBoundary, (b) =&gt; b.toLocaleUpperCase());</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">拙ブログより 🏃‍♂️</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/regex-unicode-character-class-escape-javascript-python" rel="noopener noreferrer" target="_blank">JavaScriptの正規表現のコードに見た\pや\Pって何だ？ Unicode文字クラスエスケープ！</a></p></li>
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/understand-vscode-title-case-action-implementation-regex" rel="noopener noreferrer" target="_blank">VS Codeで「Transform to Title Case」を担当するTitleCaseActionの実装の中の正規表現を読み解く</a></p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">🌯まとめ：VS Codeで文字列のちょっとした変換ができるんです！</h2>
+<ul class="simple">
+<li><p><strong>コマンドパレット</strong> の <span class="guilabel">Transform to</span> コマンドで文字列を変換できる</p></li>
+<li><p>コマンドごとにActionクラス。 <code class="docutils literal notranslate"><span class="pre">_modifyText()</span></code> を実装する <strong>Template Method</strong> パターン</p></li>
+<li><p>Unicode文字クラスエスケープをはじめ、正規表現を駆使</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">ご清聴ありがとうございました</h3>
+<p>コマンドパレットで Enjoy coding!✨</p>
+</section>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">EOF</h2>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs4/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs4/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs4/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs4/plugin/copycode/copycode.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "history": true, "center": true, "transition": "none", "slideNumber": "c/t", "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealHighlight,RevealNotes,CopyCode,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

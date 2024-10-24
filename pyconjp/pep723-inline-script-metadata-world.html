@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+
+<html lang="ja" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>PEP 723（Inline script metadata）が拓く世界。Pythonスクリプトに必要な仮想環境をツールにおまかせできるんです！</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/dist/reveal.css?v=ba26b9ed" />
+    <link rel="stylesheet" href="../_static/revealjs4/dist/theme/black.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/plugin/highlight/zenburn.css?v=83d5745d" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/common.css?v=c1f4a920" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ftnext">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://ftnext.github.io/2024-slides/pyconjp/pep723-inline-script-metadata-world.html">
+    <meta property="og:title" content="PEP 723（Inline script metadata）が拓く世界">
+    <meta property="og:description" content="Pythonスクリプトに必要な仮想環境をツールにおまかせできるんです！ （PyCon JP 2024）">
+    <meta property="og:image" content="https://ftnext.github.io/2024-slides/_static/ogps/pyconjp.png">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section>
+<h1 style="word-break: keep-all; overflow-wrap: break-word;">PEP 723（Inline script metadata）が拓く世界。Pythonスクリプトに必要な仮想環境をツールにおまかせできるんです！</h1>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">PEP 723（Inline script metadata）が拓く世界。Pythonスクリプトに必要な仮想環境をツールにおまかせできるんです！</h2>
+<dl class="field-list simple">
+<dt class="field-odd">Event<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PyCon JP 2024 <code class="docutils literal notranslate"><span class="pre">#pyconjp_1</span></code></p>
+</dd>
+<dt class="field-even">Presented<span class="colon">:</span></dt>
+<dd class="field-even"><p>2024/09/27 nikkie</p>
+</dd>
+</dl>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">突然ですが、<strong>LT</strong> します</h2>
+<ul class="simple">
+<li><p>粗い要点✨ を5分で伝えます</p></li>
+<li><p>その後25分間、<em>2周目</em> です</p></li>
+</ul>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">サンプルスクリプト</h2>
+<ul class="simple">
+<li><p>PEP＝ <a class="reference external" href="https://docs.python.org/ja/3/glossary.html#term-PEP" rel="noopener noreferrer" target="_blank">Python Enhancement Proposal</a> （Pythonの機能提案文書）</p></li>
+<li><p>PEPの一覧をJSON形式で取得できると知ったのでやってみたい</p></li>
+<li><p><a class="reference external" href="https://peps.python.org/api/peps.json" rel="noopener noreferrer" target="_blank">https://peps.python.org/api/peps.json</a></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">このライブラリを使おうかな</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/encode/httpx" rel="noopener noreferrer" target="_blank">httpx</a> ：HTTPクライアント（<a class="reference external" href="https://2024.pycon.jp/ja/talk/MD99N8" rel="noopener noreferrer" target="_blank">金曜 16:40〜 20F #pyconjp_2</a>）</p></li>
+<li><p><a class="reference external" href="https://github.com/Textualize/rich" rel="noopener noreferrer" target="_blank">rich</a> ：ターミナルにリッチなテキストで出力</p></li>
+</ul>
+<p>試す際はお好みのライブラリに読み替えください</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">PEPの一覧をJSON形式で取得するスクリプト</h3>
+<div class="literal-block-wrapper docutils container" id="id63">
+<div class="code-block-caption"><span class="caption-text">example.py</span></div>
+<pre><code class="python" data-noescape="" data-trim="">import httpx
+from rich.pretty import pprint
+
+resp = httpx.get("https://peps.python.org/api/peps.json")
+data = resp.json()
+pprint([(k, v["title"]) for k, v in data.items()][:10])
+</code></pre>
+</div>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">スクリプトができたからといって実行すると</h3>
+<pre data-id="id4"><code class="shell" data-noescape="" data-trim="">$ python example.py
+Traceback (most recent call last):
+  File "/.../example.py", line 1, in &lt;module&gt;
+    import httpx
+ModuleNotFoundError: No module named 'httpx'</code></pre>
+<p><strong>ライブラリのインストール</strong> が必要です</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">仮想環境にライブラリをインストールしてから動かす</h3>
+<pre data-id="id5"><code class="shell" data-noescape="" data-trim="">$ python -V
+Python 3.12.6
+$ python -m venv .venv --upgrade-deps
+$ .venv/bin/python -m pip install httpx rich
+$ .venv/bin/python example.py</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">仮想環境で実行したスクリプトの出力</h3>
+<img alt="../_images/run_script_in_venv.png" src="../_images/run_script_in_venv.png"/>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">実は、<strong>私たちが仮想環境を作らなくてもいい</strong> んです！</h2>
+<ul class="simple">
+<li><p>タイトルにある「PEP 723（Inline script metadata）」</p></li>
+<li><p>スクリプトにコメントとしてメタデータを書き、それをサポートしたツールで実行</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Inline script metadata（冒頭のコメント）</h3>
+<div class="literal-block-wrapper docutils container" id="id64">
+<div class="code-block-caption"><span class="caption-text">example.py（更新版）</span></div>
+<pre><code class="python" data-line-numbers="1,2,3" data-noescape="" data-trim=""># /// script
+# dependencies = ["httpx", "rich"]
+# ///
+import httpx
+from rich.pretty import pprint
+
+resp = httpx.get("https://peps.python.org/api/peps.json")
+data = resp.json()
+pprint([(k, v["title"]) for k, v in data.items()][:10])
+</code></pre>
+</div>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Inline script metadataをサポートするツールで実行</h3>
+<pre data-id="id8"><code class="shell" data-noescape="" data-trim="">$ pipx run example.py</code></pre>
+<pre data-id="id8"><code class="shell" data-noescape="" data-trim="">$ uv run example.py</code></pre>
+<pre data-id="id8"><code class="shell" data-noescape="" data-trim="">$ hatch run example.py</code></pre>
+<pre data-id="id8"><code class="shell" data-noescape="" data-trim="">$ pdm run example.py</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">ツールが仮想環境を用意して実行！</h3>
+<pre data-id="id9"><code class="txt" data-line-numbers="2,3" data-noescape="" data-trim="">% uv run example.py
+Reading inline script metadata from: example.py
+Installed 11 packages in 23ms
+[
+│   ('1', 'PEP Purpose and Guidelines'),
+│   ('2', 'Procedure for Adding New Modules'),
+│   ('3', 'Guidelines for Handling Bug Reports'),
+│   ('4', 'Deprecation of Standard Modules'),
+│   ('5', 'Guidelines for Language Evolution'),
+│   ('6', 'Bug Fix Releases'),
+│   ('7', 'Style Guide for C Code'),
+│   ('8', 'Style Guide for Python Code'),
+│   ('9', 'Sample Plaintext PEP Template'),
+│   ('10', 'Voting Guidelines')
+]</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Inline script metadataをサポートするツールがスクリプトを実行するとき</h3>
+<ol class="arabic simple">
+<li><p>ツールがmetadataを読む</p></li>
+<li><p>ツールが <strong>metadataを満たす仮想環境を用意</strong> （dependencies <em>など</em>）</p></li>
+<li><p>ツールが2の仮想環境でスクリプトを実行</p></li>
+</ol>
+<p>天才！ ありがとう〜！</p>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">このトークで伝えたいこと</h2>
+<ul class="simple">
+<li><p>Pythonスクリプトを書くとき、<strong>Inline script metadataをぜひ使って</strong> みて！</p></li>
+<li><p>開発者が仮想環境の管理から解放されます！</p></li>
+<li><p>スクリプトが依存するライブラリをコメントとして書き、サポートしたツールを使うだけ</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">inline script metadata アンケート</h3>
+<ul class="simple">
+<li><p>知ってた or 使っている方？ 🙋‍♂️</p></li>
+<li><p>もしかして、今日初めて聞きました？ 🙋</p></li>
+<li><p>ふだんPythonのスクリプトを書く方？ 🙋‍♀️</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">この後は丁寧に話す <strong>2周目</strong> です</h3>
+<ul class="simple">
+<li><p>並列トークも魅力的なので、ほかへ行っても大丈夫👍</p></li>
+<li><p>🏃‍♂️のスライドは飛ばします。興味ある方は <em>3周目</em> でどうぞ</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">（申し遅れました）お前、誰よ</h2>
+<ul class="simple">
+<li><p>nikkie ／ <span class="fab fa-github"></span> <a class="reference external" href="https://github.com/ftnext" rel="noopener noreferrer" target="_blank">@ftnext</a> ／ <a class="reference external" href="https://nikkie-ftnext.hatenablog.com/" rel="noopener noreferrer" target="_blank">ブログ</a> 連続 <strong>670</strong> 日突破</p></li>
+<li><p>機械学習エンジニア・自然言語処理（<a class="reference external" href="https://hrmos.co/pages/uzabase/jobs/1829077236709650481" rel="noopener noreferrer" target="_blank">We're hiring!</a>）</p></li>
+<li><p>Python歴6年。PyConで登壇や小さなOSS（<a class="reference external" href="https://github.com/ftnext/sphinx-new-tab-link" rel="noopener noreferrer" target="_blank">sphinx-new-tab-link</a>）</p></li>
+</ul>
+<img alt="../_images/uzabase-white-logo.png" src="../_images/uzabase-white-logo.png"/>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">親の顔より見た、スクリプトと仮想環境</h3>
+<ul class="simple">
+<li><p>仕事や <a class="reference external" href="https://github.com/ftnext/python-as-pyconjp-staff" rel="noopener noreferrer" target="_blank">PyCon JPスタッフ</a> ・ <a class="reference external" href="https://startpython.connpass.com/" rel="noopener noreferrer" target="_blank">みんなのPython勉強会</a> （ポスターあります）スタッフで数々の <strong>自動化</strong> スクリプト</p></li>
+<li><p><strong>機械学習</strong> も <code class="file docutils literal notranslate"><span class="pre">ipynb</span></code> ではなく、Pythonスクリプトで</p></li>
+</ul>
+<p>そんな私には、<strong>PEP 723が劇的</strong>！！ 皆さんにも伝えたい・享受してほしい！</p>
+</section>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">お品書き</h2>
+<ol class="arabic simple">
+<li><p><strong>PEP 723が拓く世界</strong></p></li>
+<li><p>世界に漕ぎ出すツール</p></li>
+<li><p>拓かれた世界で（学びの共有）</p></li>
+</ol>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;"><a class="reference external" href="https://peps.python.org/pep-0723/" rel="noopener noreferrer" target="_blank">PEP 723</a> が拓く世界</h2>
+<p><a class="reference external" href="https://packaging.python.org/en/latest/specifications/inline-script-metadata/" rel="noopener noreferrer" target="_blank">Inline script metadata (Python Packaging User Guide)</a></p>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">提案経緯（PEPのMotivationより）</h2>
+<ul class="simple">
+<li><p>単一ファイルの <strong>Pythonスクリプトは日常的</strong></p></li>
+<li><p>テキストが書ければ共有できる（メール、URL、チャット）</p></li>
+<li><p>では、スクリプトの実行に必要な情報は？</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">スクリプトの実行に必要な情報</h3>
+<ul class="simple">
+<li><p>スクリプトを実行するPythonのバージョン（新しい書き方をしているかも）</p></li>
+<li><p>スクリプトが依存するライブラリ（<code class="docutils literal notranslate"><span class="pre">import</span></code> 文）</p></li>
+</ul>
+<p>実行ツール向けに定義する <strong>標準的な仕組みはなかった</strong></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">提案💡 Inline script metadata</h3>
+<ul class="simple">
+<li><p>スクリプトの実行に必要な情報＝スクリプトのメタデータ</p></li>
+<li><p><strong>スクリプトの中に</strong> （inline） ツール向けの <strong>メタデータを書こう</strong></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Inline script metadataのユースケース</h3>
+<ul class="simple">
+<li><p>スクリプトを実行する <strong>ツールが読み取る</strong> 🌟🌟</p></li>
+<li><p>単一スクリプトからPythonプロジェクトへ移行しやすく</p></li>
+<li><p>スクリプトの依存を手動で管理しない 🌟🌟</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">Inline script metadataの書き方</h2>
+<pre data-id="id21"><code class="python" data-noescape="" data-trim=""># /// script
+# dependencies = [
+#   "requests&lt;3",
+#   "rich",
+# ]
+# requires-python = "&gt;=3.11"
+# ///</code></pre>
+<p><a class="reference external" href="https://peps.python.org/pep-0723/#how-to-teach-this" rel="noopener noreferrer" target="_blank">How to Teach This (PEP 723)</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Inline script metadataは、スクリプト冒頭の <strong>コメント</strong></h3>
+<pre data-id="id22"><code class="python" data-line-numbers="1,7" data-noescape="" data-trim=""># /// script  &lt;-- 始まり
+# dependencies = [
+#   "requests&lt;3",  &lt;-- 間の部分もPython処理系にとってはコメント
+#   "rich",
+# ]
+# requires-python = "&gt;=3.11"
+# ///  &lt;-- 終わり</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">2つのメタデータ</h3>
+<ul class="simple">
+<li><p>dependencies</p></li>
+<li><p>requires-python</p></li>
+</ul>
+<p><a class="reference external" href="https://toml.io/ja/" rel="noopener noreferrer" target="_blank">TOML</a> 形式</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">dependencies</h3>
+<ul class="simple">
+<li><p>スクリプト実行時の依存ライブラリを書く</p></li>
+</ul>
+<pre data-id="dependencies"><code class="python" data-noescape="" data-trim=""># /// script
+# dependencies = ["requests&lt;3", "rich"]
+# ///</code></pre>
+<ul class="simple">
+<li><p><a class="reference external" href="https://peps.python.org/pep-0508/#examples" rel="noopener noreferrer" target="_blank">PEP 508</a> の書き方でバージョン指定</p></li>
+</ul>
+<pre data-id="dependencies"><code class="default" data-noescape="" data-trim="">requests [security,tests] &gt;= 2.8.1, == 2.8.* ; python_version &lt; "2.7"</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">requires-python</h3>
+<ul class="simple">
+<li><p>スクリプトを実行できるPythonのバージョン</p></li>
+</ul>
+<pre data-id="requires-python"><code class="python" data-noescape="" data-trim=""># /// script
+# requires-python = "&gt;=3.11"
+# ///</code></pre>
+<ul class="simple">
+<li><p><a class="reference external" href="https://peps.python.org/pep-0440/#version-specifiers" rel="noopener noreferrer" target="_blank">PEP 440のversion specifier</a> で指定</p></li>
+</ul>
+<pre data-id="requires-python"><code class="default" data-noescape="" data-trim="">~= 0.9, &gt;= 1.0, != 1.3.4.*, &lt; 2.0</code></pre>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;"><a class="reference external" href="https://peps.python.org/pep-0723/" rel="noopener noreferrer" target="_blank">PEP 723</a> の仕様や実装</h2>
+<p>もう少しだけ深く見ていきます</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">導入されたのは <code class="docutils literal notranslate"><span class="pre">TYPE</span></code> 付きのメタデータ</h3>
+<pre data-id="type"><code class="python" data-noescape="" data-trim=""># /// TYPE
+#
+# ///</code></pre>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TYPE</span></code> が <code class="docutils literal notranslate"><span class="pre">script</span></code> のとき、inline script metadata</p></li>
+<li><p>（追加の <code class="docutils literal notranslate"><span class="pre">TYPE</span></code> を提案できるかも！？）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">inline script metadataには <code class="docutils literal notranslate"><span class="pre">[tool]</span></code> も書ける</h3>
+<ul class="simple">
+<li><p><code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code> でおなじみ <code class="docutils literal notranslate"><span class="pre">[tool]</span></code> テーブル（<a class="reference external" href="https://peps.python.org/pep-0518/#tool-table" rel="noopener noreferrer" target="_blank">PEP 518</a>）</p></li>
+<li><p>inline script metadataにも書けます！（後ほど登場）</p></li>
+</ul>
+<pre data-id="inline-script-metadata-tool"><code class="toml" data-noescape="" data-trim="">[tool.pytest.ini_options]
+addopts = "-ra -q"</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">実装例</h3>
+<ul class="simple">
+<li><p><strong>正規表現</strong> でパースする</p></li>
+</ul>
+<pre data-id="id25"><code class="python" data-noescape="" data-trim="">REGEX = r'(?m)^# /// (?P&lt;type&gt;[a-zA-Z0-9-]+)$\s(?P&lt;content&gt;(^#(| .*)$\s)+)^# ///$'</code></pre>
+<p><a class="reference external" href="https://peps.python.org/pep-0723/#reference-implementation" rel="noopener noreferrer" target="_blank">Reference Implementation (PEP 723)</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">正規表現の読み解き 🏃‍♂️</h3>
+<dl class="field-list simple">
+<dt class="field-odd"><a class="reference external" href="https://docs.python.org/ja/3/library/re.html#re.M" rel="noopener noreferrer" target="_blank">(?m)</a><span class="colon">:</span></dt>
+<dd class="field-odd"><p>マルチラインのフラグ</p>
+</dd>
+<dt class="field-even"><a class="reference external" href="https://docs.python.org/ja/3/library/re.html#index-18" rel="noopener noreferrer" target="_blank">(?P&lt;name&gt;...)</a><span class="colon">:</span></dt>
+<dd class="field-even"><p>マッチした部分文字列に <code class="docutils literal notranslate"><span class="pre">name</span></code> でアクセス</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">content</span></code> はTOMLなので <a class="reference external" href="https://docs.python.org/ja/3/library/tomllib.html" rel="noopener noreferrer" target="_blank">tomllib</a> で読み込みます</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">PEP 723を実装しました💪 🏃‍♂️</h3>
+<ul class="simple">
+<li><p><span class="fab fa-github"></span> <a class="reference external" href="https://github.com/ftnext/pep723" rel="noopener noreferrer" target="_blank">ftnext/pep723</a></p></li>
+<li><p>inline script metadataの dependencies を見て一時的な仮想環境で実行</p></li>
+<li><p>皆さんが使うならこの後紹介するツールをぜひ🧰</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">まとめ🌯 <a class="reference external" href="https://peps.python.org/pep-0723/" rel="noopener noreferrer" target="_blank">PEP 723</a> が拓く世界</h2>
+<ul class="simple">
+<li><p>スクリプトに書ける <code class="docutils literal notranslate"><span class="pre">TYPE=script</span></code> のmetadataを導入した（<em>inline script metadata</em>）</p></li>
+<li><p><strong>開発者はスクリプト実行に必要な情報をmetadataに書く</strong></p></li>
+<li><p><em>ツール</em> がmetadataを参照してスクリプトを実行</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">inline script metadataの書き方</h3>
+<pre data-id="id29"><code class="python" data-noescape="" data-trim=""># /// script
+# # スクリプト実行時の依存ライブラリ
+# dependencies = ["requests&lt;3", "rich"]
+#
+# # スクリプトを実行できるPythonのバージョン
+# requires-python = "&gt;=3.11"
+#
+# # ツールごとの [tool] テーブルも書ける
+# ///
+</code></pre>
+</section>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">お品書き</h2>
+<ol class="arabic simple">
+<li><p>PEP 723が拓く世界</p></li>
+<li><p><strong>世界に漕ぎ出すツール</strong></p></li>
+<li><p>拓かれた世界で（学びの共有）</p></li>
+</ol>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">世界に漕ぎ出すツール</h2>
+<ul class="simple">
+<li><p>pipx</p></li>
+<li><p>uv</p></li>
+<li><p>Hatch</p></li>
+</ul>
+<p>使っている方？🙋‍♀️🙋🙋‍♂️</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">ここがポイント！</h3>
+<ul class="simple">
+<li><p><strong class="command">pipx run</strong></p></li>
+<li><p><strong class="command">uv run</strong></p></li>
+<li><p><strong class="command">hatch run</strong></p></li>
+</ul>
+<p>響いたツール <strong>1つ</strong>、ぜひ使って</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">バージョン情報 🏃‍♂️</h3>
+<pre data-id="id33"><code class="shell" data-noescape="" data-trim="">$ pipx --version
+1.7.1
+% uv --version
+uv 0.4.16 (Homebrew 2024-09-24)
+$ hatch --version
+Hatch, version 1.12.0</code></pre>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">pipx</h2>
+<ul class="simple">
+<li><p><span class="fab fa-github"></span> <a class="reference external" href="https://github.com/pypa/pipx" rel="noopener noreferrer" target="_blank">pypa/pipx</a></p></li>
+<li><p>Python Packaging User Guide <a class="reference external" href="https://packaging.python.org/ja/latest/guides/installing-stand-alone-command-line-tools/" rel="noopener noreferrer" target="_blank">スタンドアローンのコマンドラインツールをインストールする</a> で紹介</p></li>
+<li><p>2024/01 <a class="reference external" href="https://github.com/pypa/pipx/releases/tag/1.4.2" rel="noopener noreferrer" target="_blank">1.4.2</a> でPEP 723の <code class="docutils literal notranslate"><span class="pre">dependencies</span></code> をサポート</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">pipxの利用シーン</h3>
+<ul class="simple">
+<li><p>IMO <em>PyPIアプリストア計画</em></p></li>
+<li><p>コマンドラインツールの例 <a class="reference external" href="https://github.com/astral-sh/ruff" rel="noopener noreferrer" target="_blank">Ruff</a> （リンター 兼 フォーマッタ。<code class="docutils literal notranslate"><span class="pre">import</span></code> しない）</p></li>
+<li><p>プロジェクトごとの仮想環境に都度インストールしてもよいが、<strong>グローバルにインストールしてシステムのどこからでも使える</strong> 方が便利</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">pipx自体のインストール</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://pipx.pypa.io/stable/installation/" rel="noopener noreferrer" target="_blank">https://pipx.pypa.io/stable/installation/</a></p></li>
+<li><p>私は <code class="docutils literal notranslate"><span class="pre">brew</span></code> で入れました</p></li>
+</ul>
+<pre data-id="id35"><code class="shell" data-noescape="" data-trim="">$ python3 -m pip install --user pipx
+$ python3 -m pipx ensurepath  # お忘れなく</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">脱線 <strong class="command">pipx install</strong> 🏃‍♂️</h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pipx</span> <span class="pre">install</span> <span class="pre">ruff</span></code> （<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code> の代わりに）</p></li>
+<li><p>Ruffがシステムのどこからでも使える</p></li>
+<li><p>pipxは <strong>Ruff用の仮想環境</strong> を作って管理（システムは汚さない）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">もともとの <strong class="command">pipx run</strong></h3>
+<ul class="simple">
+<li><p>PyPIにあるツールを指定して <strong>1回限りの実行</strong></p></li>
+<li><p><a class="reference external" href="https://github.com/cookiecutter/cookiecutter" rel="noopener noreferrer" target="_blank">cookiecutter</a> で1回だけ使う（<code class="docutils literal notranslate"><span class="pre">pipx</span> <span class="pre">install</span></code> の代替案）</p></li>
+</ul>
+<pre data-id="pipx-run"><code class="shell" data-noescape="" data-trim="">$ # ref: https://sourcery.ai/blog/python-best-practices/
+$ pipx run cookiecutter https://github.com/ftnext/cookiecutter-develop-pypackage --checkout 0.2.3</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><code class="docutils literal notranslate"><span class="pre">pipx</span> <span class="pre">run</span> <span class="pre">&lt;script.py&gt;</span></code></h3>
+<p>スクリプトが渡せるように！</p>
+<pre data-id="pipx-run-script-py"><code class="python" data-noescape="" data-trim=""># /// script
+# dependencies = ["rich"]
+# ///
+
+import rich
+rich.print("[blue]This worked!")</code></pre>
+<p><a class="reference external" href="https://iscinumpy.dev/post/pep723/" rel="noopener noreferrer" target="_blank">Inline run dependencies in pipx 1.4.2</a></p>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">🥟pipx、お試しあれ！</h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://pipx.pypa.io/stable/installation/" rel="noopener noreferrer" target="_blank">https://pipx.pypa.io/stable/installation/</a></p></li>
+<li><p><strong class="command">pipx run &lt;script.py&gt;</strong></p></li>
+</ul>
+<pre data-id="id36"><code class="python" data-noescape="" data-trim=""># /// script
+# dependencies = ["requests&lt;3", "rich"]
+# ///</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><code class="docutils literal notranslate"><span class="pre">pipx</span> <span class="pre">run</span></code> は <strong>URL</strong> もサポート！ 🏃‍♂️</h3>
+<pre data-id="pipx-run-url"><code class="shell" data-noescape="" data-trim="">$ pipx run https://gist.githubusercontent.com/ftnext/162898df3011883380f89771b647adde/raw/818fa20479eb9187d9efacb4d291bc959a21cf3a/put_mask.py -h</code></pre>
+<p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/cutest-girl-kotone-with-python" rel="noopener noreferrer" target="_blank">世界一かわいいを作る</a> スクリプト</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">pipx 関連エントリ 🏃‍♂️</h3>
+<ul class="simple">
+<li><p>拙ブログ <a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/announcement-uzabase-tech-blog-filetype-and-pipx-run" rel="noopener noreferrer" target="_blank">PEP 723をサポートしたpipx runについて共同でブログ記事を書きました。仮想環境から解放されたスクリプト開発！</a></p></li>
+<li><p>弊社ブログ <a class="reference external" href="https://tech.uzabase.com/entry/2024/06/07/180442" rel="noopener noreferrer" target="_blank">Pythonスクリプトのモジュラリティとポータビリティを高めていく</a></p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">uv</h2>
+<ul class="simple">
+<li><p><span class="fab fa-github"></span> <a class="reference external" href="https://github.com/astral-sh/uv" rel="noopener noreferrer" target="_blank">astral-sh/uv</a></p></li>
+<li><p>Rustで実装した高速なpipとしてスタート</p></li>
+<li><p>2024/08 <a class="reference external" href="https://github.com/astral-sh/uv/releases/tag/0.3.0" rel="noopener noreferrer" target="_blank">0.3.0</a> で <strong>Pythonプロジェクト管理ツール</strong> に劇的進化。PEP 723サポートも</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">uv自体のインストール</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.astral.sh/uv/getting-started/installation/" rel="noopener noreferrer" target="_blank">https://docs.astral.sh/uv/getting-started/installation/</a></p></li>
+</ul>
+<pre data-id="id38"><code class="shell" data-noescape="" data-trim="">$ curl -LsSf https://astral.sh/uv/install.sh | sh</code></pre>
+<p>ほか、<code class="docutils literal notranslate"><span class="pre">cargo</span></code> や <code class="docutils literal notranslate"><span class="pre">brew</span></code> などでも入ります</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">uvでPythonプロジェクト管理の例</h3>
+<pre data-id="uvpython"><code class="txt" data-noescape="" data-trim="">uv-example/
+├── .venv/
+├── .python-version
+├── example.py
+├── pyproject.toml
+└── uv.lock</code></pre>
+<pre data-id="uvpython"><code class="shell" data-noescape="" data-trim="">$ uv init --app
+$ uv add flask</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><strong class="command">uv run &lt;command&gt;</strong></h3>
+<ul>
+<li><p>uvで管理している <strong>プロジェクトの環境でコマンドを実行</strong> できる</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>uvはプロジェクトに仮想環境 <code class="file docutils literal notranslate"><span class="pre">.venv</span></code> を作り、依存をインストール</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<pre data-id="uv-run-command"><code class="shell" data-noescape="" data-trim="">$ uv run -- flask run -p 5000</code></pre>
+<p><a class="reference external" href="https://docs.astral.sh/uv/guides/projects/#running-commands" rel="noopener noreferrer" target="_blank">https://docs.astral.sh/uv/guides/projects/#running-commands</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">run</span> <span class="pre">&lt;script.py&gt;</span></code> 1/2</h3>
+<ul class="simple">
+<li><p>プロジェクトに配置したスクリプトを <strong class="command">uv run</strong> で実行できる</p></li>
+<li><p><strong>プロジェクトの仮想環境で実行</strong></p></li>
+</ul>
+<pre data-id="uv-run-script-py-1-2"><code class="shell" data-noescape="" data-trim="">$ uv run example.py</code></pre>
+<ul class="simple">
+<li><p><strong class="command">uv run python &lt;script.py&gt;</strong> と等価（<a class="reference external" href="https://docs.astral.sh/uv/reference/cli/#uv-run" rel="noopener noreferrer" target="_blank">Reference</a> より）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">run</span> <span class="pre">&lt;script.py&gt;</span></code> 2/2</h3>
+<ul class="simple">
+<li><p><strong>inline script metadataを持つスクリプトも実行</strong> できる（プロジェクトに配置されてなくても）</p></li>
+<li><p><a class="reference external" href="https://docs.astral.sh/uv/guides/scripts/" rel="noopener noreferrer" target="_blank">Guides: Running scripts</a></p></li>
+<li><p>metadataは <code class="docutils literal notranslate"><span class="pre">dependencies</span></code> ・ <code class="docutils literal notranslate"><span class="pre">requires-python</span></code> 両方をサポート</p></li>
+<li><p>（プロジェクトの仮想環境でなく）隔離した、短期間限りの仮想環境をuvが作って実行</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">metadataでuv向けのtool設定</h3>
+<pre data-id="metadatauvtool"><code class="python" data-line-numbers="5,6" data-noescape="" data-trim=""># /// script
+# dependencies = [
+#   "httpx",
+# ]
+# [tool.uv]
+# exclude-newer = "2023-10-16T00:00:00Z"
+# ///</code></pre>
+<p>uvは <code class="docutils literal notranslate"><span class="pre">exclude-newer</span></code> より前のライブラリバージョンで依存解決</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">uvはmetadataを <strong>書く</strong> ぞ！</h3>
+<pre data-id="uvmetadata"><code class="shell" data-noescape="" data-trim="">$ touch empty.py
+$ uv add --script empty.py httpx rich
+Updated `empty.py`</code></pre>
+<pre data-id="uvmetadata"><code class="default" data-noescape="" data-trim=""># /// script
+# requires-python = "&gt;=3.12"
+# dependencies = [
+#     "httpx",
+#     "rich",
+# ]
+# ///
+</code></pre>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">🥟uv、お試しあれ！</h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.astral.sh/uv/getting-started/installation/" rel="noopener noreferrer" target="_blank">https://docs.astral.sh/uv/getting-started/installation/</a></p></li>
+<li><p><strong class="command">uv run &lt;script.py&gt;</strong></p></li>
+</ul>
+<pre data-id="id39"><code class="python" data-noescape="" data-trim=""># /// script
+# requires-python = "&gt;=3.11"
+# dependencies = ["httpx", "rich"]
+# ///</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><strong class="command">uvx</strong> (= <code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">tool</span> <span class="pre">run</span></code>) 🏃‍♂️</h3>
+<ul>
+<li><p><a class="reference external" href="https://docs.astral.sh/uv/guides/tools/" rel="noopener noreferrer" target="_blank">Guides: Using tools</a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pipx</span> <span class="pre">run</span></code> 的な機能</p>
+<blockquote>
+<div><p>The uvx command invokes a tool without installing it.</p>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">uv 拙ブログ関連エントリ 🏃‍♂️</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/uv-0.3.0-release-awesome-future-python-project-package-manager" rel="noopener noreferrer" target="_blank">uv 0.3.0リリース、Pythonプロジェクト管理ツールのすがた！ uv、お前、Ryeを屠るのか...</a></p></li>
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/uv-guides-running-scripts-add-inline-script-metadata" rel="noopener noreferrer" target="_blank">uvはinline script metadataを書ける！ Guidesの「Running scripts」を読んだメモ</a></p></li>
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/uv-0.4.0-specify-distributable-flag-app-or-lib" rel="noopener noreferrer" target="_blank">uv 0.4.0 リリースノートより、Pythonプロジェクトの扱いの変更。再配布可能にするかを--appや--libフラグで指定する</a></p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">Hatch</h2>
+<ul class="simple">
+<li><p><span class="fab fa-github"></span> <a class="reference external" href="https://github.com/pypa/hatch" rel="noopener noreferrer" target="_blank">pypa/hatch</a></p></li>
+<li><p>Pythonプロジェクト管理ツール</p></li>
+<li><p>2024/05 <a class="reference external" href="https://hatch.pypa.io/latest/blog/2024/05/02/hatch-v1100/" rel="noopener noreferrer" target="_blank">1.10.0</a> で <strong class="command">hatch run</strong> がPEP 723サポート</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">IMO: Hatch vs uv 🏃‍♂️</h3>
+<ul class="simple">
+<li><p>どちらもPythonプロジェクト管理ツールと認識している</p></li>
+<li><p>uvはめちゃめちゃ注目されている印象</p></li>
+<li><p>Hatchは手厚い。現在の機能差は、Hatchなら <strong>デフォルトでPython開発のプラクティスがインストールされる</strong> 点と映る</p></li>
+</ul>
+<p>これ以上突っ込んだ話は廊下で捕まえてください（大歓迎）</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Hatch自体のインストール</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://hatch.pypa.io/latest/install/" rel="noopener noreferrer" target="_blank">https://hatch.pypa.io/latest/install/</a></p></li>
+<li><p>macOS・Windows向けインストーラ</p></li>
+<li><p>pipやpipx、brewなどでも入ります</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">もともとの <strong class="command">hatch run</strong></h3>
+<ul class="simple">
+<li><p><code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code> に <em>env</em> ごとに定義した <em>script</em> を実行する</p></li>
+</ul>
+<pre data-id="hatch-run"><code class="toml" data-noescape="" data-trim="">[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/unko tests}"</code></pre>
+<pre data-id="hatch-run"><code class="shell" data-noescape="" data-trim="">$ hatch run types:check  # types envのcheck script実行</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><code class="docutils literal notranslate"><span class="pre">hatch</span> <span class="pre">run</span> <span class="pre">&lt;script.py&gt;</span></code></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://hatch.pypa.io/latest/how-to/run/python-scripts/" rel="noopener noreferrer" target="_blank">How to run Python scripts</a></p></li>
+<li><p><code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code> のscriptだけでなく、<strong>Pythonファイルのパスを渡して実行できる</strong> ようになった！</p></li>
+<li><p>metadataは <code class="docutils literal notranslate"><span class="pre">dependencies</span></code> ・ <code class="docutils literal notranslate"><span class="pre">requires-python</span></code> 両方をサポート</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">metadataでHatch向けのtool設定</h3>
+<p>Hatchのインストーラとして（uvではなく）pipを使う</p>
+<pre data-id="metadatahatchtool"><code class="python" data-noescape="" data-trim=""># /// script
+# ...
+# [tool.hatch]
+# installer = "pip"
+# ///</code></pre>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">🥟Hatch、お試しあれ</h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://hatch.pypa.io/latest/install/" rel="noopener noreferrer" target="_blank">https://hatch.pypa.io/latest/install/</a></p></li>
+<li><p><strong class="command">hatch run &lt;script.py&gt;</strong></p></li>
+</ul>
+<pre data-id="id42"><code class="python" data-noescape="" data-trim=""># /// script
+# requires-python = "&gt;=3.11"
+# dependencies = ["httpx", "rich"]
+# ///</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Hatch 参考 🏃‍♂️</h3>
+<ul class="simple">
+<li><p>Python Monthly Topics <a class="reference external" href="https://gihyo.jp/article/2024/05/monthly-python-2405" rel="noopener noreferrer" target="_blank">最近気になるツール「Hatch」でPythonプロジェクトを管理する</a></p></li>
+<li><p>拙ブログ <a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/hatch-v1.10-supports-inline-script-metadata" rel="noopener noreferrer" target="_blank">Hatchはv1.10からinline script metadataをサポートしています！</a></p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">まとめ🌯 世界に漕ぎ出すツール</h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>\</p></th>
+<th class="head"><p>dependencies</p></th>
+<th class="head"><p>requires-python</p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">[tool]</span></code></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>pipx</p></td>
+<td><p>✅</p></td>
+<td><p>未</p></td>
+<td><p>未</p></td>
+</tr>
+<tr class="row-odd"><td><p>uv</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p>Hatch</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong class="command">uv add --script</strong> で書ける！</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">サポート状況の時系列 🏃‍♂️</h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>時期</p></th>
+<th class="head"><p>ツール</p></th>
+<th class="head"><p>バージョン</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>2024/01</p></td>
+<td><p>pipx</p></td>
+<td><p>1.4.2</p></td>
+</tr>
+<tr class="row-odd"><td><p>2024/05</p></td>
+<td><p>Hatch</p></td>
+<td><p>1.10.0</p></td>
+</tr>
+<tr class="row-even"><td><p>2024/08</p></td>
+<td><p>uv</p></td>
+<td><p>0.3.0</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">ほかにも 🏃‍♂️</h2>
+<ul class="simple">
+<li><p>PDM 2024/06 <a class="reference external" href="https://github.com/pdm-project/pdm/releases/tag/2.16.0" rel="noopener noreferrer" target="_blank">2.16.0</a> 〜</p>
+<ul>
+<li><p><a class="reference external" href="https://pdm-project.org/en/latest/usage/scripts/#single-file-scripts" rel="noopener noreferrer" target="_blank">https://pdm-project.org/en/latest/usage/scripts/#single-file-scripts</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference external" href="https://github.com/jaraco/pip-run?tab=readme-ov-file#script-declared-dependencies" rel="noopener noreferrer" target="_blank">pip-run</a></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">PEP 723サポートの動き 🏃‍♂️</h3>
+<ul class="simple">
+<li><p>pip <a class="reference external" href="https://github.com/pypa/pip/issues/12891" rel="noopener noreferrer" target="_blank">#12891</a></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">--script</span> <span class="pre">script.py</span></code> でmetadataのライブラリをインストールしたい（プルリク待ち）</p></li>
+</ul>
+</li>
+<li><p>poetryやpipenvはリポジトリを検索しても見つけられず😢（情報求ム）</p></li>
+</ul>
+</section>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">お品書き</h2>
+<ol class="arabic simple">
+<li><p>PEP 723が拓く世界</p></li>
+<li><p>世界に漕ぎ出すツール</p></li>
+<li><p><strong>拓かれた世界で（学びの共有）</strong></p></li>
+</ol>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">拓かれた世界で</h2>
+<ul class="simple">
+<li><p>学びの共有</p></li>
+<li><p>tips共有</p></li>
+</ul>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">inline script metadataをサポートしたツールを使っての学び</h2>
+<p>2点共有</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">inline script metadataより前</h3>
+<ul class="simple">
+<li><p>スクリプトと合わせて、 <strong>依存ライブラリを何らかの方法で示す</strong> 必要あり</p></li>
+<li><p>例えば <code class="file docutils literal notranslate"><span class="pre">requirements.txt</span></code></p></li>
+</ul>
+<pre data-id="id51"><code class="shell" data-noescape="" data-trim="">$ .venv/bin/python -m pip freeze &gt; requirements.txt</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">他の開発者にスクリプトを渡すとき</h3>
+<ul class="simple">
+<li><p>他の開発者（未来の私も含む）は <strong>仮想環境の再現が手間</strong></p></li>
+<li><p><code class="file docutils literal notranslate"><span class="pre">requirements.txt</span></code> だけでなく、環境構築コマンドをまとめた <code class="file docutils literal notranslate"><span class="pre">Makefile</span></code> も試したり試行錯誤</p></li>
+<li><p>ここがinline script metadataで変わった（天才！）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">学び1️⃣ 一度動いたスクリプトを他の開発者に渡しやすい🙌</h3>
+<ul class="simple">
+<li><p><strong>スクリプトだけ渡せばOK</strong>！（仮想環境の作り方の共有不要）</p></li>
+<li><p>常時ペアプロ + 頻繁に交代という環境（※<a class="reference external" href="https://uzabase-tech.connpass.com/event/329824/" rel="noopener noreferrer" target="_blank">今晩オンライン勉強会</a>）では、ペアを交代してスクリプトの続きを書くのもやりやすい（仮想環境の構築が不要なので）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">学び2️⃣ 簡単に依存ライブラリを追加できる🍰</h3>
+<ul>
+<li><p>スクリプト用の仮想環境を使っていたときは、追加した依存ライブラリの共有が億劫</p></li>
+<li><p>依存ライブラリの管理から解放されたので、<strong>気軽に追加</strong> できる</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>例：表っぽく出力したい？ <a class="reference external" href="https://pypi.org/project/tabulate/" rel="noopener noreferrer" target="_blank">tabulate</a> 追加しましょう</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</section>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">inline script metadataをサポートしたツール向けtips</h2>
+<p>2点共有</p>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">1️⃣スクリプト書いているときは対話モードを立ち上げたい</h2>
+<ul class="simple">
+<li><p>途中まで書いて対話モードに入る</p></li>
+<li><p>データを見ながら続きを書き進める</p></li>
+</ul>
+<pre data-id="id55"><code class="python" data-noescape="" data-trim="">import httpx
+
+resp = httpx.get("https://peps.python.org/api/peps.json")
+data = resp.json()</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><strong class="command">python -i</strong></h3>
+<blockquote>
+<div><p>(略) スクリプトかコマンドを実行した後にインタラクティブモードに入ります。（<a class="reference external" href="https://docs.python.org/ja/3/using/cmdline.html#cmdoption-i" rel="noopener noreferrer" target="_blank">1. コマンドラインと環境</a>）</p>
+</div></blockquote>
+<pre data-id="python-i"><code class="shell" data-noescape="" data-trim="">(.venv) $ python -i script.py
+&gt;&gt;&gt; type(data)
+&lt;class 'dict'&gt;</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">環境変数 <code class="docutils literal notranslate"><span class="pre">PYTHONINSPECT</span></code></h3>
+<blockquote>
+<div><p>この変数に空でない文字列を設定するのは -i オプションを指定するのと等価です。（<a class="reference external" href="https://docs.python.org/ja/3/using/cmdline.html#envvar-PYTHONINSPECT" rel="noopener noreferrer" target="_blank">1. コマンドラインと環境</a>）</p>
+</div></blockquote>
+<pre data-id="pythoninspect"><code class="shell" data-noescape="" data-trim="">$ PYTHONINSPECT=1 pipx run script.py
+$ PYTHONINSPECT=1 uv run script.py
+$ PYTHONINSPECT=1 hatch run script.py</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">拙ブログ関連エントリ 🏃‍♂️</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/pep723-inline-script-metadata-tools-support-pythoninspect-envvar-or-not" rel="noopener noreferrer" target="_blank">inline script metadataをサポートしたツールでスクリプトを実行したときにもPythonの対話モードに入りたい！ 環境変数 PYTHONINSPECT が有効か調査しました</a></p></li>
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/pipx-run-hang-pythoninspect-and-venv-creation" rel="noopener noreferrer" target="_blank">pipx runとPYTHONINSPECT環境変数の補足：仮想環境を作るときは環境変数を指定できない</a></p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">2️⃣エディタの補完を受けたい</h2>
+<p>VS Codeを例に話します（メソッドは応用できると期待）</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><code class="docutils literal notranslate"><span class="pre">sys.executable</span></code></h3>
+<blockquote>
+<div><p>Python インタプリタの実行ファイルの絶対パスを示す文字列です。</p>
+</div></blockquote>
+<p><a class="reference external" href="https://docs.python.org/ja/3/library/sys.html#sys.executable" rel="noopener noreferrer" target="_blank">https://docs.python.org/ja/3/library/sys.html#sys.executable</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">対話モードでインタプリタのパスを知る</h3>
+<pre data-id="id58"><code class="shell" data-noescape="" data-trim="">$ PYTHONINSPECT=1 hatch run example.py  # tips1️⃣！</code></pre>
+<pre data-id="id58"><code class="pycon" data-noescape="" data-trim="">&gt;&gt;&gt; import sys
+&gt;&gt;&gt; sys.executable
+'/Users/.../Library/Application Support/hatch/env/virtual/.scripts/tHs9jFaE/bin/python'</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">VS Codeで「<span class="guilabel">Select Interpreter</span>」</h3>
+<ul class="simple">
+<li><p><span class="guilabel">Enter interpreter path...</span> に <code class="docutils literal notranslate"><span class="pre">sys.executable</span></code> の値を設定！</p></li>
+</ul>
+<img alt="../_images/vscode_selected_tool_venv_interpreter.png" src="../_images/vscode_selected_tool_venv_interpreter.png"/>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">拙ブログ関連エントリ 🏃‍♂️</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/pipx-run-with-vscode-completion-setting" rel="noopener noreferrer" target="_blank">pipx runするスクリプトを書く中でも、VS Codeによる補完のサポートを受ける</a></p></li>
+</ul>
+</section>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">まとめ🌯 拓かれた世界で（学びとtips）</h2>
+<ul class="simple">
+<li><p>PEP 723をサポートしたツールを採用することで、スクリプトの <strong>共有</strong> やスクリプト実装中の <strong>依存追加がやりやすい</strong></p></li>
+<li><p><strong>環境変数 PYTHONINSPECT を指定</strong> して、対話モードを織り交ぜながらスクリプトを書ける！</p>
+<ul>
+<li><p>エディタ補完のために <code class="docutils literal notranslate"><span class="pre">sys.executable</span></code> も確認</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">まとめ🌯 PEP 723（Inline script metadata）が拓く世界</h2>
+<ul class="simple">
+<li><p>まさに「Pythonスクリプトに必要な仮想環境をツールにおまかせできるんです！」</p></li>
+<li><p><strong>タイトル回収</strong> に膝を打っていただけたら嬉しいです（嬉しいフィードバック：「PEP 723、天才ですね」）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Pythonスクリプトに必要な仮想環境をツールにおまかせできるんです！</h3>
+<ul class="simple">
+<li><p>開発者は <strong>inline script metadata</strong> を書く</p></li>
+<li><p>サポートしたツール（pipx, uv, hatch, pdm など）でスクリプトを実行</p></li>
+</ul>
+<pre data-id="python"><code class="python" data-noescape="" data-trim=""># /// script
+# requires-python = "&gt;=3.11"
+# dependencies = ["httpx", "rich"]
+# ///</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">IMO: スクリプトを書くPython本で採用プリーズ🙏 🏃‍♂️</h3>
+<ul class="simple">
+<li><p>提言：ノンプログラマー向けのPythonで自動化本（例：『<a class="reference external" href="https://www.oreilly.co.jp/books/9784873119274/" rel="noopener noreferrer" target="_blank">退屈なことはPythonにやらせよう</a>』）、かなり楽になるのでは？</p></li>
+<li><p>例えばuvを採用。inline script metadata + <strong class="command">uv run</strong> で <strong>自動化の実装だけに集中</strong> できると思います</p></li>
+</ul>
+<p>📣著者に届け（スクリプトだけ書きたい方の環境構築、ちょっとでも楽になれ）</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">今すぐインストール！！（Hatchもね）</h3>
+<img alt="../_images/connpass_icon_pyconjp.png" src="../_images/connpass_icon_pyconjp.png"/>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">ご清聴ありがとうございました</h3>
+<p>Enjoy Python scripting❤️</p>
+<p>🥹🥹🥹 使ってくれますか？ 🥹🥹🥹</p>
+</section>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">References</h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://peps.python.org/pep-0723/" rel="noopener noreferrer" target="_blank">PEP 723</a></p></li>
+<li><p><a class="reference external" href="https://packaging.python.org/en/latest/specifications/inline-script-metadata/" rel="noopener noreferrer" target="_blank">Inline script metadata (Python Packaging User Guide)</a></p></li>
+</ul>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">Appendix</h2>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">スクリプトを実行するとき、仮想環境は何個できる？</h3>
+<ul class="simple">
+<li><p>ツールにもよるが「1個（スクリプトごとに作る）」または「1〜0個（依存の組ごとに作る）」</p></li>
+<li><p>拙ブログ <a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/pep723-inline-script-metadata-tools-venv-cache-strategy-source-reading-202409" rel="noopener noreferrer" target="_blank">inline script metadataをサポートしたツールが仮想環境を再利用する様子を、振る舞いやソースコードから調べる</a></p></li>
+<li><p>IMO: スクリプトごとに人力で仮想環境を作っていたのが自動化されたにすぎない</p></li>
+</ul>
+</section>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">EOF</h2>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs4/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs4/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs4/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs4/plugin/copycode/copycode.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "history": true, "center": true, "transition": "none", "slideNumber": "c/t", "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealHighlight,RevealNotes,CopyCode,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>
