@@ -11,7 +11,7 @@ LLMの知識で使い倒すCopilot
 私「いかにCopilotにコードを書かせるか、それだけを考えている」
 ----------------------------------------------------------------------
 
-* LLMについての知識を使って、Copilotにとにかく働いてもらおう
+* Copilotに馬車馬のように働いてもらうために、私はLLMについての知識を使う
 * 本LTのスコープは `Inline suggestions <https://code.visualstudio.com/docs/copilot/ai-powered-suggestions#_inline-suggestions>`__ です
 
 お前、誰よ（自己紹介）
@@ -34,7 +34,7 @@ LLMの知識で使い倒すCopilot
 
 * :fab:`github` `@ftnext <https://github.com/ftnext>`__
 * `Uberi/speech_recognition <https://github.com/Uberi/speech_recognition>`__ 8.4k⭐️ **メンテナ** （無料提供によるサポート、ありがとうございます）
-* 他にこのスライドで使っている `sphinx-new-tab-link <https://pypi.org/project/sphinx-new-tab-link/>`__ など
+* 🏃‍♂️他にこのスライドで使っている `sphinx-new-tab-link <https://pypi.org/project/sphinx-new-tab-link/>`__ など
 
 Copilotが精度よく続きを書くとき（※私の感覚）
 ======================================================================
@@ -57,14 +57,14 @@ GitHub Copilotの裏は、OpenAIのGPT
 
 `Bringing developer choice to Copilot with Anthropic’s Claude 3.5 Sonnet, Google’s Gemini 1.5 Pro, and OpenAI’s o1-preview <https://github.blog/news-insights/product-news/bringing-developer-choice-to-copilot/>`_
 
-GitHub Copilotの裏は、OpenAIのGPT（承前）
+GitHub Copilotの裏は、OpenAIのGPT（承前）🏃‍♂️
 --------------------------------------------------
 
     we have updated the base model versions multiple times, using a range from GPT 3.5-turbo to GPT 4o and 4o-mini models
 
 `Bringing developer choice to Copilot with Anthropic’s Claude 3.5 Sonnet, Google’s Gemini 1.5 Pro, and OpenAI’s o1-preview`_
 
-ChatGPT（＝GPT-3.5）はいきなり出てきたわけではない
+ChatGPT（＝GPT-3.5）は、いきなり出てきたわけではない
 ------------------------------------------------------------
 
 * `2018年 GPT <https://openai.com/index/language-unsupervised/>`__
@@ -80,8 +80,8 @@ GPT-3論文「Language Models are Few-Shot Learners」
 GPT-3のプロンプト
 --------------------------------------------------
 
+* **自然言語** で書けばよい
 * 続きの生成を *促す*
-* 自然言語で書けばよい
 
 .. code-block::
     :caption: GPT-3論文 Figure 2.1 より
@@ -92,11 +92,11 @@ GPT-3のプロンプト
 GPT-3のここがすごい！
 --------------------------------------------------
 
-* **プロンプトを変えるだけ** で、1つのモデルで様々なタスクが解ける
+* 自然言語の **プロンプトを変えるだけ** で、1つのモデルで様々なタスクが解ける
 
     * コード生成、翻訳、etc.etc.
 
-* ※後の世代（ChatGPT以降）は、加えて会話形式で生成、かつ、有害なことを言わないように追加訓練をしています
+* 🏃‍♂️後の世代（ChatGPT以降）は、加えて会話形式で生成、かつ、有害なことを言わないように追加訓練をしています
 
 few-shot プロンプト
 --------------------------------------------------
@@ -120,7 +120,7 @@ few-shot プロンプト
 
 GPT-3論文 Figure 1.2
 
-脱線：なぜ例示すると性能が上がるかは、まだ説明できていないらしいです
+脱線🏃‍♂️ なぜ例示すると性能が上がるかは、まだ説明できていないらしいです
 --------------------------------------------------------------------------------
 
 * 例を見せる＝In-Context Learning (ICL) と呼ぶ（GPT-3論文より）
@@ -141,7 +141,7 @@ GitHub Copilotとfew-shotプロンプト
 .. code-block:: python
     :caption: 例：pytestを使ったPythonのテストコードのイメージ
 
-    def test_  # 最初のテストを書くとき、Copilotはやや見当違いな生成
+    def test_  # からのファイルに最初のテストを書くとき、Copilotはやや見当違いな生成
 
 テストケースを1つか2つ書いた後
 --------------------------------------------------
@@ -180,7 +180,7 @@ GitHub Copilotとfew-shotプロンプト
 ======================================================================
 
 * GPT-3論文で示された **few-shotを意識** して、Copilotの Inline suggestions を使っています
-* 例を見せるほどLLMは性能がよい -> いくらか書き進めたファイルだとTabで採用していくだけ
+* 書き進めて例示豊富になったファイルでは、Tabで採用していくだけ
 * 例を超える生成はまだできないので、ライブラリの **ベストプラクティスの知識は開発者に必要** と考えています
 
 One more thing...
@@ -197,7 +197,7 @@ One more thing...
 --------------------------------------------------
 
 * 『コード×AI』本・PyCharmとAI
-* https://startpython.connpass.com/event/334454/
+* **オンライン** 開催 https://startpython.connpass.com/event/334454/
 * スタッフしています。よろしければ再びお会いしましょう！
 
 ご清聴ありがとうございました
@@ -210,6 +210,7 @@ References
 
 * 『`大規模言語モデル入門 <https://gihyo.jp/book/2023/978-4-297-13633-8>`__』4.2.1
 * `Few-Shotプロンプティング（Prompt Engineering Guide） <https://www.promptingguide.ai/jp/techniques/fewshot>`__
+* `例を示す（GitHub Copilot のプロンプト エンジニアリング） <https://docs.github.com/ja/copilot/using-github-copilot/prompt-engineering-for-github-copilot#give-examples>`__
 * 『`テスト駆動Python 第2版 <https://www.shoeisha.co.jp/book/detail/9784798177458>`__』2.3
 
 `GPT-3論文 <https://arxiv.org/abs/2005.14165>`__ Figure 2.1 (left)
@@ -224,13 +225,15 @@ Appendix
 お前、誰よ（補足）
 --------------------------------------------------
 
-* `ブログ <https://nikkie-ftnext.hatenablog.com/>`__ 連続 **720** 日達成
+* 毎日 `ブログ <https://nikkie-ftnext.hatenablog.com/>`__ を書いてます。連続 **720** 日達成
 * VS Code拡張 `TOKIMEKI Editing🌈 <https://marketplace.visualstudio.com/items?itemName=everlasting-diary.tokimeki-editing>`__
 
 拙ブログ 関連記事
 --------------------------------------------------
 
 * `基本に立ち戻る：LLMのプロンプト <https://nikkie-ftnext.hatenablog.com/entry/llm-prompt-basics-202405-few-shot-learning-and-chain-of-thought>`__
+* `そこにいるペアのCopilotを慮り、VS Codeのエディタに増えたタブを閉じる <https://nikkie-ftnext.hatenablog.com/entry/care-github-copilot-close-all-and-pin-editor-for-context>`__
+* Copilotから学ぶ例： `grepの-oや正規表現の肯定先読み・肯定戻り読みで、テキストの一部だけを取り出す <https://nikkie-ftnext.hatenablog.com/entry/grep-only-matching-pcre-lookahead-lookbehind>`__
 
 EOF
 ===
