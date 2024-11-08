@@ -1,3 +1,9 @@
+:ogp_title: LLMの知識で使い倒すCopilot
+:ogp_event_name: vscodejp-nov
+:ogp_slide_name: copilot-as-large-language-model
+:ogp_description: VS Code Meetup #32 LT
+:ogp_image_name: vscodejp-nov
+
 ======================================================================
 LLMの知識で使い倒すCopilot
 ======================================================================
