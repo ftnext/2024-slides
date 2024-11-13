@@ -2,6 +2,15 @@
 PythonでもGitHub Copilot Extensions作れるもん！
 ======================================================================
 
+準備用カンペ
+--------------------------------------------------
+
+* `GitHubのDeveloper settings <https://github.com/settings/apps>`__ を開く
+
+    * GitHub Appの「Copilot」メニューを編集できるようにしておく（認証が必要になる）
+
+* 共有はデスクトップ
+
 PythonでもGitHub Copilot Extensions作れるもん！
 ======================================================================
 
@@ -22,33 +31,15 @@ GitHub Copilot Extensionsって、何よ
 
 聞いたことありますか？🙋‍♂️
 
-まず GitHub Copilot
+GitHub Copilotは様々な機能を搭載（進化中！）
 --------------------------------------------------
 
-**AI ペア プログラマー**
+:コード補完: :kbd:`Tab` を押すだけ！（少し直す）
+:**チャット**: ChatGPTがVS Codeやgithub.comに住んでいるイメージ。色々聞けちゃう
 
 `GitHub Copilot とは何ですか? <https://docs.github.com/ja/copilot/about-github-copilot/what-is-github-copilot>`__
-------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    GitHub Copilot は AI コーディング アシスタントであり、コードをより速く楽に記述できるため、問題解決とコラボレーションにより多くのエネルギーを集中できます。
-
-様々な機能を搭載
---------------------------------------------------
-
-:コード補完: 続くコードを提案してくれる。採用して少し直すだけ
-:チャット: ChatGPTがVS Codeに住んでいるイメージ。色々聞けちゃう
-
-ほかにもまだまだ！ なお進化中！
-
-Copilot 棲息場所
---------------------------------------------------
-
-課金して有効にすると
-
-* VS Code（`拡張 <https://marketplace.visualstudio.com/items?itemName=GitHub.copilot>`__ をインストール）
-* ブラウザで閲覧している GitHub の中 (github.com)
-
-ご参考
+🏃‍♂️ご参考
 --------------------------------------------------
 
 .. raw:: html
@@ -60,19 +51,21 @@ GitHub Copilot **Extensions**
 
 Extension＝拡張
 
-拡張、2つの方向性
+**チャット相手** ＝エージェント
 --------------------------------------------------
 
-:VS Code チャット拡張機能: VS Code拡張としてCopilot Chatを拡張できる（@する先の *エージェント*）
-:GitHub Copilot Extensions: エージェントを作れる。このLTの本題
+* GitHub Copilot Extensionsで実現
+* ``@docker``: `Docker専門エージェント <https://github.com/marketplace/docker-for-github-copilot>`__
+* 🏃‍♂️*VS Code チャット拡張機能* というものもあるが、本LTではスコープ外
+
+.. https://www.publickey1.jp/blog/24/github_copilot_extensionscopilotdockerazure.html
 
 `Copilot 拡張機能の構築について <https://docs.github.com/ja/copilot/building-copilot-extensions/about-building-copilot-extensions>`__
 
-GitHub Copilot Extensions
+GitHub Copilot Extensions🤖
 --------------------------------------------------
 
-* GitHub Copilotをカスタマイズして、 **独自のエージェント** （Copilot Chatの相手）を作れる
-* GitHubが用意する ``/chat/completions`` のエンドポイントを使える
+* GitHubが提供する **LLM** を使って実装できる（エンドポイント ``/chat/completions``）
 * 例えば特定のリポジトリでRAGをするエージェント（プライベートのコードベースで）
 
 服部さんの発表で知りました
@@ -144,6 +137,12 @@ Pythonでもできました✌️（FastAPI❤️）
 --------------------------------------------------
 
 Demo https://github.com/ftnext/blackbeard-extension-python
+
+.. リポジトリからCodespace起動
+    ポートを手動で転送しておく
+    ターミナルが使えるようになったらREADMEからコピー（依存をインストールしてアプリを起動）
+    ポートのURLをコピーして、GitHub App側を設定
+    そのままgithub.comでChatを試す「日本語でお願いします。あなたは何をしてくれますか？」
 
 まとめ🌯 PythonでもGitHub Copilot Extensions作れるもん！
 ======================================================================
