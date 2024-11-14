@@ -1,3 +1,9 @@
+:ogp_title: PythonでもGitHub Copilot Extensions作れるもん！
+:ogp_event_name: stapy-nov
+:ogp_slide_name: copilot-extensions-with-python
+:ogp_description: みんなのPython勉強会#110 LT
+:ogp_image_name: stapy-nov
+
 ======================================================================
 PythonでもGitHub Copilot Extensions作れるもん！
 ======================================================================
