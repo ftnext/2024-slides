@@ -1,3 +1,9 @@
+:ogp_title: 櫻木真乃さんかわいいLT
+:ogp_event_name: engineers-anime
+:ogp_slide_name: sakuragi-mano-san
+:ogp_description: 2024/11 アニメから得た学びを発表会 懇親会LT
+:ogp_image_name: engineers-anime-nov
+
 ======================================================================
 櫻木真乃さんかわいいLT
 ======================================================================
