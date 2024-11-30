@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+
+<html lang="ja" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>櫻木真乃さんかわいいLT</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/dist/reveal.css?v=ba26b9ed" />
+    <link rel="stylesheet" href="../_static/revealjs4/dist/theme/black.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/plugin/highlight/zenburn.css?v=83d5745d" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/common.css?v=c1f4a920" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ftnext">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://ftnext.github.io/2024-slides/engineers-anime/sakuragi-mano-san.html">
+    <meta property="og:title" content="櫻木真乃さんかわいいLT">
+    <meta property="og:description" content="2024/11 アニメから得た学びを発表会 懇親会LT">
+    <meta property="og:image" content="https://ftnext.github.io/2024-slides/_static/ogps/engineers-anime-nov.png">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section>
+<h1 style="word-break: keep-all; overflow-wrap: break-word;">櫻木真乃さんかわいいLT</h1>
+<dl class="field-list simple">
+<dt class="field-odd">Event<span class="colon">:</span></dt>
+<dd class="field-odd"><p>アニメから得た学びを発表会 <strong>懇親会</strong> 野良LT</p>
+</dd>
+<dt class="field-even">Presented<span class="colon">:</span></dt>
+<dd class="field-even"><p>2024/11/28 nikkie</p>
+</dd>
+</dl>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">お前、誰よ（自己紹介）</h2>
+<ul class="simple">
+<li><p>nikkie（にっきー）</p></li>
+<li><p>Pythonとアニメが好き。<a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/self-introduction-as-anime-fan-202405" rel="noopener noreferrer" target="_blank">詳細な自己紹介記事</a></p></li>
+<li><p>今期 アオのハコ、めっっっっちゃよい</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><a class="reference external" href="https://x.com/pauli_agile/status/1806334941254586749" rel="noopener noreferrer" target="_blank">厳しい1on1</a> 系アニメかな</h3>
+<blockquote class="twitter-tweet" data-align="center" data-dnt="true" data-lang="ja"><p dir="ltr" lang="ja">毎日１on１してほしい。僕の上司になってください。 <a href="https://t.co/Iy5nRcdSBf">pic.twitter.com/Iy5nRcdSBf</a></p>— うーたん (@uutan1108) <a href="https://twitter.com/uutan1108/status/1841493777233408239?ref_src=twsrc%5Etfw">2024年10月2日</a></blockquote> <script async="" charset="utf-8" src="https://platform.twitter.com/widgets.js"></script></section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">本業は、プロデューサーです！</h2>
+<ul class="simple">
+<li><p>アイドルマスター、中でも <strong>ミリオンライブ！</strong> が好き</p></li>
+<li><p>7月話した <a class="reference external" href="https://ftnext.github.io/2024-slides/engineers-anime/million-live-and-rag.html" rel="noopener noreferrer" target="_blank">MILLION R@G</a></p></li>
+<li><p><a class="reference external" href="https://millionlive-theaterdays.idolmaster-official.jp/idol/kotoha/" rel="noopener noreferrer" target="_blank">田中琴葉さん</a> をPython開発に！ <a class="reference external" href="https://pypi.org/project/flake8-kotoha/" rel="noopener noreferrer" target="_blank">flake8-kotoha</a></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">今回は櫻木真乃（さくらぎまの）さんのお話</h3>
+<p>🌸 <strong>さくら</strong> インターネット東京支社 🌸</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">念のためのおことわり</h3>
+<blockquote class="twitter-tweet" data-align="center" data-dnt="true" data-lang="ja"><p dir="ltr" lang="ja">アイマスに古から伝わる格言をひとつ。<br/><br/>オマエの天海春香と俺の天海春香は別人<br/><br/>ひとりひとりに自分と担当アイドルの物語がある以上、本質的にユーザーとユーザーとの間に解釈違いは生まれないし、それを否定してはいけない。自らが思うアイドル像を貫き通すのが1番大切で尊いことなのです。　&gt;RT</p>— 紅木 弘＠アイマスエキスポDay2_Ｐ０２ａ (@hiroshiakagi398) <a href="https://twitter.com/hiroshiakagi398/status/1860565865525313767?ref_src=twsrc%5Etfw">2024年11月24日</a></blockquote></section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">IMO 「それもまたアイマスだね」ってこと</h3>
+<ul class="simple">
+<li><p>私の口から語る櫻木真乃さんと、あなたの前に（ゲームやアニメやライブで）立ち現れる櫻木真乃さんは <strong>別人</strong> です</p></li>
+<li><p><a class="reference external" href="https://www.nicovideo.jp/watch/sm36102638" rel="noopener noreferrer" target="_blank">それもまたアイカツだね</a> （Helpfeelさん <a class="reference external" href="https://news.mynavi.jp/techplus/series/user-interface/" rel="noopener noreferrer" target="_blank">それもまたUIだね。</a>）</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">櫻木真乃さんの紹介</h2>
+<ul class="simple">
+<li><p>ご存じの方？🙋‍♂️</p></li>
+<li><p>アイドルマスター <strong>シャイニーカラーズ</strong> （アニメ放送中！）</p></li>
+<li><p>283プロダクション所属のアイドル。<a class="reference external" href="https://shinycolors.idolmaster.jp/idol/illuminationstars/" rel="noopener noreferrer" target="_blank">イルミネーションスターズ</a> の1人</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">櫻木真乃さんの紹介</h3>
+<ul class="simple">
+<li><p>ほわほわした感じ + かわいらしいお声</p></li>
+<li><p><em>鳩を食べる</em> らしい（<a class="reference external" href="https://www.nicovideo.jp/watch/sm36270308" rel="noopener noreferrer" target="_blank">鳩さん解剖</a>）。一周回ってかわいい</p></li>
+</ul>
+</section>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">シャニアニでの櫻木真乃さん</h2>
+<p>2つ紹介 &amp; <em>学び</em></p>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">1️⃣第1話 一人分の空、一枚の羽</h2>
+<blockquote>
+<div><p>アイドルになって、新しい世界を見てみないか？</p>
+</div></blockquote>
+<p><a class="reference external" href="https://shinycolors-anime.idolmaster-official.jp/story/" rel="noopener noreferrer" target="_blank">https://shinycolors-anime.idolmaster-official.jp/story/</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">「たぶん私にはできないと思います」</h3>
+<ul class="simple">
+<li><p>お断り！</p></li>
+<li><p>一晩を経て、「私でも新しい世界、見られますか？」（👉アイドルになります）</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">2️⃣第10話 色とりどりのイメージ</h2>
+<blockquote>
+<div><p>センターである真乃 (略)</p>
+<p>みんなと一緒に頑張るため、自分はなにをすればいいのか。夜空を見上げながら、真乃はひとりで考える。</p>
+</div></blockquote>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">そんな私に（<em>みんなと一緒に頑張れる私に</em>）なれたら</h3>
+<ul class="simple">
+<li><p>口ずさまれる「Spread the Wings!!」</p></li>
+<li><p>♫ <em>どんな憧れも 全部かなえる</em> （この演出、ふおおおおおおお！！）</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">nikkie「一度できないと思ったものに、自分は一人で向き合えるだろうか」</h2>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">櫻木真乃さんはすごすぎる👏</h3>
+<ul class="simple">
+<li><p>アイドルやセンター：心は動くが、いまの自分に <strong>できるとは思えない</strong> もの</p></li>
+<li><p>「不安はあるけど、やってみます」はできそうと思えている</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">自分自身と向き合う</h3>
+<ul class="simple">
+<li><p>不安の方がずっと大きい</p></li>
+<li><p>誰にも相談せずに <strong>自分自身とだけ向き合って</strong> 腹をくくれるだろうか</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">希望の光（<em>illumination</em> stars） ※ココ怪文書</h3>
+<ul class="simple">
+<li><p>向き合う問い： <strong>本当に怖いもの</strong> は？（新しい世界が見られないこと、なのでは）</p></li>
+<li><p>真乃さんの <em>強さ</em> ：不安でも、自信なくても、 <strong>チャンスを掴む</strong> 握力</p></li>
+</ul>
+<p>SHIROBAKOを思い出しています（りーちゃん、杉江さん）</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">さらに、シャニマスで補完される <strong>文脈</strong>！</h3>
+<p>ネタバレを気にされない方はリンク先をどうぞ</p>
+<ul class="simple">
+<li><p>1話補足 <a class="reference external" href="https://x.com/nishizono_riko/status/1776399425876718049" rel="noopener noreferrer" target="_blank">https://x.com/nishizono_riko/status/1776399425876718049</a></p></li>
+<li><p>10話補足 <a class="reference external" href="https://x.com/nishizono_riko/status/1799229856615477740" rel="noopener noreferrer" target="_blank">https://x.com/nishizono_riko/status/1799229856615477740</a></p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">まとめ🌯 櫻木真乃さんかわいいLT</h2>
+<ul class="simple">
+<li><p>アイドルマスター シャイニーカラーズの櫻木真乃さんはかわいいぞ</p></li>
+<li><p>そして <em>強い</em> ぞ。自分自身と向き合って腹をくくられている</p></li>
+<li><p>シャニマスでもっと深く知っていけそう</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">ご清聴ありがとうございました</h3>
+<ul class="simple">
+<li><p>シャニマスの先輩方、助けてください（ミリPは3行も読めないから、もう全然わかんないよ〜）</p></li>
+<li><p>アオのハコ、めっっっっちゃよい</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">Appendix</h2>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">副業（※本業は仕掛け人）</h3>
+<ul class="simple">
+<li><p>機械学習エンジニア・自然言語処理（<a class="reference external" href="https://hrmos.co/pages/uzabase/jobs/1829077236709650481" rel="noopener noreferrer" target="_blank">We're hiring!</a>）</p></li>
+</ul>
+<img alt="../_images/uzabase-white-logo.png" src="../_images/uzabase-white-logo.png"/>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">お前、誰よ（補足）</h3>
+<ul class="simple">
+<li><p>毎日 <a class="reference external" href="https://nikkie-ftnext.hatenablog.com/" rel="noopener noreferrer" target="_blank">ブログ</a> を書いてます。連続 <strong>740</strong> 日達成</p></li>
+<li><p>代表作：Sphinx拡張 <a class="reference external" href="https://github.com/ftnext/sphinx-new-tab-link" rel="noopener noreferrer" target="_blank">sphinx-new-tab-link</a> （この資料でも使ってます）</p></li>
+</ul>
+</section>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">EOF</h2>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs4/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs4/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs4/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs4/plugin/copycode/copycode.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "history": true, "center": true, "transition": "none", "slideNumber": "c/t", "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealHighlight,RevealNotes,CopyCode,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

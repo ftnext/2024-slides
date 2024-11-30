@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+<html lang="ja" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>PEP 723（Inline script metadata）が拓く世界。Pythonスクリプトに必要な仮想環境をツールにおまかせできるんです！</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/dist/reveal.css?v=ba26b9ed" />
+    <link rel="stylesheet" href="../_static/revealjs4/dist/theme/black.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/plugin/highlight/zenburn.css?v=83d5745d" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/common.css?v=c1f4a920" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ftnext">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://ftnext.github.io/2024-slides/stapy-sep/preview-pyconjp-pep723-talk.html">
+    <meta property="og:title" content="プレビュー版：PEP 723（Inline script metadata）が拓く世界">
+    <meta property="og:description" content="Pythonスクリプトに必要な仮想環境をツールにおまかせできるんです！ みんなのPython勉強会#108 LT">
+    <meta property="og:image" content="https://ftnext.github.io/2024-slides/_static/ogps/stapy-sep.png">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section>
+<h1 style="word-break: keep-all; overflow-wrap: break-word;">PEP 723（Inline script metadata）が拓く世界。Pythonスクリプトに必要な仮想環境をツールにおまかせできるんです！</h1>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;"><strong>プレビュー版</strong>：PEP 723（Inline script metadata）が拓く世界。Pythonスクリプトに必要な仮想環境をツールにおまかせできるんです！</h2>
+<dl class="field-list simple">
+<dt class="field-odd">Event<span class="colon">:</span></dt>
+<dd class="field-odd"><p>みんなのPython勉強会#108 LT</p>
+</dd>
+<dt class="field-even">Presented<span class="colon">:</span></dt>
+<dd class="field-even"><p>2024/09/19 nikkie</p>
+</dd>
+</dl>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">このLTは</h3>
+<ul class="simple">
+<li><p>2024/09/27(金) 28(土) に有明で開催される <a class="reference external" href="https://pyconjp.connpass.com/event/324211/" rel="noopener noreferrer" target="_blank">PyCon JP 2024</a> のトークのプレビューです</p>
+<ul>
+<li><p><a class="reference external" href="https://2024.pycon.jp/ja/talk/89F3RQ" rel="noopener noreferrer" target="_blank">金曜 15:50〜 20F #pyconjp_1</a> 僕と握手🤝</p></li>
+</ul>
+</li>
+<li><p>お届けする内容は、ちょっとした <strong>スクリプトを書くシーン</strong> で皆さんに使ってもらえたら嬉しいです</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">サンプルスクリプト</h2>
+<ul class="simple">
+<li><p>PEP＝ <a class="reference external" href="https://docs.python.org/ja/3/glossary.html#term-PEP" rel="noopener noreferrer" target="_blank">Python Enhancement Proposal</a> （Pythonの機能提案文書）</p></li>
+<li><p>PEPの一覧をJSON形式で取得できると知ったのでやってみたい</p></li>
+<li><p><a class="reference external" href="https://peps.python.org/api/peps.json" rel="noopener noreferrer" target="_blank">https://peps.python.org/api/peps.json</a></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">このライブラリを使おうかな</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/encode/httpx" rel="noopener noreferrer" target="_blank">httpx</a> ：HTTPクライアント（<a class="reference external" href="https://2024.pycon.jp/ja/talk/MD99N8" rel="noopener noreferrer" target="_blank">金曜 16:40〜 20F #pyconjp_2</a>）</p></li>
+<li><p><a class="reference external" href="https://github.com/Textualize/rich" rel="noopener noreferrer" target="_blank">rich</a> ：ターミナルにリッチなテキストで出力</p></li>
+</ul>
+<p>試す際はお好みのライブラリに読み替えください</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">PEPの一覧をJSON形式で取得するスクリプト</h3>
+<div class="literal-block-wrapper docutils container" id="id12">
+<div class="code-block-caption"><span class="caption-text">example.py</span></div>
+<pre><code class="python" data-noescape="" data-trim="">import httpx
+from rich.pretty import pprint
+
+resp = httpx.get("https://peps.python.org/api/peps.json")
+data = resp.json()
+pprint([(k, v["title"]) for k, v in data.items()][:10])
+</code></pre>
+</div>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">スクリプトができたからといって実行すると</h3>
+<pre data-id="id4"><code class="shell" data-noescape="" data-trim="">$ python example.py
+Traceback (most recent call last):
+  File "/.../example.py", line 1, in &lt;module&gt;
+    import httpx
+ModuleNotFoundError: No module named 'httpx'</code></pre>
+<p><strong>ライブラリのインストール</strong> が必要です</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">仮想環境にライブラリをインストールしてから動かす</h3>
+<pre data-id="id5"><code class="shell" data-noescape="" data-trim="">$ python -V
+Python 3.12.6
+$ python -m venv .venv --upgrade-deps
+$ .venv/bin/python -m pip install httpx rich
+$ .venv/bin/python example.py</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">仮想環境で実行したスクリプトの出力</h3>
+<img alt="../_images/run_script_in_venv.png" src="../_images/run_script_in_venv.png"/>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">実は、<strong>私たちが仮想環境を作らなくてもいい</strong> んです！</h2>
+<ul class="simple">
+<li><p>タイトルにある「PEP 723（Inline script metadata）」</p></li>
+<li><p>スクリプトにコメントとしてメタデータを書き、それをサポートしたツールで実行</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Inline script metadata（冒頭のコメント）</h3>
+<div class="literal-block-wrapper docutils container" id="id13">
+<div class="code-block-caption"><span class="caption-text">example.py（更新版）</span></div>
+<pre><code class="python" data-line-numbers="1,2,3" data-noescape="" data-trim=""># /// script
+# dependencies = ["httpx", "rich"]
+# ///
+import httpx
+from rich.pretty import pprint
+
+resp = httpx.get("https://peps.python.org/api/peps.json")
+data = resp.json()
+pprint([(k, v["title"]) for k, v in data.items()][:10])
+</code></pre>
+</div>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Inline script metadataをサポートするツールで実行</h3>
+<pre data-id="id8"><code class="shell" data-noescape="" data-trim="">$ pipx run example.py</code></pre>
+<pre data-id="id8"><code class="shell" data-noescape="" data-trim="">$ uv run example.py</code></pre>
+<pre data-id="id8"><code class="shell" data-noescape="" data-trim="">$ hatch run example.py</code></pre>
+<pre data-id="id8"><code class="shell" data-noescape="" data-trim="">$ pdm run example.py</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">ツールが仮想環境を用意して実行！</h3>
+<pre data-id="id9"><code class="txt" data-line-numbers="2,3" data-noescape="" data-trim="">% uv run example.py
+Reading inline script metadata from: example.py
+Installed 11 packages in 23ms
+[
+│   ('1', 'PEP Purpose and Guidelines'),
+│   ('2', 'Procedure for Adding New Modules'),
+│   ('3', 'Guidelines for Handling Bug Reports'),
+│   ('4', 'Deprecation of Standard Modules'),
+│   ('5', 'Guidelines for Language Evolution'),
+│   ('6', 'Bug Fix Releases'),
+│   ('7', 'Style Guide for C Code'),
+│   ('8', 'Style Guide for Python Code'),
+│   ('9', 'Sample Plaintext PEP Template'),
+│   ('10', 'Voting Guidelines')
+]</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Inline script metadataをサポートするツールがスクリプトを実行するとき</h3>
+<ol class="arabic simple">
+<li><p>ツールがmetadataを読む</p></li>
+<li><p>ツールが <strong>metadataを満たす仮想環境を用意</strong> （dependencies <em>など</em>）</p></li>
+<li><p>ツールが2の仮想環境でスクリプトを実行</p></li>
+</ol>
+<p>天才！ ありがとう〜！</p>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">このトークで伝えたいこと</h2>
+<ul class="simple">
+<li><p>Pythonスクリプトを書くとき、<strong>Inline script metadataをぜひ使って</strong> みて！</p></li>
+<li><p>開発者が仮想環境の管理から解放されます！</p></li>
+<li><p>スクリプトが依存するライブラリをコメントとして書き、サポートしたツールを使うだけ</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">続きは9/27(金)のPyCon JP 2024にて</h3>
+<p><a class="reference external" href="https://2024.pycon.jp/ja/talk/89F3RQ" rel="noopener noreferrer" target="_blank">金曜 15:50〜 20F #pyconjp_1</a></p>
+<p>ご清聴ありがとうございました</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">お前、誰だったのよ？ ― nikkieでした</h3>
+<ul class="simple">
+<li><p><span class="fab fa-github"></span> <a class="reference external" href="https://github.com/ftnext" rel="noopener noreferrer" target="_blank">@ftnext</a> ／ <a class="reference external" href="https://nikkie-ftnext.hatenablog.com/" rel="noopener noreferrer" target="_blank">ブログ</a> 連続 <strong>670</strong> 日突破</p></li>
+<li><p>ユーザベースの機械学習エンジニア（<a class="reference external" href="https://hrmos.co/pages/uzabase/jobs/1829077236709650481" rel="noopener noreferrer" target="_blank">We're hiring!</a>）</p></li>
+<li><p><a class="reference external" href="https://startpython.connpass.com/" rel="noopener noreferrer" target="_blank">みんなのPython勉強会</a> スタッフ・4代目LT王子</p></li>
+<li><p>小さなOSSの開発が好き：代表作はSphinx拡張 <a class="reference external" href="https://github.com/ftnext/sphinx-new-tab-link" rel="noopener noreferrer" target="_blank">sphinx-new-tab-link</a></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">EOF</h3>
+</section>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs4/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs4/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs4/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs4/plugin/copycode/copycode.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "history": true, "center": true, "transition": "none", "slideNumber": "c/t", "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealHighlight,RevealNotes,CopyCode,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+
+<html lang="ja" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>PythonでもGitHub Copilot Extensions作れるもん！</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/dist/reveal.css?v=ba26b9ed" />
+    <link rel="stylesheet" href="../_static/revealjs4/dist/theme/black.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/plugin/highlight/zenburn.css?v=83d5745d" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/common.css?v=c1f4a920" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ftnext">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://ftnext.github.io/2024-slides/stapy-nov/copilot-extensions-with-python.html">
+    <meta property="og:title" content="PythonでもGitHub Copilot Extensions作れるもん！">
+    <meta property="og:description" content="みんなのPython勉強会#110 LT">
+    <meta property="og:image" content="https://ftnext.github.io/2024-slides/_static/ogps/stapy-nov.png">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section>
+<h1 style="word-break: keep-all; overflow-wrap: break-word;">PythonでもGitHub Copilot Extensions作れるもん！</h1>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">準備用カンペ</h2>
+<ul>
+<li><p><a class="reference external" href="https://github.com/settings/apps" rel="noopener noreferrer" target="_blank">GitHubのDeveloper settings</a> を開く</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>GitHub Appの「Copilot」メニューを編集できるようにしておく（認証が必要になる）</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>共有はデスクトップ</p></li>
+</ul>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">PythonでもGitHub Copilot Extensions作れるもん！</h2>
+<dl class="field-list simple">
+<dt class="field-odd">Event<span class="colon">:</span></dt>
+<dd class="field-odd"><p>みんなのPython勉強会#110 LT</p>
+</dd>
+<dt class="field-even">Presented<span class="colon">:</span></dt>
+<dd class="field-even"><p>2024/11/14 nikkie</p>
+</dd>
+</dl>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">お前、誰よ</h2>
+<ul class="simple">
+<li><p>nikkie @ Copilotを馬車馬のように働かせ隊</p></li>
+<li><p>機械学習エンジニア・自然言語処理（<a class="reference external" href="https://hrmos.co/pages/uzabase/jobs/1829077236709650481" rel="noopener noreferrer" target="_blank">We're hiring!</a>）</p></li>
+<li><p><a class="reference external" href="https://startpython.connpass.com/" rel="noopener noreferrer" target="_blank">みんなのPython勉強会</a> スタッフ・4代目LT王子</p></li>
+</ul>
+<img alt="../_images/uzabase-white-logo.png" src="../_images/uzabase-white-logo.png"/>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">GitHub Copilot Extensionsって、何よ</h2>
+<p>聞いたことありますか？🙋‍♂️</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">GitHub Copilotは様々な機能を搭載（進化中！）</h3>
+<dl class="field-list simple">
+<dt class="field-odd">コード補完<span class="colon">:</span></dt>
+<dd class="field-odd"><p><kbd class="kbd docutils literal notranslate">Tab</kbd> を押すだけ！（少し直す）</p>
+</dd>
+<dt class="field-even"><strong>チャット</strong><span class="colon">:</span></dt>
+<dd class="field-even"><p>ChatGPTがVS Codeやgithub.comに住んでいるイメージ。色々聞けちゃう</p>
+</dd>
+</dl>
+<p><a class="reference external" href="https://docs.github.com/ja/copilot/about-github-copilot/what-is-github-copilot" rel="noopener noreferrer" target="_blank">GitHub Copilot とは何ですか?</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">🏃‍♂️ご参考</h3>
+<iframe allowfullscreen="true" class="speakerdeck-iframe" data-ratio="1.7777777777777777" frameborder="0" src="https://speakerdeck.com/player/21bcfa0ac76a426e8b39ce92884a9f2a?slide=1" style="border: 0px; background: rgba(0, 0, 0, 0.1) padding-box; margin: 0px; padding: 0px; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 40px; width: 100%; height: auto; aspect-ratio: 560 / 315;" title="GitHub Copilot Tips and Tricks"></iframe></section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">GitHub Copilot <strong>Extensions</strong></h2>
+<p>Extension＝拡張</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><strong>チャット相手</strong> ＝エージェント</h3>
+<ul class="simple">
+<li><p>GitHub Copilot Extensionsで実現</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">@docker</span></code>: <a class="reference external" href="https://github.com/marketplace/docker-for-github-copilot" rel="noopener noreferrer" target="_blank">Docker専門エージェント</a></p></li>
+<li><p>🏃‍♂️*VS Code チャット拡張機能* というものもあるが、本LTではスコープ外</p></li>
+</ul>
+<p><a class="reference external" href="https://docs.github.com/ja/copilot/building-copilot-extensions/about-building-copilot-extensions" rel="noopener noreferrer" target="_blank">Copilot 拡張機能の構築について</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">GitHub Copilot Extensions🤖</h3>
+<ul class="simple">
+<li><p>GitHubが提供する <strong>LLM</strong> を使って実装できる（エンドポイント <code class="docutils literal notranslate"><span class="pre">/chat/completions</span></code>）</p></li>
+<li><p>例えば特定のリポジトリでRAGをするエージェント（プライベートのコードベースで）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">服部さんの発表で知りました</h3>
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" frameborder="0" height="315" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube-nocookie.com/embed/UKpbIv0_J4A?si=DgWvs__rNEf6PMAj&amp;start=1364" title="YouTube video player" width="560"></iframe></section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">実装例</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/copilot-extensions" rel="noopener noreferrer" target="_blank">https://github.com/copilot-extensions</a></p></li>
+<li><p>Node.js, TypeScript</p></li>
+<li><p>Go</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;"><strong>Python</strong> でもGitHub Copilot Extensions作れるもん！</h2>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">得意なPythonを使いたい...！</h3>
+<ul class="simple">
+<li><p>Hello worldにあたる <a class="reference external" href="https://github.com/copilot-extensions/blackbeard-extension" rel="noopener noreferrer" target="_blank">blackbeard-extension</a></p></li>
+<li><p>海賊黒ひげとしてChatに応じる（※ONE PIECEではない）</p></li>
+<li><p>Node.jsによる実装</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">blackbeard-extension (Node.js) 抜粋</h3>
+<pre data-id="blackbeard-extension-node-js"><code class="javascript" data-noescape="" data-trim="">// https://github.com/copilot-extensions/blackbeard-extension/blob/11b5a9abaec14f57ee1c92350bf64553411deb02/index.js#L7-L48
+app.post("/", express.json(), async (req, res) =&gt; {
+  const payload = req.body;
+  const messages = payload.messages;
+  messages.unshift({
+    role: "system", content: "You are a helpful assistant that replies to user messages as if you were the Blackbeard Pirate.",
+  });
+  // Chatのユーザの入力にシステムプロンプトを加え、LLMに返答を生成させる
+  const copilotLLMResponse = await fetch(
+    "https://api.githubcopilot.com/chat/completions",
+    // 省略
+  )
+  Readable.from(copilotLLMResponse.body).pipe(res);
+})</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Pythonでもできました✌️（FastAPI❤️）</h3>
+<pre data-id="python-fastapi"><code class="python" data-noescape="" data-trim=""># https://github.com/ftnext/blackbeard-extension-python/blob/56ae295c54e2241645382a8a027a81316072b43b/app.py#L10-L40
+@app.post("/")
+async def stream(request: Request, x_github_token: str = Header(None)):
+    payload = await request.json()
+    messages = payload["messages"]
+    messages.insert(
+        0, {"role": "system", "content": "You are a helpful assistant that replies to user messages as if you were the Blackbeard Pirate."})
+
+    def pass_generator():
+        with httpx.stream(
+            "POST", "https://api.githubcopilot.com/chat/completions", headers=headers, json=data,
+        ) as response:
+            # response.iter_lines() を yield
+
+    return StreamingResponse(pass_generator(), media_type="text/event-stream")</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">簡単に動かせます！</h3>
+<p>Demo <a class="reference external" href="https://github.com/ftnext/blackbeard-extension-python" rel="noopener noreferrer" target="_blank">https://github.com/ftnext/blackbeard-extension-python</a></p>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">まとめ🌯 PythonでもGitHub Copilot Extensions作れるもん！</h2>
+<ul class="simple">
+<li><p>Copilot Chatのエージェントを作れるGitHub Copilot Extensions</p></li>
+<li><p><strong>海賊黒ひげ拡張をPythonで実装</strong> してみました</p></li>
+<li><p>OpenAIのGPTsのようなものをプログラミングで作っている感覚でとってもワクワク</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">ご清聴ありがとうございました</h3>
+<p><a class="reference external" href="https://github.com/ftnext/blackbeard-extension-python" rel="noopener noreferrer" target="_blank">blackbeard-extension-python</a> お試しあれ！</p>
+<p>☠️ゼハハハハ☠️</p>
+</section>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs4/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs4/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs4/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs4/plugin/copycode/copycode.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "history": true, "center": true, "transition": "none", "slideNumber": "c/t", "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealHighlight,RevealNotes,CopyCode,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>
