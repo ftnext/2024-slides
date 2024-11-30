@@ -1,6 +1,7 @@
 # 2024-slides
 
 - [櫻木真乃さんかわいいLT](https://ftnext.github.io/2024-slides/engineers-anime/sakuragi-mano-san.html) @[アニメから得た学びを発表会 (2024/11)](https://engineers-anime.connpass.com/event/334139/)
+- [PythonでもGitHub Copilot Extensions作れるもん！](https://ftnext.github.io/2024-slides/stapy-nov/copilot-extensions-with-python.html#/2) @[みんなのPython勉強会#110 (2024/11)](https://startpython.connpass.com/event/334454/)
 - [LLMの知識で使い倒すCopilot](https://ftnext.github.io/2024-slides/vscodejp-nov/copilot-as-large-language-model.html) @[VS Code Meetup #32 - VS Code x Copilot (2024/11)](https://vscode.connpass.com/event/333720/)
 - [関数の引数の型ヒントをカイゼンするFlake8 pluginを作りました！！](https://ftnext.github.io/2024-slides/stapy-oct/introduction-flake8-kotoha.html#/1) @[みんなのPython勉強会#109 (2024/10)](https://startpython.connpass.com/event/331957/)
 - [1日1エントリにもがく中で見えてきたXPの「フィードバック」の価値](https://ftnext.github.io/2024-slides/xpjug/feedback-value-from-everyday-blogging.html#/1) @[XP祭り2024 (2024/09)](https://xpjug.connpass.com/event/326033/)
