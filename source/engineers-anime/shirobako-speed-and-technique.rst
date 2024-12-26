@@ -20,11 +20,23 @@ SHIROBAKOのあのセリフ
 お前、誰よ（自己紹介）
 ======================================================================
 
-TODO
+* nikkie（にっきー）
+* Pythonとアニメが好き
+* `アドカレ：『白い砂のアクアトープ』に学ぶ、叶わなかった夢との向き合い方 <https://nikkie-ftnext.hatenablog.com/entry/aquatope-anime-broken-dreams-and-future>`__
+* 今期『アオのハコ』めっっっっちゃよい（**雛様** あああ。**千夏先輩** うあああ）
+
+.. _厳しい1on1: https://x.com/pauli_agile/status/1806334941254586749
+
+きっかけ🏃‍♂️： `厳しい1on1`_ 系アニメかな
+--------------------------------------------------
+
+.. raw:: html
+
+    <blockquote class="twitter-tweet" data-lang="ja" data-align="center" data-dnt="true"><p lang="ja" dir="ltr">毎日１on１してほしい。僕の上司になってください。 <a href="https://t.co/Iy5nRcdSBf">pic.twitter.com/Iy5nRcdSBf</a></p>&mdash; うーたん (@uutan1108) <a href="https://twitter.com/uutan1108/status/1841493777233408239?ref_src=twsrc%5Etfw">2024年10月2日</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 .. _SHIROBAKO: http://shirobako-anime.com/
 
-`SHIROBAKO`_
+`SHIROBAKO`_ （今日は青じゃなくて白！）
 ======================================================================
 
 * **アニメ業界** お仕事モノ（P.A.WORKS お仕事シリーズ 第2作）
@@ -46,6 +58,15 @@ ITエンジニア、SHIROBAKO大好き説🤗
 * IMO：SHIROBAKO × エンジニア = **こにふぁーさん**
 * 過去のエンジニアニメでも
 
+10月 エンジニアニメ in 関西 🏃‍♂️
+--------------------------------------------------
+
+.. raw:: html
+
+    <iframe class="speakerdeck-iframe" style="border: 0px; background: rgba(0, 0, 0, 0.1) padding-box; margin: 0px; padding: 0px; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 40px; width: 100%; height: auto; aspect-ratio: 560 / 315;" frameborder="0" src="https://speakerdeck.com/player/36a4c5f74f2647f99ff6ea7e0c7e5c8b" title="「ばん・さく・つき・たー！」にならないためにSHIROBAKOから 学んだこと" allowfullscreen="true" data-ratio="1.7777777777777777"></iframe>
+
+ほか、`5月の東京開催 <https://togetter.com/li/2364695?page=7>`__ でも
+
 夢追う5人 (1/2)
 --------------------------------------------------
 
@@ -65,7 +86,14 @@ ITエンジニア、SHIROBAKO大好き説🤗
 
 .. raw:: html
 
-    <blockquote class="twitter-tweet" data-lang="ja" data-align="center" data-dnt="true"><p lang="ja" dir="ltr">10/1に京都、10/2に東京で開催します！<br><br>アニメSHIROBAKOだと今井みどりが好きです。<br><br>アニメから得た学びを発表会を京都で開催します｜うーたん <a href="https://twitter.com/uutan1108?ref_src=twsrc%5Etfw">@uutan1108</a> <a href="https://twitter.com/hashtag/note?src=hash&amp;ref_src=twsrc%5Etfw">#note</a> <a href="https://t.co/xCpE1rpM3v">https://t.co/xCpE1rpM3v</a> <a href="https://twitter.com/hashtag/%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%8B%E3%82%A2%E3%83%8B%E3%83%A1?src=hash&amp;ref_src=twsrc%5Etfw">#エンジニアニメ</a></p>&mdash; うーたん (@uutan1108) <a href="https://twitter.com/uutan1108/status/1838637687563260391?ref_src=twsrc%5Etfw">September 24, 2024</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    <blockquote class="twitter-tweet" data-lang="ja" data-align="center" data-dnt="true"><p lang="ja" dir="ltr">10/1に京都、10/2に東京で開催します！<br><br>アニメSHIROBAKOだと今井みどりが好きです。<br><br>アニメから得た学びを発表会を京都で開催します｜うーたん <a href="https://twitter.com/uutan1108?ref_src=twsrc%5Etfw">@uutan1108</a> <a href="https://twitter.com/hashtag/note?src=hash&amp;ref_src=twsrc%5Etfw">#note</a> <a href="https://t.co/xCpE1rpM3v">https://t.co/xCpE1rpM3v</a> <a href="https://twitter.com/hashtag/%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%8B%E3%82%A2%E3%83%8B%E3%83%A1?src=hash&amp;ref_src=twsrc%5Etfw">#エンジニアニメ</a></p>&mdash; うーたん (@uutan1108) <a href="https://twitter.com/uutan1108/status/1838637687563260391?ref_src=twsrc%5Etfw">September 24, 2024</a></blockquote>
+
+脱線：夢追う5人以外は **モデルがいます** 🏃‍♂️
+--------------------------------------------------
+
+.. raw:: html
+
+    <blockquote class="twitter-tweet" data-lang="ja" data-align="center" data-dnt="true"><p lang="ja" dir="ltr">SHIROBAKOの男性キャラの年齢や体型が様々なのは、実際にモデルがいて、その方々に沿ったキャラ造形にしているからです。<br><br>ちなみに女性にもかなりモデルの人物がいますし、<br>女性キャラクターの年齢層は10代〜40代以上とかなり幅があります。<br><br>あまりにも浅い考察ですね。 <a href="https://t.co/hTJX8JCK5p">https://t.co/hTJX8JCK5p</a> <a href="https://t.co/UfyoIOa2cN">pic.twitter.com/UfyoIOa2cN</a></p>&mdash; 知念実希人【公式】 (@MIKITO_777) <a href="https://twitter.com/MIKITO_777/status/1477650095508455425?ref_src=twsrc%5Etfw">2022年1月2日</a></blockquote>
 
 あのセリフ：速く描くには巧くなる
 ======================================================================
@@ -90,7 +118,12 @@ ITエンジニア、SHIROBAKO大好き説🤗
 :作画監督: 瀬川さん
 :関わってない: **杉江さん** （絵麻たその隣席のおじいちゃん）
 
-.. TODO 画像入れる？
+こちらの方々
+--------------------------------------------------
+
+.. image:: ../_static/engineers-anime/shirobako-animators.drawio.png
+
+http://shirobako-anime.com/character.html から作成
 
 ネコが思うように描けない絵麻たそに
 --------------------------------------------------
@@ -187,12 +220,14 @@ YAPC::Hakodate 2024 キーノート
 速くて巧いへ（原画・プログラミング）
 --------------------------------------------------
 
-.. TODO 図
+.. image:: ../_static/engineers-anime/quantity-quality.drawio.png
+    :scale: 150%
 
 動作するきれいなコードへ
 --------------------------------------------------
 
-.. TODO 図
+.. image:: ../_static/engineers-anime/tdd.drawio.png
+    :scale: 150%
 
 まとめ🌯 2024年で印象的な学び：SHIROBAKOのあのセリフ
 ======================================================================
