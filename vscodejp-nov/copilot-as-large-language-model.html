@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+<html lang="ja" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>LLMの知識で使い倒すCopilot</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/dist/reveal.css?v=ba26b9ed" />
+    <link rel="stylesheet" href="../_static/revealjs4/dist/theme/black.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/plugin/highlight/zenburn.css?v=83d5745d" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/common.css?v=c1f4a920" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ftnext">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://ftnext.github.io/2024-slides/vscodejp-nov/copilot-as-large-language-model.html">
+    <meta property="og:title" content="LLMの知識で使い倒すCopilot">
+    <meta property="og:description" content="VS Code Meetup #32 LT">
+    <meta property="og:image" content="https://ftnext.github.io/2024-slides/_static/ogps/vscodejp-nov.png">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section>
+<h1 style="word-break: keep-all; overflow-wrap: break-word;">LLMの知識で使い倒すCopilot</h1>
+<dl class="field-list simple">
+<dt class="field-odd">Event<span class="colon">:</span></dt>
+<dd class="field-odd"><p>VS Code Meetup #32 LT</p>
+</dd>
+<dt class="field-even">Presented<span class="colon">:</span></dt>
+<dd class="field-even"><p>2024/11/08 nikkie</p>
+</dd>
+</dl>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">📣 みなさーん！ GitHub Copilot、使ってますかー？？</h2>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">私「いかにCopilotにコードを書かせるか、それだけを考えている」</h3>
+<ul class="simple">
+<li><p>Copilotに馬車馬のように働いてもらうために、私はLLMについての知識を使う</p></li>
+<li><p>本LTのスコープは <a class="reference external" href="https://code.visualstudio.com/docs/copilot/ai-powered-suggestions#_inline-suggestions" rel="noopener noreferrer" target="_blank">Inline suggestions</a> です</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">お前、誰よ（自己紹介）</h2>
+<ul class="simple">
+<li><p>nikkie（にっきー）</p></li>
+<li><p>4月のVS Code Conference JPぶりですね</p></li>
+<li><p><a class="reference external" href="https://ftnext.github.io/2024-slides/vscodeconjp/transform-text-commands.html#/1" rel="noopener noreferrer" target="_blank">VS Codeで文字列のちょっとした変換ができるんです！ 〜実装まで覗くクイックツアー〜</a></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">仕事でもCopilot！</h3>
+<ul class="simple">
+<li><p>機械学習エンジニア・ <strong>自然言語処理</strong> （<a class="reference external" href="https://hrmos.co/pages/uzabase/jobs/1829077236709650481" rel="noopener noreferrer" target="_blank">We're hiring!</a>）</p></li>
+<li><p>Copilot、お世話になっています！（<a class="reference external" href="https://www.uzabase.com/jp/info/20230428-play-engineering/" rel="noopener noreferrer" target="_blank">経済情報領域におけるChatGPT・LLM活用推進プロジェクト</a>）</p></li>
+</ul>
+<img alt="../_images/uzabase-white-logo.png" src="../_images/uzabase-white-logo.png"/>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">プライベートでもCopilot！</h3>
+<ul class="simple">
+<li><p><span class="fab fa-github"></span> <a class="reference external" href="https://github.com/ftnext" rel="noopener noreferrer" target="_blank">@ftnext</a></p></li>
+<li><p><a class="reference external" href="https://github.com/Uberi/speech_recognition" rel="noopener noreferrer" target="_blank">Uberi/speech_recognition</a> 8.4k⭐️ <strong>メンテナ</strong> （無料提供によるサポート、ありがとうございます）</p></li>
+<li><p>🏃‍♂️他にこのスライドで使っている <a class="reference external" href="https://pypi.org/project/sphinx-new-tab-link/" rel="noopener noreferrer" target="_blank">sphinx-new-tab-link</a> など</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">Copilotが精度よく続きを書くとき（※私の感覚）</h2>
+<ul class="simple">
+<li><p><em>再掲：Inline suggestionsのお話</em></p></li>
+<li><p>空に近いファイルではなく、<strong>ある程度書かれている</strong> ファイル</p></li>
+<li><p>仮説：Copilotが参考にできるコードが多いとき</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">自然言語処理からの裏付け</h3>
+<ul class="simple">
+<li><p>再掲 <em>参考にできるコードが多いとき、Copilotは精度よく生成</em></p></li>
+<li><p>実は、<strong>例示が多い</strong> とき、LLMは <strong>精度が良くなる</strong> と一般化できる</p></li>
+<li><p>キーワードは <em>few-shot</em></p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">GitHub Copilotの裏は、OpenAIのGPT</h2>
+<blockquote>
+<div><p>The first public version of Copilot was launched using Codex, an early version of OpenAI GPT-3, specifically fine-tuned for coding tasks.</p>
+</div></blockquote>
+<p><a class="reference external" href="https://github.blog/news-insights/product-news/bringing-developer-choice-to-copilot/" rel="noopener noreferrer" target="_blank">Bringing developer choice to Copilot with Anthropic’s Claude 3.5 Sonnet, Google’s Gemini 1.5 Pro, and OpenAI’s o1-preview</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">GitHub Copilotの裏は、OpenAIのGPT（承前）🏃‍♂️</h3>
+<blockquote>
+<div><p>we have updated the base model versions multiple times, using a range from GPT 3.5-turbo to GPT 4o and 4o-mini models</p>
+</div></blockquote>
+<p><a class="reference external" href="https://github.blog/news-insights/product-news/bringing-developer-choice-to-copilot/" rel="noopener noreferrer" target="_blank">Bringing developer choice to Copilot with Anthropic’s Claude 3.5 Sonnet, Google’s Gemini 1.5 Pro, and OpenAI’s o1-preview</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">ChatGPT（＝GPT-3.5）は、いきなり出てきたわけではない</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://openai.com/index/language-unsupervised/" rel="noopener noreferrer" target="_blank">2018年 GPT</a></p></li>
+<li><p><a class="reference external" href="https://openai.com/index/better-language-models/" rel="noopener noreferrer" target="_blank">2019年 GPT-2</a></p></li>
+<li><p>2020年 GPT-3</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">GPT-3論文「Language Models are Few-Shot Learners」</h3>
+<ul class="simple">
+<li><p>訳してみると「<em>言語モデルは少数の例示から学習する</em>」</p></li>
+<li><p><a class="reference external" href="https://arxiv.org/abs/2005.14165" rel="noopener noreferrer" target="_blank">https://arxiv.org/abs/2005.14165</a></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">GPT-3のプロンプト</h3>
+<ul class="simple">
+<li><p><strong>自然言語</strong> で書けばよい</p></li>
+<li><p>続きの生成を <em>促す</em></p></li>
+</ul>
+<div class="literal-block-wrapper docutils container" id="id18">
+<div class="code-block-caption"><span class="caption-text">GPT-3論文 Figure 2.1 より</span></div>
+<pre><code class="default" data-noescape="" data-trim="">Translate English to French:
+cheese =&gt;</code></pre>
+</div>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">GPT-3のここがすごい！</h3>
+<ul>
+<li><p>自然言語の <strong>プロンプトを変えるだけ</strong> で、1つのモデルで様々なタスクが解ける</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>コード生成、翻訳、etc.etc.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>🏃‍♂️後の世代（ChatGPT以降）は、加えて会話形式で生成、かつ、有害なことを言わないように追加訓練をしています</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">few-shot プロンプト</h3>
+<ul class="simple">
+<li><p><strong>例示</strong> （shot） <strong>をいくつも見せ</strong> た上で続きの生成を促す</p></li>
+</ul>
+<div class="literal-block-wrapper docutils container" id="id19">
+<div class="code-block-caption"><span class="caption-text">GPT-3論文 Figure 2.1 より</span></div>
+<pre><code class="default" data-noescape="" data-trim="">Translate English to French:
+sea otter =&gt; loutre de mer
+peppermint =&gt; menthe poivrée
+plush girafe =&gt; girafe peluche
+cheese =&gt;</code></pre>
+</div>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">パラメタ数が多いモデルほど、例を見せるほど正答率向上</h3>
+<a class="reference internal image-reference" href="../_images/2005.14165_figure12.png"><img alt="../_images/2005.14165_figure12.png" src="../_images/2005.14165_figure12.png" style="width: 770.4px; height: 412.2px;"/></a>
+<p>GPT-3論文 Figure 1.2</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">脱線🏃‍♂️ なぜ例示すると性能が上がるかは、まだ説明できていないらしいです</h3>
+<ul class="simple">
+<li><p>例を見せる＝In-Context Learning (ICL) と呼ぶ（GPT-3論文より）</p></li>
+<li><p>なんと <strong>例が間違っていても性能が上がる</strong> ことが分かっている！（<a class="reference external" href="https://arxiv.org/abs/2202.12837" rel="noopener noreferrer" target="_blank">Rethinking the Role of Demonstrations: What Makes In-Context Learning Work?</a>）</p></li>
+<li><p>ICLの説明はいくつか仮説が出てきているが、研究者間でまだ合意できていないらしい</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">GitHub Copilotとfew-shotプロンプト</h2>
+<ul class="simple">
+<li><p>参考にできるコードが多いとき、Copilotは精度よく生成する感覚を説明できていそう</p></li>
+<li><p><strong>すでに書いたコードがCopilotへの例示に</strong> なっている！</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">よーし、テスト書くぞー！！（直近の例）</h3>
+<p>再掲 <em>いかにCopilotにコードを書かせるか</em></p>
+<div class="literal-block-wrapper docutils container" id="id20">
+<div class="code-block-caption"><span class="caption-text">例：pytestを使ったPythonのテストコードのイメージ</span></div>
+<pre><code class="python" data-noescape="" data-trim="">def test_  # からのファイルに最初のテストを書くとき、Copilotはやや見当違いな生成</code></pre>
+</div>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">テストケースを1つか2つ書いた後</h3>
+<pre data-id="id11"><code class="python" data-noescape="" data-trim="">def test_これこれのときはTrueを返す():
+    # actualを特定の引数の組で作るコード
+    assert actual is True
+
+def test_それそれのときはFalseを返す():
+    # actualを上とは別の引数の組で作るコード
+    assert actual is False
+
+def test_  # まだ網羅していない引数の組でコードを書いてくれる
+    # assertのsuggestionの精度もよい</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">ただし、例に引っ張られる</h3>
+<div class="literal-block-wrapper docutils container" id="id21">
+<div class="code-block-caption"><span class="caption-text">pytestとしてより良い書き換え</span></div>
+<pre><code class="diff" data-noescape="" data-trim="">-assert actual is True
++assert actual
+
+-assert actual is False
++assert not actual</code></pre>
+</div>
+<ul class="simple">
+<li><p>IMO：いまのCopilotは <strong>ライブラリのベストプラクティスを提示するわけではない</strong> （だから人間に知識が必要）</p></li>
+</ul>
+</section>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">まとめ🌯：LLMの知識で使い倒すCopilot</h2>
+<ul class="simple">
+<li><p>GPT-3論文で示された <strong>few-shotを意識</strong> して、Copilotの Inline suggestions を使っています</p></li>
+<li><p>書き進めて例示豊富になったファイルでは、Tabで採用していくだけ</p></li>
+<li><p>例を超える生成はまだできないので、ライブラリの <strong>ベストプラクティスの知識は開発者に必要</strong> と考えています</p></li>
+</ul>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">One more thing...</h2>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">服部さん 今後の発表イベント</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://fod.connpass.com/event/330797/" rel="noopener noreferrer" target="_blank">11/11(月) 明日の開発カンファレンス 2024</a></p></li>
+<li><p><a class="reference external" href="https://findy.connpass.com/event/333534/" rel="noopener noreferrer" target="_blank">11/13(水) コード×AI疑問解消会（Findyさん）</a></p></li>
+<li><p>11/14(木) みんなのPython勉強会#110</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">11/14(木) みんなのPython勉強会#110</h3>
+<ul class="simple">
+<li><p>『コード×AI』本・PyCharmとAI</p></li>
+<li><p><strong>オンライン</strong> 開催 <a class="reference external" href="https://startpython.connpass.com/event/334454/" rel="noopener noreferrer" target="_blank">https://startpython.connpass.com/event/334454/</a></p></li>
+<li><p>スタッフしています。よろしければ再びお会いしましょう！</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">ご清聴ありがとうございました</h3>
+<p>References・Appendixが続きます</p>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">References</h2>
+<ul class="simple">
+<li><p>『<a class="reference external" href="https://gihyo.jp/book/2023/978-4-297-13633-8" rel="noopener noreferrer" target="_blank">大規模言語モデル入門</a>』4.2.1</p></li>
+<li><p><a class="reference external" href="https://www.promptingguide.ai/jp/techniques/fewshot" rel="noopener noreferrer" target="_blank">Few-Shotプロンプティング（Prompt Engineering Guide）</a></p></li>
+<li><p><a class="reference external" href="https://docs.github.com/ja/copilot/using-github-copilot/prompt-engineering-for-github-copilot#give-examples" rel="noopener noreferrer" target="_blank">例を示す（GitHub Copilot のプロンプト エンジニアリング）</a></p></li>
+<li><p>『<a class="reference external" href="https://www.shoeisha.co.jp/book/detail/9784798177458" rel="noopener noreferrer" target="_blank">テスト駆動Python 第2版</a>』2.3</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><a class="reference external" href="https://arxiv.org/abs/2005.14165" rel="noopener noreferrer" target="_blank">GPT-3論文</a> Figure 2.1 (left)</h3>
+<a class="reference internal image-reference" href="../_images/2005.14165_figure21_left.png"><img alt="../_images/2005.14165_figure21_left.png" src="../_images/2005.14165_figure21_left.png" style="width: 327.20000000000005px; height: 576.0px;"/></a>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">Appendix</h2>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">お前、誰よ（補足）</h3>
+<ul class="simple">
+<li><p>毎日 <a class="reference external" href="https://nikkie-ftnext.hatenablog.com/" rel="noopener noreferrer" target="_blank">ブログ</a> を書いてます。連続 <strong>720</strong> 日達成</p></li>
+<li><p>VS Code拡張 <a class="reference external" href="https://marketplace.visualstudio.com/items?itemName=everlasting-diary.tokimeki-editing" rel="noopener noreferrer" target="_blank">TOKIMEKI Editing🌈</a></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">拙ブログ 関連記事</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/llm-prompt-basics-202405-few-shot-learning-and-chain-of-thought" rel="noopener noreferrer" target="_blank">基本に立ち戻る：LLMのプロンプト</a></p></li>
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/care-github-copilot-close-all-and-pin-editor-for-context" rel="noopener noreferrer" target="_blank">そこにいるペアのCopilotを慮り、VS Codeのエディタに増えたタブを閉じる</a></p></li>
+<li><p>Copilotから学ぶ例： <a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/grep-only-matching-pcre-lookahead-lookbehind" rel="noopener noreferrer" target="_blank">grepの-oや正規表現の肯定先読み・肯定戻り読みで、テキストの一部だけを取り出す</a></p></li>
+</ul>
+</section>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">EOF</h2>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs4/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs4/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs4/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs4/plugin/copycode/copycode.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "history": true, "center": true, "transition": "none", "slideNumber": "c/t", "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealHighlight,RevealNotes,CopyCode,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+
+<html lang="ja" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>1日1エントリにもがく中で見えてきたXPの「フィードバック」の価値</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/dist/reveal.css?v=ba26b9ed" />
+    <link rel="stylesheet" href="../_static/revealjs4/dist/theme/black.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/plugin/highlight/zenburn.css?v=83d5745d" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/common.css?v=c1f4a920" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ftnext">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://ftnext.github.io/2024-slides/xpjug/feedback-value-from-everyday-blogging.html">
+    <meta property="og:title" content="1日1エントリにもがく中で見えてきたXPの「フィードバック」の価値">
+    <meta property="og:description" content="XP祭り2024">
+    <meta property="og:image" content="https://ftnext.github.io/2024-slides/_static/ogps/xpjug.png">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section>
+<h1 style="word-break: keep-all; overflow-wrap: break-word;">1日1エントリにもがく中で見えてきたXPの「フィードバック」の価値</h1>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">1日1エントリにもがく中で見えてきたXPの「フィードバック」の価値</h2>
+<dl class="field-list simple">
+<dt class="field-odd">Event<span class="colon">:</span></dt>
+<dd class="field-odd"><p>XP祭り2024</p>
+</dd>
+<dt class="field-even">Presented<span class="colon">:</span></dt>
+<dd class="field-even"><p>2024/09/28 nikkie</p>
+</dd>
+</dl>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">お前、誰よ（自己紹介）</h2>
+<ul class="simple">
+<li><p>nikkie ／ <span class="fab fa-github"></span> <a class="reference external" href="https://github.com/ftnext" rel="noopener noreferrer" target="_blank">@ftnext</a></p></li>
+<li><p>機械学習エンジニア・自然言語処理・XP（<a class="reference external" href="https://hrmos.co/pages/uzabase/jobs/1829077236709650481" rel="noopener noreferrer" target="_blank">We're hiring!</a>）</p></li>
+<li><p>Pythonをよく書く。小さなOSS開発（代表作 <a class="reference external" href="https://github.com/ftnext/sphinx-new-tab-link" rel="noopener noreferrer" target="_blank">sphinx-new-tab-link</a>）</p></li>
+</ul>
+<img alt="../_images/uzabase-white-logo.png" src="../_images/uzabase-white-logo.png"/>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">毎日ブログを書いてます</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/" rel="noopener noreferrer" target="_blank">https://nikkie-ftnext.hatenablog.com/</a></p></li>
+<li><p>連続 <strong>680日</strong> 突破</p></li>
+<li><p>豊富なストックがあるわけではなく、自転車操業🚵‍♀️（＝もがき）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">1日1エントリ</h3>
+<ul class="simple">
+<li><p>毎日テックブログ <strong>ではありません</strong></p></li>
+<li><p>技術記事もそうでない記事（趣味・暮らし向き）も書いています</p></li>
+<li><p>割合としては技術記事の方が多いはず（7〜8割？）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">1日1エントリの雰囲気</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/everyday-entry-as-snapshot-of-the-day" rel="noopener noreferrer" target="_blank">その日1日を写真に撮るような</a></p></li>
+<li><p>感情の動き（例：仕事や趣味開発でハマっていた事象が解決できた！）</p></li>
+<li><p>趣は <a class="reference external" href="https://syossan.hateblo.jp/entry/2016/02/16/144305" rel="noopener noreferrer" target="_blank">Today I Learned (TIL)</a></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">⚠️注意事項</h3>
+<ul class="simple">
+<li><p>1日1エントリをオススメする気は <strong>ありません</strong> （超きついよ）</p></li>
+<li><p>ブログを継続するコツは（XPとは関係ないと思っているので）お伝えしません</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">XPの価値</h2>
+<ul class="simple">
+<li><p>コミュニケーション</p></li>
+<li><p>シンプリシティ</p></li>
+<li><p><strong>フィードバック</strong></p></li>
+<li><p>勇気</p></li>
+<li><p>リスペクト</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">価値、原則、プラクティス</h3>
+<iframe allowfullscreen="true" class="speakerdeck-iframe" data-ratio="1.7777777777777777" frameborder="0" src="https://speakerdeck.com/player/6724fd9dfb65454b8af32bf05c19cbb2?slide=24" style="border: 0px; background: rgba(0, 0, 0, 0.1) padding-box; margin: 0px; padding: 0px; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 40px; width: 100%; height: auto; aspect-ratio: 560 / 315;" title="実践エクストリームプログラミング / Extreme Programming in Practice"></iframe></section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">見えてきたXPの「フィードバック」の価値</h3>
+<blockquote>
+<div><p>フィードバックサイクルをいかに高速に回すか</p>
+</div></blockquote>
+<p>仕事で機械学習をする中で意識する</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">機械学習プロジェクトにおけるフィードバックサイクル？</h3>
+<ul class="simple">
+<li><p>機械学習で提供する価値を高めたい（例：性能のより高い機械学習モデル）</p></li>
+<li><p>性能のよいモデルの作り方は <strong>あらかじめ分からない</strong> （案を試して、性能向上 or 効果なし）</p></li>
+<li><p><strong>先が見通せない状況</strong> でフィードバックを得て進む、とは？？</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">お話しするのは、2トピック</h3>
+<ul class="simple">
+<li><p>ベイビーステップ（原則）</p></li>
+<li><p>イテレーティブ</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">ベイビーステップ</h2>
+<blockquote>
+<div><p>大きな変更は、大きなステップでやりたくなるものである。</p>
+</div></blockquote>
+<p>『<a class="reference external" href="https://www.ohmsha.co.jp/book/9784274217623/" rel="noopener noreferrer" target="_blank">エクストリームプログラミング（第2版）</a>』 5.13 書き出し</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">ブログ執筆に当てはめると</h3>
+<blockquote>
+<div><p>大きな記事は、大きなステップで書きたくなるものである（nikkie）</p>
+</div></blockquote>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">大きな記事を書くぞ！</h3>
+<ul class="simple">
+<li><p>ヒット（バズ）を狙って、大著な1記事💪</p></li>
+<li><p>あれもこれも盛り込んでいく</p></li>
+<li><p>IMO 1万字超えると私にはしんどい</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">再び『<a class="reference external" href="https://www.ohmsha.co.jp/book/9784274217623/" rel="noopener noreferrer" target="_blank">エクストリームプログラミング（第2版）</a>』</h3>
+<blockquote>
+<div><p>大きな変更が失敗してチームがムダに後退するよりも、小さなステップのオーバーヘッドの方が小さい。</p>
+</div></blockquote>
+<p>ベイビーステップ（5.13）</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><strong>毎日</strong> の強制力で1つ1つの記事は小さくなった</h3>
+<ul class="simple">
+<li><p>「<a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/everyday-small-output-202312#%E7%B6%99%E7%B6%9A%E3%81%99%E3%82%8B%E4%B8%AD%E3%81%A7%E3%82%A2%E3%82%A6%E3%83%88%E3%83%97%E3%83%83%E3%83%88%E3%81%AE%E5%8D%98%E4%BD%8D%E3%81%AF%E5%B0%8F%E3%81%95%E3%81%8F%E3%81%AA%E3%82%8A%E3%81%BE%E3%81%97%E3%81%9F" rel="noopener noreferrer" target="_blank">継続する中で、アウトプットの単位は小さくなりました</a>」</p></li>
+<li><p>小さな記事のオーバーヘッドを受け容れた結果に</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">小さな記事という考え方</h2>
+<p>計画の考え方（頻繁にリリースする）との関連</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">一度に1つのプロジェクト</h3>
+<img alt="../_images/aoad1_release_planning__multitasking.gif" src="../_images/aoad1_release_planning__multitasking.gif"/>
+<p>『<a class="reference external" href="https://www.oreilly.co.jp/books/9784873113951/" rel="noopener noreferrer" target="_blank">アート・オブ・アジャイル デベロップメント</a>』8.2.1 <a class="reference external" href="https://www.jamesshore.com/v2/books/aoad1/release_planning" rel="noopener noreferrer" target="_blank">図の出典</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">一度に1つのプロジェクト</h3>
+<ul class="simple">
+<li><p>マルチタスク（図のシナリオA）をしない</p></li>
+<li><p>一度に1つだけのプロジェクト（図のシナリオB）で進めたほうが、届く価値（＝対価）は大きい</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">早期にリリース、頻繁にリリース</h3>
+<img alt="../_images/aoad1_release_planning__multiple_releases.gif" src="../_images/aoad1_release_planning__multiple_releases.gif"/>
+<p>『<a class="reference external" href="https://www.oreilly.co.jp/books/9784873113951/" rel="noopener noreferrer" target="_blank">アート・オブ・アジャイル デベロップメント</a>』8.2.2 <a class="reference external" href="https://www.jamesshore.com/v2/books/aoad1/release_planning" rel="noopener noreferrer" target="_blank">図の出典</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">早期にリリース、頻繁にリリース</h3>
+<ul class="simple">
+<li><p>全部完成すると毎月 <em>5</em> の価値が届くとする</p></li>
+<li><p>シナリオAは6ヶ月目に一度だけリリースして、7ヶ月目に5の価値を届ける（＝対価を得る）</p></li>
+<li><p>シナリオBは <strong>3の価値で3ヶ月目にリリース</strong>。届けている価値の総量はAより多い</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">頻繁にリリースするために</h3>
+<ul class="simple">
+<li><p><strong>機能を小さく</strong> する</p></li>
+<li><p>1日1エントリで記事が小さくなった経験から、わかりみが深い（Shoreさん、天才！）</p></li>
+<li><p>IMO <em>小さいは正義！</em></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">『<a class="reference external" href="https://asciidwango.jp/post/163632160215/" rel="noopener noreferrer" target="_blank">継続的デリバリー</a>』より</h3>
+<blockquote>
+<div><p>ソフトウェアの世界では、何か痛みを伴うものがあった場合にその痛みを軽減する方法は、もっとこまめに行うことだけだ。(Kindle版 p.62)</p>
+</div></blockquote>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">小さくするテクニック： <em>縦スライス</em></h2>
+<p>from ユーザストーリーの考え方</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">縦スライスと横スライス</h3>
+<img alt="../_images/aoad1_release_planning__horizontal_and_vertical_stripes.gif" src="../_images/aoad1_release_planning__horizontal_and_vertical_stripes.gif"/>
+<p>『<a class="reference external" href="https://www.oreilly.co.jp/books/9784873113951/" rel="noopener noreferrer" target="_blank">アート・オブ・アジャイル デベロップメント</a>』8.2.6 <a class="reference external" href="https://www.jamesshore.com/v2/books/aoad1/release_planning" rel="noopener noreferrer" target="_blank">図の出典</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">横スライス（horizontal）の例</h3>
+<img alt="../_images/edited_aoad1_horizontal_stripes.drawio.png" src="../_images/edited_aoad1_horizontal_stripes.drawio.png"/>
+<p>James Shoreさん作成の図をnikkieが加工</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">横スライス（horizontal）の例</h3>
+<ul class="simple">
+<li><p>データ取得のストーリー</p></li>
+<li><p>データ検証のストーリー</p></li>
+<li><p>データベースへ書き込むストーリー</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">横スライス的な記事分割</h3>
+<ul class="simple">
+<li><p>Part 1, 2, ... のように分かれる</p></li>
+<li><p>Part 1だけでは不完全。2は1がないと読めない</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">横スライスのストーリー（Shoreさん曰く）</h3>
+<ul class="simple">
+<li><p>簡単に作れる</p></li>
+<li><p>しかし、計画の柔軟性をなくす（3つで1つの大きな <strong>塊</strong>）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">そこで <strong>縦</strong> スライス！（vertical）</h3>
+<img alt="../_images/edited_aoad1_vertical_stripes.drawio.png" src="../_images/edited_aoad1_vertical_stripes.drawio.png"/>
+<p>James Shoreさん作成の図をnikkieが加工</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">縦スライスの例</h3>
+<p><strong>特定のデータ</strong> について、取得・検証・DB書き込みできる</p>
+<ul class="simple">
+<li><p>顧客データ</p></li>
+<li><p>送付先住所</p></li>
+<li><p>請求情報</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">縦スライスのストーリー（Shoreさん曰く）</h3>
+<ul class="simple">
+<li><p>各ストーリーは <strong>小さい価値を届けきって</strong> いる（途中で全く別の開発に移ってもよい）</p></li>
+<li><p>＝計画は柔軟性を得られる</p></li>
+<li><p>縦スライスできるようになるには、練習が必要</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">縦スライス的な記事分割</h3>
+<ul>
+<li><p>あるツールの <strong>特定の用途</strong> についてアウトプット</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>1記事ですべての機能を網羅しない</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>書いていてインストールだけでも難しいと分かったら、インストールの記事と用途記事（インストール記事を内包）に分けた</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">縦スライスの恩恵</h3>
+<ul class="simple">
+<li><p>nikkieは <strong>超気分屋</strong>。続きが書けないことが多い</p></li>
+<li><p>「昨日書いてた続きよりも、今日はこのネタが書きたいんじゃ〜！！」</p></li>
+<li><p>縦スライスなら、後続記事を書かなくてもよい（横スライスは後続記事がマスト）</p></li>
+</ul>
+</section>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">まとめ🥟 ベイビーステップ</h2>
+<ul class="simple">
+<li><p>1日1エントリを継続する中で <strong>小さな記事</strong> に至った</p></li>
+<li><p>小さくすることで頻繁にリリースにつながる</p></li>
+<li><p>小さくするときは縦スライスにして、気分屋でも継続しやすく</p></li>
+</ul>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">イテレーティブ</h2>
+<p>iterative = 反復</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">機械学習プロジェクトをベイビーステップでやっていくぞ！</h3>
+<ul class="simple">
+<li><p>雑に言うと、機械学習は <strong>データ</strong> から <strong>モデル</strong> を作る</p></li>
+<li><p>開発範囲：データまわりの自動化、モデルまわりの自動化</p></li>
+<li><p>開発すべきことは <strong>全部やらねば</strong> とも思っていた（私は完璧主義）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">小さく進みたいけれど</h3>
+<ul class="simple">
+<li><p>データもモデルもやろうとすると、 <strong>大きく</strong> なってしまう</p></li>
+<li><p>大きくなると、うまくいかなかった場合の手戻りは大きい</p></li>
+<li><p>どう両立させる？</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">「常に次回がある」という考え方</h2>
+<ul class="simple">
+<li><p>『アート・オブ・アジャイル デベロップメント』はふりかえりのトピックを <em>コイン投げ</em> で決める</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">『<a class="reference external" href="https://www.oreilly.co.jp/books/9784873113951/" rel="noopener noreferrer" target="_blank">アート・オブ・アジャイル デベロップメント</a>』5.5.6</h3>
+<blockquote>
+<div><p>（※1つのカテゴリに人気が集中していなくても）、時間をかけすぎてはいけない。コインか何かを投げて 1 つのカテゴリを選ぼう。</p>
+</div></blockquote>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Shoreさん、コイン投げで決めていいんですか？</h3>
+<blockquote>
+<div><p>来週もふりかえりをするんだ。重要な問題であれば、また出てくるだろう。(p.101)</p>
+</div></blockquote>
+<p>トピックを話す方に時間を使う考え方、なるほどな〜</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">ブログでも「常に次回がある」</h3>
+<ul class="simple">
+<li><p>＝1日1エントリ</p></li>
+<li><p>趣味や暮らし向きを書くことへの抵抗感が薄れた</p></li>
+<li><p>100%のものを毎回目指すが、 <strong>更新する次回</strong> も常にある</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">内容への指摘は <strong>追加の次回</strong></h3>
+<ul class="simple">
+<li><p>指摘やコメントはありがたい</p></li>
+<li><p>記事自体はリリース済み（リリースが否定されるわけではない）</p></li>
+<li><p>追記して修正（<em>パッチ</em>） or 対応する記事執筆（<em>追加ストーリー</em>）</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">機械学習プロジェクトでも</h2>
+<ul class="simple">
+<li><p>小さく進むことを優先するために、 <strong>次がある</strong> と考えられることに気づいた</p></li>
+<li><p>「一息にやらない完璧主義」（？）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><strong>次を前提に、今は最小限を</strong></h3>
+<ul class="simple">
+<li><p>どうしてもいま必要な部分だけをやる</p>
+<ul>
+<li><p>例：モデルまわりだけまず自動化し、モデルに必要なデータは最初は手動で用意（次に自動化する）</p></li>
+</ul>
+</li>
+<li><p>小さく進むのを <strong>何度も繰り返し</strong> たら、やるべきことが全部できている状態で進む</p></li>
+</ul>
+</section>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">まとめ🥟 イテレーティブ</h2>
+<ul class="simple">
+<li><p>小さく進むのを繰り返す中で、<strong>次回がある</strong> ことに気づいた</p></li>
+<li><p>小さく進み続ける中で、少しずつシステムを作り上げていく</p></li>
+<li><p>手戻るかもしれないので、一度に全部を作りきらない</p></li>
+</ul>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">まとめ🌯 1日1エントリにもがく中で見えてきたXPの「フィードバック」の価値</h2>
+<ul class="simple">
+<li><p>ベイビーステップ：小さいがゆえの高頻度</p></li>
+<li><p>イテレーティブ：繰り返す中で（少しずつ）近づく</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">1日1エントリ</h3>
+<ul class="simple">
+<li><p>毎日（＝高頻度）リリースする中で記事は <strong>小さく</strong> なった</p></li>
+<li><p>「<strong>常に次回</strong> がある」ことを認識した（そのネタ、本当に全部書く？）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">フィードバックサイクルをいかに高速に回すか、とは</h3>
+<p>性能のよいモデルの作り方は <strong>あらかじめ分からない</strong> からこそ</p>
+<ul class="simple">
+<li><p><strong>一歩一歩は小さく</strong> して、進んでいる方向を確認しながら</p></li>
+<li><p>繰り返し小さく進み続ける中で機械学習システムが徐々に <strong>作り上げられていく</strong></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/my-practices-small-and-repeatedly#1%E6%97%A51%E3%82%A8%E3%83%B3%E3%83%88%E3%83%AA" rel="noopener noreferrer" target="_blank">小さく区切って絶えずやる</a> （nikkie）</h3>
+<ul class="simple">
+<li><p>ベイビーステップ（小さく・頻度高く）</p></li>
+<li><p>かつ、イテレーティブ（何度も反復）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">NEXT? 小さな記事を <strong>つなげる</strong></h3>
+<ul class="simple">
+<li><p>カンファレンス登壇へ活かす道を模索中</p></li>
+<li><p>試行錯誤中：小さな技術記事をつなげて、30分（程度）の発表を構成</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">ご清聴ありがとうございました</h3>
+<p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/" rel="noopener noreferrer" target="_blank">https://nikkie-ftnext.hatenablog.com/</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">余談『<a class="reference external" href="https://www.diamond.co.jp/book/9784478065778.html" rel="noopener noreferrer" target="_blank">小さな習慣</a>』</h3>
+<ul class="simple">
+<li><p>毎日たった1回の腕立て伏せ</p></li>
+<li><p>小さすぎて失敗しないので継続しやすい</p></li>
+<li><p>1回やると調子が出てきて超過達成できる</p></li>
+</ul>
+</section>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs4/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs4/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs4/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs4/plugin/copycode/copycode.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "history": true, "center": true, "transition": "none", "slideNumber": "c/t", "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealHighlight,RevealNotes,CopyCode,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

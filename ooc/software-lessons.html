@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+
+<html lang="ja" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>ソフトウェアを作りたかった私へ</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/dist/reveal.css?v=ba26b9ed" />
+    <link rel="stylesheet" href="../_static/revealjs4/dist/theme/black.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/plugin/highlight/zenburn.css?v=83d5745d" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/common.css?v=c1f4a920" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ftnext">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://ftnext.github.io/2024-slides/ooc/software-lessons.html">
+    <meta property="og:title" content="ソフトウェアを作りたかった私へ">
+    <meta property="og:description" content="〜変更しやすいコードを書くコツが見えてきた今伝えられること〜 2024/03 Object-Oriented Conference">
+    <meta property="og:image" content="https://ftnext.github.io/2024-slides/_static/ogps/ooc.png">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section>
+<h1 style="word-break: keep-all; overflow-wrap: break-word;">ソフトウェアを作りたかった私へ</h1>
+<p>変更しやすいコードを書くコツが見えてきた今伝えられること</p>
+<dl class="field-list simple">
+<dt class="field-odd">Event<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Object-Oriented Conference 2024</p>
+</dd>
+<dt class="field-even">Presented<span class="colon">:</span></dt>
+<dd class="field-even"><p>2024/03/24 nikkie</p>
+</dd>
+</dl>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">聞きに来ていただき、ありがとうございます</h2>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">変更しやすいコードを書きたいですか〜？📣</h3>
+<p>コール&amp;レスポンス スライド</p>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">お前、誰よ（自己紹介）</h2>
+<ul class="simple">
+<li><p>nikkie ／ 毎日 <a class="reference external" href="https://nikkie-ftnext.hatenablog.com/" rel="noopener noreferrer" target="_blank">ブログ</a> 執筆、490日突破</p></li>
+<li><p>ソフトウェア開発 2016年〜（歴8年）</p></li>
+<li><p>2019年〜 データサイエンティスト。 <strong>Python</strong> ・機械学習・ソフトウェアエンジニアリング（<a class="reference external" href="https://hrmos.co/pages/uzabase/jobs/1829077236709650481" rel="noopener noreferrer" target="_blank">We're hiring!</a>）</p></li>
+</ul>
+<img alt="../_images/uzabase-white-logo.png" src="../_images/uzabase-white-logo.png"/>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Pythonでこんな開発しています</h3>
+<ul class="simple">
+<li><p>ファイルを入力し、別のファイルに出力する処理（を組合せた、機械学習パイプライン）</p></li>
+<li><p>CLI（小さいライブラリを個人開発）</p></li>
+<li><p><strong>テストコード</strong> 書いてます（リファクタリング ゴリゴリ）</p></li>
+<li><p>経験が薄いもの：がっつりWebアプリ開発、DDD</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">変更しやすいコードを書きたい！🔥</h2>
+<blockquote>
+<div><p>変更しやすいコードというのはずっと憧れでした。（<a class="reference external" href="https://fortee.jp/oocon-2024/proposal/cd029e95-0a76-48ff-92ae-4a973e01c9d3" rel="noopener noreferrer" target="_blank">fortee</a>）</p>
+</div></blockquote>
+<p>（そのコードがユーザに価値があるという前提で）</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">ソフトウェア（soft + ware）</h3>
+<ul class="simple">
+<li><p>ware：製品</p></li>
+<li><p>soft： <strong>振る舞いを変更</strong> できる</p></li>
+</ul>
+<p>ref: 『<a class="reference external" href="https://asciidwango.jp/post/176293765750/clean-architecture" rel="noopener noreferrer" target="_blank">Clean Architecture</a>』第2章</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">ソフトウェアの <strong>2つ</strong> の価値</h3>
+<ul class="simple">
+<li><p>振る舞い：ユーザが認知</p></li>
+<li><p>構造：開発者が認知</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">振る舞いと構造</h3>
+<ul class="simple">
+<li><p>ソフトさ（振る舞いを変更できるか）は、 <strong>構造による</strong></p></li>
+<li><p>構造がソフトウェアをソフトにする</p></li>
+</ul>
+<p>ref: 『<a class="reference external" href="https://asciidwango.jp/post/176293765750/clean-architecture" rel="noopener noreferrer" target="_blank">Clean Architecture</a>』第15章</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">振る舞いを変更できるコードを書きたい！ のに</h3>
+<ul class="simple">
+<li><p>過去の自分が最善を尽くしたコードの構造が、それを <strong>妨げる</strong> 😢</p></li>
+<li><p>振る舞いの変更がめちゃくちゃ大変。ハードウェアじゃん</p></li>
+<li><p><em>わからん殺し</em> されている</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">セルフわからん殺し（ミノ駆動さん）</h3>
+<iframe allowfullscreen="true" class="speakerdeck-iframe" data-ratio="1.7777777777777777" frameborder="0" src="https://speakerdeck.com/player/d63493c089ff4d718ea15795d185eecb?slide=26" style="border: 0px; background: rgba(0, 0, 0, 0.1) padding-box; margin: 0px; padding: 0px; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 40px; width: 100%; height: auto; aspect-ratio: 560 / 315;" title="不幸を再生産しないための設計に対する向き合い方"></iframe></section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">自分の外側に知識を求めた</h3>
+<ul class="simple">
+<li><p>Python使いの観点から、アウトプット中心の <strong>読書会</strong> を共同主催（2022年〜）</p></li>
+<li><p>シーズン1 ミノ駆動本</p></li>
+<li><p>シーズン2 ちょうぜつ本（<a class="reference external" href="https://pythonista-books.connpass.com/event/312231/" rel="noopener noreferrer" target="_blank">次回最終回</a> 予定）</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">本トーク「ソフトウェアを作りたかった私へ」では</h2>
+<ul class="simple">
+<li><p>過去の私向け（振る舞いを変更しやすいコードを書きたいのに、作った構造に阻まれてしまう方）</p></li>
+<li><p>変更しやすいコードの <em>構造</em> について、セルフわからん殺しを共有・言語化</p></li>
+<li><p>👉 <strong>過去の私</strong> にとっての、ソフトウェアを作る <strong>知の高速道路</strong></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">道程（お品書き）</h3>
+<ul class="simple">
+<li><p>指針を得る（<em>小さい</em>）</p></li>
+<li><p>小さな部品の作り方の気づき（3点）</p></li>
+<li><p>難所（インターフェース、継承）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">訪れた書籍（本トークにおける <strong>呼称まとめ</strong>）</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://gihyo.jp/book/2022/978-4-297-12783-1" rel="noopener noreferrer" target="_blank">ミノ駆動本</a>：『良いコード／悪いコードで学ぶ設計入門』</p></li>
+<li><p><a class="reference external" href="https://gihyo.jp/book/2022/978-4-297-13234-7" rel="noopener noreferrer" target="_blank">ちょうぜつ本</a>：『ちょうぜつソフトウェア設計入門』</p></li>
+<li><p><a class="reference external" href="https://gihyo.jp/book/2017/978-4-7741-9087-7" rel="noopener noreferrer" target="_blank">増田本</a>：『現場で役立つシステム設計の原則』</p></li>
+</ul>
+</section>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">指針を得るパート</h2>
+<ol class="arabic simple">
+<li><p>シンプル</p></li>
+<li><p>クラスの使い所</p></li>
+</ol>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">1️⃣シンプル</h2>
+<p>変更しやすいコードの構造についての考え方</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">⚠️世間一般に言う「シンプル」と違う意味で使ってます</h3>
+<ul>
+<li><p>シンプルは <em>簡単</em> という意味でよく使われるように思われる</p></li>
+<li><p><a class="reference external" href="https://www.oxfordlearnersdictionaries.com/definition/english/simple" rel="noopener noreferrer" target="_blank">https://www.oxfordlearnersdictionaries.com/definition/english/simple</a></p>
+<blockquote>
+<div><div class="line-block">
+<div class="line">not complicated; easy to understand or do</div>
+<div class="line">synonym easy</div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">このトークで言うシンプルは、 <strong>LEGOブロック</strong> のイメージ</h3>
+</section>
+<section>
+<img alt="../_images/wikipedia-commons-512px-LEGO-01.jpg" src="../_images/wikipedia-commons-512px-LEGO-01.jpg"/>
+<p><a class="reference external" href="https://commons.wikimedia.org/wiki/File:LEGO-01.jpg" rel="noopener noreferrer" target="_blank">https://commons.wikimedia.org/wiki/File:LEGO-01.jpg</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">LEGOブロック</h3>
+<ul class="simple">
+<li><p>ブロックの1つ1つは単純（2x2, 2x4）</p></li>
+<li><p>ブロックを組合せることで <strong>どんな大きなものでも作れる</strong> （例：城）</p></li>
+</ul>
+</section>
+<section>
+<img alt="../_images/11_Article_Biggest_Sets_Desktop_Hero_Std_desktop.jpg" src="../_images/11_Article_Biggest_Sets_Desktop_Hero_Std_desktop.jpg"/>
+<p><a class="reference external" href="https://www.lego.com/ja-jp/categories/adults-welcome/article/artists" rel="noopener noreferrer" target="_blank">世界のベスト レゴ®アーティスト</a> より</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;"><strong>小さな部品を組み合わせる</strong></h3>
+<ul class="simple">
+<li><p>変更しやすい構造のコードを書くために採用した戦略</p></li>
+<li><p>1つ1つの部品はLEGOブロックのようにして、組合せて機能を実現する</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">影響：Rich Hickeyの「Simple Made Easy」</h3>
+<ul class="simple">
+<li><p>訳すなら「 <strong>誰でもわかる</strong> Simple」</p></li>
+<li><p>Clojureの作者のプログラミング観</p></li>
+<li><p>紹介 <a class="reference external" href="https://boxofpapers.hatenablog.com/entry/simple_made_easy" rel="noopener noreferrer" target="_blank">Clojureと「Simple Made Easy」</a></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">参考：『<a class="reference external" href="https://asciidwango.jp/post/693992928727760896/clean-craftsmanship" rel="noopener noreferrer" target="_blank">Clean Craftsmanship</a>』第6章</h3>
+<blockquote>
+<div><p>シンプルは「簡単」という意味ではない。シンプルとは「もつれていない、絡み合っていない」という意味である。(Kindle版 p.262)</p>
+</div></blockquote>
+<p>※直前の脚注で「Simple Made Easy」を案内。また、Uncle BobはClojureを書きます</p>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">2️⃣クラスをどう使うかを知る</h2>
+<ul class="simple">
+<li><p>小さい部品？ 関数は任せて！</p></li>
+<li><p>クラス？ うっ...🙈</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">ずっと分からなかった、クラスの使い所</h3>
+<ul class="simple">
+<li><p>nikkieは、（必ずクラスを書く）Javaの経験がありません</p>
+<ul>
+<li><p>関数でも書ける言語を使ってきた（PHP、Python）</p></li>
+</ul>
+</li>
+<li><p>「文法は完全に理解したが、 <strong>クラスはどんな時に使うの？</strong>」</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">クラスの文法を説明する例：犬</h3>
+<pre data-id="id25"><code class="python" data-line-numbers="" data-noescape="" data-trim="">class Dog:
+    kind = 'canine'  # クラス変数
+
+    def __init__(self, name):
+        self.name = name  # インスタンス変数</code></pre>
+<p><a class="reference external" href="https://docs.python.org/ja/3/tutorial/classes.html#class-and-instance-variables" rel="noopener noreferrer" target="_blank">Python チュートリアル「9.3.5. クラスとインスタンス変数」</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">よい構造のコードとしてのクラスの例（<a class="reference external" href="https://gihyo.jp/book/2022/978-4-297-12783-1" rel="noopener noreferrer" target="_blank">ミノ駆動本</a> 2章）</h3>
+<blockquote>
+<div><p>強く関係し合うデータとロジックを一箇所にギュッと集めておく (Kindle版 p.51)</p>
+</div></blockquote>
+<p>例：ヒットポイント</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Pythonでの実装例</h3>
+<pre data-id="id27"><code class="python" data-noescape="" data-trim="">class HitPoint:
+    MIN: Final[int] = 0
+    MAX: Final[int] = 999
+
+    def __init__(self, value: int) -&gt; None:
+        if value &lt; self.MIN:
+            raise ValueError(f"{self.MIN}以上を指定してください")
+        if value &gt; self.MAX:
+            raise ValueError(f"{self.MAX}以下を指定してください")
+
+        self.value = value
+
+    def damage(self, damage_amount: int) -&gt; HitPoint:
+        """ダメージを受ける"""
+
+    def recover(self, recovery_amount: int) -&gt; HitPoint:
+        """回復する"""
+</code></pre>
+<p><a class="reference external" href="https://github.com/ftnext/exile-of-the-wicked-py/blob/ef07c9a870013580b240f9a6d05f0d4dbecb9a88/chapter2/first_step.py" rel="noopener noreferrer" target="_blank">実装の全体</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">クラス変数</h3>
+<p>ヒットポイントの最大、最小</p>
+<pre data-id="id28"><code class="python" data-line-numbers="2,3" data-noescape="" data-trim="">class HitPoint:
+    MIN: Final[int] = 0
+    MAX: Final[int] = 999
+
+    def __init__(self, value: int) -&gt; None:
+        if value &lt; self.MIN:
+            raise ValueError(f"{self.MIN}以上を指定してください")
+        if value &gt; self.MAX:
+            raise ValueError(f"{self.MAX}以下を指定してください")
+
+        self.value = value
+
+    def damage(self, damage_amount: int) -&gt; HitPoint:
+        """ダメージを受ける"""
+
+    def recover(self, recovery_amount: int) -&gt; HitPoint:
+        """回復する"""
+</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">インスタンス変数</h3>
+<p>値を検証している！！</p>
+<pre data-id="id29"><code class="python" data-line-numbers="5,6,7,8,9,10,11" data-noescape="" data-trim="">class HitPoint:
+    MIN: Final[int] = 0
+    MAX: Final[int] = 999
+
+    def __init__(self, value: int) -&gt; None:
+        if value &lt; self.MIN:
+            raise ValueError(f"{self.MIN}以上を指定してください")
+        if value &gt; self.MAX:
+            raise ValueError(f"{self.MAX}以下を指定してください")
+
+        self.value = value
+
+    def damage(self, damage_amount: int) -&gt; HitPoint:
+        """ダメージを受ける"""
+
+    def recover(self, recovery_amount: int) -&gt; HitPoint:
+        """回復する"""
+</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">ヒットポイントに関わるメソッド</h3>
+<pre data-id="id30"><code class="python" data-line-numbers="13,14,15,16,17" data-noescape="" data-trim="">class HitPoint:
+    MIN: Final[int] = 0
+    MAX: Final[int] = 999
+
+    def __init__(self, value: int) -&gt; None:
+        if value &lt; self.MIN:
+            raise ValueError(f"{self.MIN}以上を指定してください")
+        if value &gt; self.MAX:
+            raise ValueError(f"{self.MAX}以下を指定してください")
+
+        self.value = value
+
+    def damage(self, damage_amount: int) -&gt; HitPoint:
+        """ダメージを受ける"""
+
+    def recover(self, recovery_amount: int) -&gt; HitPoint:
+        """回復する"""
+</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">クラスは <strong>データとロジックをまとめる</strong> もの</h3>
+<ul class="simple">
+<li><p>文法を学べば、処理系が動作するクラスは書ける</p></li>
+<li><p>コードの構造としてよいクラスも悪いクラスも、同様に動作してしまう</p></li>
+<li><p>良し悪しの <strong>判断基準</strong> 「まとめているか」（過去の私はこれが持てていなかった）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">データだけのクラスに注意⚠️</h3>
+<ul class="simple">
+<li><p><strong>ロジックを持たない</strong></p></li>
+<li><p>クラスを使うコードがデータを取り出して加工してしまっている</p></li>
+<li><p>私はよくやってました</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">データクラス</h3>
+<ul class="simple">
+<li><p>悪しき構造として知られる（<a class="reference external" href="https://gihyo.jp/book/2017/978-4-7741-9087-7" rel="noopener noreferrer" target="_blank">増田本</a> 第3章・<a class="reference external" href="https://gihyo.jp/book/2022/978-4-297-12783-1" rel="noopener noreferrer" target="_blank">ミノ駆動本</a> 第1章）</p></li>
+<li><p>リファクタリングでは、データを取り出して加工するコードを <strong>クラスの中へ移動する</strong></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">クラスを使う側のコードよ、 <strong>楽</strong> してこうぜ</h3>
+<p>クラスにデータとロジックをまとめる効能</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">参考：「コーヒーちょうだい」</h3>
+<iframe allowfullscreen="true" class="speakerdeck-iframe" data-ratio="1.4177215189873418" frameborder="0" src="https://speakerdeck.com/player/d4f99108649049b1a0f91c86e7890b98?slide=7" style="border: 0px; background: rgba(0, 0, 0, 0.1) padding-box; margin: 0px; padding: 0px; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 40px; width: 100%; height: auto; aspect-ratio: 560 / 395;" title="Tell, don't ask"></iframe></section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">参考：<a class="reference external" href="https://gihyo.jp/book/2017/978-4-7741-9087-7" rel="noopener noreferrer" target="_blank">増田本</a> 第1章</h3>
+<blockquote>
+<div><p>使う側のプログラムの記述がかんたんになるように、使われる側のクラスに便利なメソッドを用意する (Kindle版 p.54)</p>
+</div></blockquote>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">まとめ🌯 得た指針</h2>
+<ul class="simple">
+<li><p><strong>小さい部品を組合せる</strong> （シンプル。LEGOのように）</p></li>
+<li><p>クラスでデータとメソッドをまとめる</p></li>
+<li><p>👉関数やクラスを小さい部品として使っていく</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">道程</h3>
+<ul class="simple">
+<li><p>指針を得る（小さい）</p></li>
+<li><p><strong>小さな部品の作り方の気づき</strong> （3点）</p></li>
+<li><p>難所（インターフェース、継承）</p></li>
+</ul>
+</section>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">小さな部品の作り方</h2>
+<ol class="arabic simple">
+<li><p>小さい責務とは</p></li>
+<li><p>入出力と計算判断</p></li>
+<li><p>作ると使う</p></li>
+</ol>
+<p>小さいは、正義！</p>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">1️⃣小さい責務とは</h2>
+<p>SOLIDのSについて</p>
+<p>※ここでは責任と責務を同じものと扱っていきます</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">単一責任原則</h3>
+<blockquote>
+<div><p>モジュールを変更する理由はたったひとつだけであるべき</p>
+</div></blockquote>
+<p>『<a class="reference external" href="https://asciidwango.jp/post/176293765750/clean-architecture" rel="noopener noreferrer" target="_blank">Clean Architecture</a>』第7章</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">単一責任の私の <strong>誤解</strong></h3>
+<ul class="simple">
+<li><p>数学の証明のように、この状況であれば <strong>単一責任は絶対こう決まると示せる</strong> と私は思っていた</p></li>
+<li><p>クラスの責務は絶対の解があるという思い込み</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">単一責任は <strong>恣意的</strong></h3>
+<blockquote>
+<div><p>クラスの責務は、何かの法則で機械的に決まるものではなく、将来の保守開発への想像から恣意的に生み出すもの (Kindle 版 p.152)</p>
+</div></blockquote>
+<p><a class="reference external" href="https://gihyo.jp/book/2022/978-4-297-13234-7" rel="noopener noreferrer" target="_blank">ちょうぜつ本</a> 5.2</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">恣意的（スーパー大辞林）</h3>
+<blockquote>
+<div><p>その時々の思いつきで物事を判断するさま。</p>
+</div></blockquote>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">例：このデータベースドライバは単一責任？</h3>
+<ul class="simple">
+<li><p>データベースを読み取る</p></li>
+<li><p>データベースに書き込む</p></li>
+<li><p>読み書き（と <em>2つのこと</em> を）やっているけれど、単一責任？</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">単一責任！（ちょうぜつ本の解答）</h3>
+<ul class="simple">
+<li><p>「ドライバのreadとwriteを分けるよりも、ドライバ <strong>ver1とver2を分けるのを優先</strong>」</p></li>
+<li><p>別の文脈では、readとwriteを分けることがありうるという気づき</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">コード例</h3>
+<pre data-id="id47"><code class="python" data-line-numbers="" data-noescape="" data-trim="">class DatabaseDriverInterface(metaclass=ABCMeta):
+    @abstractmethod
+    def write(self, key: str, data) -&gt; None:
+        ...
+
+    @abstractmethod
+    def read(self, key: str):
+        ...
+
+
+class DatabaseDriverVer1(DatabaseDriverInterface):
+    def write(self, key: str, data) -&gt; None:
+        ...
+
+    def read(self, key: str):
+        ...
+
+
+class DatabaseDriverVer2(DatabaseDriverInterface):
+    def write(self, key: str, data) -&gt; None:
+        ...
+
+    def read(self, key: str):
+        ...</code></pre>
+<p><a class="reference external" href="https://github.com/ftnext/transcendent-book-py/blob/4c2b8c0064aa67be6d98e239cfdb1430f1e59cc7/chapter5/database_drivers.py" rel="noopener noreferrer" target="_blank">コード例の全容</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">単一責任</h3>
+<ul class="simple">
+<li><p><strong>将来のコードの変更を想像</strong> して決める（保守、拡張）</p></li>
+<li><p>単一責任が現実と合わなくなったら修正すればよいのか！</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">2️⃣入出力と計算を <strong>分ける</strong></h2>
+<p>分けて小さく、再利用しやすく</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">計算結果を書き込む処理（悪しき例）</h3>
+<pre data-id="id50"><code class="python" data-line-numbers="" data-noescape="" data-trim="">def save_result(data, file_path):
+    result = []
+    for obj in data:
+        # 実際は、summaryの末尾に句点「。」がなければ補うなども入ってきます
+        result.append({"text": obj["summary"] + obj["detail"]})
+
+    with jsonlines.open(file_path, "w") as writer:
+        writer.write_all(result)</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">参考例：クラスの場合</h3>
+<pre data-id="id51"><code class="python" data-line-numbers="" data-noescape="" data-trim="">class DataCollection:
+    def __init__(self, data):
+        self.data = data
+
+    def save(self, file_path):
+        result = []
+        for obj in self.data:
+            result.append({"text": obj["summary"] + obj["detail"]})
+
+        with jsonlines.open(file_path, "w") as writer:
+            writer.write_all(result)</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">少し後になって</h3>
+<ul class="simple">
+<li><p>「今から実装する処理、前に作った <code class="docutils literal notranslate"><span class="pre">save_result()</span></code> と <strong>同じ計算</strong> が出てくる。その計算結果をさらに計算するのか」</p></li>
+<li><p>「 <code class="docutils literal notranslate"><span class="pre">save_result()</span></code> 使えば最初の計算はできるな。あれ、これなんでファイルに保存までするの？ 余計〜」</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">実はテストも書きづらかった</h3>
+<pre data-id="id53"><code class="python" data-line-numbers="" data-noescape="" data-trim="">@patch("(Pythonの詳細なので略).jsonlines")
+def test_save_result(jsonlines):  # 書き込まないようモックにする
+    writer = jsonlines.open.return_value.__enter__.return_value
+    data = [
+        # 実際はsummaryやdetail以外の項目も含みます
+        {"summary": "すごい要約。", "detail": "かくかくしかじか、ほげほげふがふが"},
+        {"summary": "今北産業", "detail": "..."},
+    ]
+
+    save_result(data, file_path)
+
+    writer.write_all.assert_called_once_with(
+        [
+            {"text": "すごい要約。かくかくしかじか、ほげほげふがふが"},
+            {"text": "今北産業。..."},
+        ]
+    )</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">計算して保存する関数を書いていた私</h3>
+<ul class="simple">
+<li><p><strong>計算部分だけ再利用できない</strong> （保存が余計）</p></li>
+<li><p>テストコードはデータとその計算結果を含むので、縦に長くなる</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">🧭入出力と計算判断を分ける</h3>
+<iframe allowfullscreen="true" class="speakerdeck-iframe" data-ratio="1.7777777777777777" frameborder="0" src="https://speakerdeck.com/player/d663c3f2afec45379371126260431048?slide=12" style="border: 0px; background: rgba(0, 0, 0, 0.1) padding-box; margin: 0px; padding: 0px; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 40px; width: 100%; height: auto; aspect-ratio: 560 / 315;" title="これだけは知っておきたいクラス設計の基礎知識"></iframe></section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">計算と出力を分けて書く</h3>
+<pre data-id="id56"><code class="python" data-line-numbers="" data-noescape="" data-trim="">def calculate(data):  # データを受け取ってデータを返す
+    result = []
+    for obj in data:
+        result.append({"text": obj["summary"] + obj["detail"]})
+    return result
+
+def write(file_path, data):  # ファイルに保存する処理
+    with jsonlines.open(file_path, "w") as writer:
+        writer.write_all(data)
+
+# calculateしてwriteするとして、先のsave_resultを実現</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">入出力と計算判断を分けた実装</h3>
+<ul class="simple">
+<li><p><strong>計算</strong> では <strong>メモリ上のデータ</strong> を扱う。再利用しやすい</p></li>
+<li><p>永続化は出力処理で担う。計算は気にしなくてよい（出力形式の変更も対応できる）</p></li>
+<li><p>小さく分かれたので、テストコードも書きやすい</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">ふりかえると、注目すべき箇所が見えていなかった</h3>
+<ul class="simple">
+<li><p>コードの行数に注目していた（N行くらいだから関数にしよう）</p></li>
+<li><p>コードの <strong>目的</strong> （入出力、計算判断）に盲目でした</p></li>
+<li><p>混ぜていたので、計算だけ使えない</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">入出力と計算判断を分けていく</h3>
+<p>過去の自分のコードをリファクタリングしていく</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://refactoring.com/catalog/extractFunction.html" rel="noopener noreferrer" target="_blank">関数の抽出</a></p></li>
+<li><p><a class="reference external" href="https://refactoring.com/catalog/inlineFunction.html" rel="noopener noreferrer" target="_blank">関数のインライン化</a></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">目的ごとに関数に <strong>抽出</strong></h3>
+<pre data-id="id60"><code class="python" data-line-numbers="" data-noescape="" data-trim="">def save_result(data, file_path):
+    result = calculate(data)
+    write(result, file_path)
+
+def calculate(data):
+    result = []
+    for obj in data:
+        result.append({"text": obj["summary"] + obj["detail"]})
+    return result
+
+def write(file_path, data):
+    with jsonlines.open(file_path, "w") as writer:
+        writer.write_all(data)</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">元の関数を <strong>インライン化</strong></h3>
+<pre data-id="id61"><code class="python" data-noescape="" data-trim=""># save_resultを呼び出していた箇所（呼び出しがなくなる）
+result = calculate(data)
+write(result, file_path)</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">参考： <strong>基本</strong> のリファクタリングテクニックでできちゃいます</h3>
+<p>『<a class="reference external" href="https://www.ohmsha.co.jp/book/9784274224546/" rel="noopener noreferrer" target="_blank">リファクタリング（第2版）</a>』6章「リファクタリングはじめの一歩」</p>
+<ul class="simple">
+<li><p>関数の抽出</p></li>
+<li><p>関数のインライン化</p></li>
+<li><p>関数宣言の変更（後述）</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">3️⃣作ると使うを <strong>分ける</strong></h2>
+<p>分けて小さく、拡張しやすく</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">例：外部のWeb APIを使ったOCR（光学文字認識）</h3>
+<ul class="simple">
+<li><p>画像中の文字を認識（例：標識）</p></li>
+<li><p>ドキュメントの画像から文字を認識（例：帳票）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">手元にクライアントを実装</h3>
+<ul class="simple">
+<li><p>画像中の文字を認識（例：標識）： <code class="docutils literal notranslate"><span class="pre">ImageOcrClient</span></code></p></li>
+<li><p>ドキュメントの画像から文字を認識（例：帳票）： <code class="docutils literal notranslate"><span class="pre">DocumentOcrClient</span></code></p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">recognize()</span></code> メソッドで使う</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">作ると使うが一体となった処理（悪しき例）</h3>
+<p>「<code class="docutils literal notranslate"><span class="pre">ImageOcrClient</span></code> 使うぞ！」</p>
+<pre data-id="id65"><code class="python" data-line-numbers="" data-noescape="" data-trim="">def execute_ocr(image) -&gt; str:
+    client = ImageOcrClient()
+    result = client.recognize(image)  # 読み込まれた画像を渡す
+    return result</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">参考例：クラスの場合</h3>
+<pre data-id="id66"><code class="python" data-line-numbers="" data-noescape="" data-trim="">class OcrExecutor:
+    def __init__(self):
+        self.client = ImageOcrClient()
+
+    def execute(self, image):
+        result = client.recognize(image)
+        return result</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">少し後になって</h3>
+<ul class="simple">
+<li><p>「ドキュメントの画像からの文字認識も試したい」</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DocumentOcrClient().recognize()</span></code> に画像を渡す</p></li>
+<li><p>「 <code class="docutils literal notranslate"><span class="pre">execute_ocr()</span></code> あるけど、別に関数作ったほうがいいかー」</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">爆誕する似た処理</h3>
+<pre data-id="id68"><code class="python" data-line-numbers="" data-noescape="" data-trim="">def execute_document_ocr(image) -&gt; str:
+    client = DocumentOcrClient()
+    result = client.recognize(image)
+    return result</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">作ると使うが一体の関数を書いていた私へ</h3>
+<ul class="simple">
+<li><p>3つ目のクライアントを追加したら、 <code class="docutils literal notranslate"><span class="pre">execute_ocr</span></code> の亜種をまた増やしますか？</p></li>
+<li><p>クライアントの文字認識結果を返すだけ。なのに <code class="docutils literal notranslate"><span class="pre">execute_ocr()</span></code> の拡張で済まないのはどうして？</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">🧭生成と使用の分離</h3>
+<ul class="simple">
+<li><p>『<a class="reference external" href="https://gihyo.jp/book/2022/978-4-297-13234-7" rel="noopener noreferrer" target="_blank">ちょうぜつ本</a>』第7章</p></li>
+<li><p>作ると使うを <strong>分けよう</strong></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">生成と使用</h3>
+<dl class="field-list simple">
+<dt class="field-odd">生成（作る）<span class="colon">:</span></dt>
+<dd class="field-odd"><p>処理が依存するモノ（例： <code class="docutils literal notranslate"><span class="pre">client</span></code>）を作ること</p>
+</dd>
+<dt class="field-even">使用（使う）<span class="colon">:</span></dt>
+<dd class="field-even"><p>処理が依存するモノを使うこと</p>
+</dd>
+</dl>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">使う <strong>だけ</strong></h3>
+<ul class="simple">
+<li><p>使う時に作るように実装しない</p></li>
+<li><p>依存するモノは外で作られて <strong>与えられる</strong> （依存性注入💉）</p></li>
+<li><p>操作するだけ</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">作ると使うを分けて書く</h3>
+<pre data-id="id73"><code class="python" data-line-numbers="" data-noescape="" data-trim="">def execute_ocr(client, image) -&gt; str:
+    result = client.recognize(image)
+    return result
+
+# ImageOcrClientを作ってexecute_ocr関数を呼び出す</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">作ると使うを分けた実装</h3>
+<ul class="simple">
+<li><p>与えられた <code class="docutils literal notranslate"><span class="pre">client</span></code> を使うだけ！（使い方は共通だった！）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ImageOcrClient</span></code> を渡しても <code class="docutils literal notranslate"><span class="pre">DocumentOcrClient</span></code> を渡してもよい</p></li>
+<li><p>画像を受け付ける <code class="docutils literal notranslate"><span class="pre">recognize()</span></code> メソッドを持ったモノならいいぞ（👉インターフェースの話へ）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">作ると使うを分けていく</h3>
+<p>過去の自分のコードをリファクタリング</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://refactoring.com/catalog/changeFunctionDeclaration.html" rel="noopener noreferrer" target="_blank">関数宣言の変更</a> （抽出 &amp; インライン化）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">一時的な関数に <strong>抽出</strong></h3>
+<pre data-id="id76"><code class="python" data-line-numbers="" data-noescape="" data-trim="">def execute_ocr(image) -&gt; str:
+    client = ImageOcrClient()
+    return xx_execute_ocr(client, image)
+
+def xx_execute_ocr(client, image) -&gt; str:
+    result = client.recognize(image)
+    return result</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">元の関数を <strong>インライン化</strong></h3>
+<pre data-id="id77"><code class="python" data-line-numbers="" data-noescape="" data-trim="">def xx_execute_ocr(client, image) -&gt; str:
+    result = client.recognize(image)
+    return result
+
+client = ImageOcrClient()
+xx_execute_ocr(client, image)</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">関数名をrename</h3>
+<pre data-id="rename"><code class="python" data-line-numbers="" data-noescape="" data-trim="">def execute_ocr(client, image) -&gt; str:
+    result = client.recognize(image)
+    return result
+
+client = ImageOcrClient()
+execute_ocr(client, image)</code></pre>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">まとめ🌯 小さな部品の作り方</h2>
+<ul class="simple">
+<li><p>小さい責務は <strong>恣意的</strong> に決める</p></li>
+<li><p>小さく切り出す際は、コードの行数だけでなく <strong>目的</strong> にも目を向ける（入出力、計算）</p></li>
+<li><p>依存するモノを引数で渡す（<strong>依存性注入</strong>）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">道程</h3>
+<ul class="simple">
+<li><p>指針を得る（小さい）</p></li>
+<li><p>小さな部品の作り方の気づき（3点）</p></li>
+<li><p><strong>難所（インターフェース、継承）</strong></p></li>
+</ul>
+</section>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">難所</h2>
+<ol class="arabic simple">
+<li><p>インターフェースとまつわる原則</p></li>
+<li><p>クラスの継承（失敗談）</p></li>
+</ol>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">1️⃣インターフェースの2原則</h2>
+<p>SOLIDから2つ</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">⚠️Pythonにインターフェースはありません</h3>
+<ul class="simple">
+<li><p>「インターフェースを実装」は <strong>文法にありません</strong></p></li>
+<li><p>抽象基底クラス（の <em>継承</em>）や、Protocolで実現します</p></li>
+<li><p>言語にないために、私は理解するのに非常に苦労しました</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">1️⃣インターフェース分離原則（ISP）</h3>
+<p>SOLIDのI</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">インターフェースとは、 <strong>利用</strong> 時の関心</h3>
+<ul class="simple">
+<li><p>利用時、つまり使うとき</p></li>
+<li><p>1つのインターフェースに、利用時の関心 <strong>複数を結合させない</strong> （小さな部品に分ける）</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">セルフわからん殺し：利用時の関心が複数ある大きなインターフェース</h3>
+<pre data-id="id84"><code class="python" data-line-numbers="" data-noescape="" data-trim="">class DatabaseDriverInterface(metaclass=ABCMeta):
+    @abstractmethod
+    def write(self, key: str, data) -&gt; None:
+        ...
+
+    @abstractmethod
+    def read(self, key: str):
+        ...</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">解決策：小さなインターフェースを組合せる</h3>
+<ul class="simple">
+<li><p>write()メソッドがあることを伝える <code class="docutils literal notranslate"><span class="pre">DataInputInterface</span></code></p></li>
+<li><p>read()メソッドがあることを伝える <code class="docutils literal notranslate"><span class="pre">DataOutputInterface</span></code></p></li>
+<li><p>2つを組合せた <code class="docutils literal notranslate"><span class="pre">DatabaseDriverInterface</span></code></p></li>
+</ul>
+<p><a class="reference external" href="https://gihyo.jp/book/2022/978-4-297-13234-7" rel="noopener noreferrer" target="_blank">ちょうぜつ本</a> 5.5</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">組合せる例</h3>
+<pre data-id="id86"><code class="python" data-line-numbers="" data-noescape="" data-trim="">class DataInputInterface(metaclass=ABCMeta):
+    @abstractmethod
+    def write(self, key: str, data) -&gt; None:
+        ...
+
+class DataOutputInterface(metaclass=ABCMeta):
+    @abstractmethod
+    def read(self, key: str):
+        ...
+
+class DatabaseDriverInterface(DataInputInterface, DataOutputInterface):
+    # DatabaseDriverInterfaceを継承したクラスはreadとwriteを実装する必要がある
+    ...</code></pre>
+<p><a class="reference external" href="https://github.com/ftnext/transcendent-book-py/blob/4c2b8c0064aa67be6d98e239cfdb1430f1e59cc7/chapter5/multi_interface_drivers/db/interface.py" rel="noopener noreferrer" target="_blank">Python実装例の全容</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">なぜインターフェースを小さくする？</h3>
+<ul class="simple">
+<li><p><strong>使うときは概念の一部しか見えない</strong> から</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">read</span></code> メソッドがあるという使い方だけ伝えればよい</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">read</span></code> と一緒に <code class="docutils literal notranslate"><span class="pre">write</span></code> メソッドもあるということは、 <code class="docutils literal notranslate"><span class="pre">read</span></code> を使う上では不要</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">2️⃣依存性逆転原則（DIP）</h3>
+<p>SOLIDのD</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">（最小の）インターフェースに依存させる</h3>
+<ul class="simple">
+<li><p><strong>使い方</strong> （fooメソッドがある。 <strong>抽象</strong>）に依存</p></li>
+<li><p>fooメソッドが具体的にどう実装されているかは一切気にしない</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">作ると使うを分けた先に</h3>
+<pre data-id="id89"><code class="python" data-line-numbers="" data-noescape="" data-trim="">def execute_ocr(client: ImageOcrClient | DocumentOcrClient, image) -&gt; str:
+    result = client.recognize(...)
+    return result
+
+client = ImageOcrClient()
+execute_ocr(client, image)</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">インターフェースを導入</h3>
+<pre data-id="id90"><code class="python" data-line-numbers="" data-noescape="" data-trim="">def execute_ocr(client: OcrClientInterface, image) -&gt; str:
+    result = client.recognize(...)
+    return result</code></pre>
+<p>画像を受け取れる <code class="docutils literal notranslate"><span class="pre">recognize()</span></code> メソッドを持つ</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">差し替え可能になっている</h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">recognize</span></code> メソッドがある <strong>別のクラス</strong> （具象）を <strong>注入</strong> することもできる</p></li>
+<li><p>作ると使うが一体になり具象に依存していた状態からは、雲泥の差</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">「作ると使うを分ける」から <strong>依存性逆転</strong> へ</h3>
+<ul class="simple">
+<li><p>最初は引数に切り出しただけ</p></li>
+<li><p>引数の共通の性質として、インターフェースを導入</p></li>
+<li><p>結果、インターフェースに依存させられた！</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">2️⃣クラスの継承</h2>
+<blockquote>
+<div><p><em>ここで野球をしてはいけません</em></p>
+</div></blockquote>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">『<a class="reference external" href="https://www.ohmsha.co.jp/book/9784274226298/" rel="noopener noreferrer" target="_blank">達人プログラマー（第2版）</a>』より</h3>
+<p>第5章に「インヘリタンス（相続）税」</p>
+<blockquote>
+<div><p>継承が答えになることは滅多にない (Kindle版 p.380)</p>
+</div></blockquote>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">継承の代わりに</h3>
+<ul class="simple">
+<li><p>型情報の共有には、 <strong>インターフェース</strong> （やプロトコル）を</p></li>
+</ul>
+<p>『<a class="reference external" href="https://www.ohmsha.co.jp/book/9784274226298/" rel="noopener noreferrer" target="_blank">達人プログラマー（第2版）</a>』より</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">セルフわからん殺し：ほしかったのはインターフェース</h3>
+<ul class="simple">
+<li><p>（インターフェースとしての）抽象基底クラスで始めた</p></li>
+<li><p>同時にTemplate Methodパターンも導入（あれ、インターフェース？）</p></li>
+</ul>
+<pre data-id="id96"><code class="python" data-noescape="" data-trim="">class DoNotUseThisExample(metaclass=abc.ABCMeta):
+    def method(self, ...):  # インターフェースのはずが
+        # 省略
+        retval = self.process(...)
+        # 省略
+
+    @abc.abstractmethod
+    def process(self, ...):  # 穴空き問題にする（Template Method）
+        raise NotImplementedError</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">わからん殺しされて言える「気軽に継承してはいけません」</h3>
+<ul class="simple">
+<li><p>穴埋め問題（<code class="docutils literal notranslate"><span class="pre">process</span></code> の実装）に落とし込めないケースが後から登場🤯</p></li>
+<li><p><strong>インターフェースが別で定義されていない</strong> のが痛い。穴埋め問題で吸収できないと全体を修正せざるを得ない</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">継承の代わりに（もう一つ）</h3>
+<ul class="simple">
+<li><p>機能の追加には、 <strong>委譲</strong> を</p></li>
+</ul>
+<p>『<a class="reference external" href="https://www.ohmsha.co.jp/book/9784274226298/" rel="noopener noreferrer" target="_blank">達人プログラマー（第2版）</a>』より</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">委譲した例</h3>
+<ul class="simple">
+<li><p>直近公開したOSS <a class="reference external" href="https://pypi.org/project/kurenai/" rel="noopener noreferrer" target="_blank">kurenai</a> （紅）</p></li>
+<li><p>google-researchの <a class="reference external" href="https://pypi.org/project/rouge-score/" rel="noopener noreferrer" target="_blank">rouge-score</a> のラッパー</p></li>
+<li><p>デフォルトで日本語テキストからもROUGEという指標を算出したい</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">rouge-scoreとインターフェースを揃えつつ、日本語対応という機能追加</h3>
+<pre data-id="rouge-score"><code class="pycon" data-line-numbers="5,6,7,8" data-noescape="" data-trim="">&gt;&gt;&gt; from rouge_score.rouge_scorer import RougeScorer
+&gt;&gt;&gt; scorer = RougeScorer(["rouge1"])
+&gt;&gt;&gt; scorer.score('いぬ ねこ', 'いぬ ねこ')
+{'rouge1': Score(precision=0.0, recall=0.0, fmeasure=0.0)}
+&gt;&gt;&gt; from kurenai.rouge_scorer import RougeScorer
+&gt;&gt;&gt; scorer = RougeScorer(["rouge1"])
+&gt;&gt;&gt; scorer.score('いぬ ねこ', 'いぬ ねこ')
+{'rouge1': Score(precision=1.0, recall=1.0, fmeasure=1.0)}</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">rouge-score.RougeScorerの継承でなく、 <strong>委譲</strong> する</h3>
+<pre data-id="rouge-score-rougescorer"><code class="python" data-line-numbers="" data-noescape="" data-trim="">class RougeScorer(BaseScorer):  # 本家RougeScorerと同じインターフェース（scoreメソッド持つ）
+    def __init__(self, rouge_types: list[str]) -&gt; None:
+        self._scorer = OriginalRougeScorer(
+            rouge_types, tokenizer=AllCharacterSupportTokenizer()
+        )
+
+    def score(self, target, prediction):  # 委譲による実装
+        return self._scorer.score(target, prediction)</code></pre>
+<p><a class="reference external" href="https://github.com/ftnext/kurenai/blob/v0.0.1/src/kurenai/rouge_scorer.py#L9-L16" rel="noopener noreferrer" target="_blank">https://github.com/ftnext/kurenai/blob/v0.0.1/src/kurenai/rouge_scorer.py#L9-L16</a></p>
+</section>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">まとめ🌯 難所からの学び</h2>
+<ul class="simple">
+<li><p>インターフェースで <strong>使い方</strong> を小さく示す</p></li>
+<li><p>具象ではなく、インターフェースに依存する（<strong>依存性注入からの発展</strong>）</p></li>
+<li><p>継承は最後の選択肢（インターフェースや委譲を使う）</p></li>
+</ul>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">NEXT 変更しやすいコードを <strong>チーム</strong> で書く</h2>
+<p>次のわからん殺し（今の思考のダンプです）</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">コードはチームで書くもの</h3>
+<blockquote>
+<div><p>ソフトウェア開発はチームスポーツである（『<a class="reference external" href="https://www.oreilly.co.jp/books/9784873116303/" rel="noopener noreferrer" target="_blank">Team Geek</a>』p.3）</p>
+</div></blockquote>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">チームで、変更しやすいコードを書きたい！🔥</h3>
+<ul class="simple">
+<li><p><em>常時ペアプロ</em> という環境</p></li>
+<li><p>私は変更しやすいコードを書きたい！で、ソフトウェアについて知った部分が増えた。チームにも還元できる</p></li>
+<li><p>nikkieがいなくなっても、ソフトウェアが書け、さらによりよくしていけるチーム、どうやる？？</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">easyが必要な可能性？</h3>
+<ul class="simple">
+<li><p>小さな部品、その組合せはまずい（操作ミス）という事象</p></li>
+<li><p>小さな部品を使いやすく組合せて提供する？</p></li>
+<li><p>「<a class="reference external" href="https://yoshi389111.github.io/kinokobooks/prog_ja/prog053.htm" rel="noopener noreferrer" target="_blank">正しい使い方を簡単に、誤った使い方を困難に</a>」</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">🌯まとめ：ソフトウェアを作りたかった私へ</h2>
+<ul class="simple">
+<li><p>振る舞いを変更しやすい <strong>構造</strong> のコードを書くには</p></li>
+<li><p><strong>小さい</strong> 部品（関数・クラス）を組み合わせた構造を採用した</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">🌯変更しやすいコードを書くコツが見えてきた今伝えられること 1/2</h3>
+<ul class="simple">
+<li><p>単一責務は恣意的</p></li>
+<li><p>入出力と計算判断を <strong>分ける</strong></p></li>
+<li><p>使うと作るを <strong>分ける</strong></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">🌯変更しやすいコードを書くコツが見えてきた今伝えられること 2/2</h3>
+<ul class="simple">
+<li><p>インターフェースとは <strong>使い方</strong>。使うと作るを分けた先</p></li>
+<li><p>継承は（理解するまでは）初手で使ってはいけません</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">謝辞❤️</h3>
+<ul class="simple">
+<li><p>登壇練習会に協力いただいた開発チーム有志（Hさん、Nさん、Hさん）</p></li>
+<li><p>OOC 2024 スタッフの皆さま</p></li>
+<li><p>知恵を書籍という形で伝えてくださった著者の皆さま</p></li>
+<li><p>読書会共同主催のnibuさん、これまでの参加者の皆さま</p></li>
+<li><p>And You!!</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">ご清聴ありがとうございました</h3>
+<p>皆に <strong>幸</strong> あれ！</p>
+<p>引き続きOOCを楽しみましょう</p>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">お前、誰よ（詳細版）</h2>
+<ul class="simple">
+<li><p><span class="fab fa-twitter"></span> <a class="reference external" href="https://twitter.com/ftnext" rel="noopener noreferrer" target="_blank">@ftnext</a> ／ <span class="fab fa-github"></span> <a class="reference external" href="https://github.com/ftnext" rel="noopener noreferrer" target="_blank">@ftnext</a></p></li>
+<li><p>毎月の <a class="reference external" href="https://startpython.connpass.com/" rel="noopener noreferrer" target="_blank">みんなのPython勉強会</a> スタッフ</p></li>
+<li><p>登壇 <a class="reference external" href="https://github.com/ftnext/2024-slides" rel="noopener noreferrer" target="_blank">2024</a> <a class="reference external" href="https://github.com/ftnext/2023-slides" rel="noopener noreferrer" target="_blank">2023</a></p></li>
+<li><p>代表作：Sphinx拡張 <a class="reference external" href="https://github.com/ftnext/sphinx-new-tab-link" rel="noopener noreferrer" target="_blank">sphinx-new-tab-link</a></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">コード例にした自作ライブラリ</h3>
+<ul class="simple">
+<li><p>kurenai <a class="reference external" href="https://github.com/ftnext/kurenai" rel="noopener noreferrer" target="_blank">https://github.com/ftnext/kurenai</a></p></li>
+<li><p>ocroy <a class="reference external" href="https://github.com/ftnext/ocroy" rel="noopener noreferrer" target="_blank">https://github.com/ftnext/ocroy</a></p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">この発表の元になったアウトプット</h2>
+<ul class="simple">
+<li><p>シンプルさ： <a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/clean-craftsmanship-simple-design-four-rule-in-clean-series#%E3%82%B7%E3%83%B3%E3%83%97%E3%83%AB%E3%81%A8%E3%81%AF" rel="noopener noreferrer" target="_blank">読書ログ | 『Clean Craftsmanship』 第6章 シンプルな設計</a></p></li>
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/minodriven-book-chapter2-class" rel="noopener noreferrer" target="_blank">#ミノ駆動本 2章を読んで、クラスの使い所がようやく分かった気がします</a></p></li>
+</ul>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">この発表の元になったアウトプット</h2>
+<ul class="simple">
+<li><p>依存性注入： <a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/the-transcendent-book-chapter7-grasp-dependency-injection-and-auto-wiring-by-di-container" rel="noopener noreferrer" target="_blank">読書ログ | #ちょうぜつ本 第7章</a></p></li>
+<li><p>インターフェース： <a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/the-transcendent-book-chapter5-solid-principles#ISP" rel="noopener noreferrer" target="_blank">読書ログ | #ちょうぜつ本 第5章</a></p></li>
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/hoge-language-paradox-nikkie-case-python-interface" rel="noopener noreferrer" target="_blank">nikkieと「ほげ言語」のパラドックス 〜"Pythonで考えていた"からインターフェースの理解が難しかった説〜</a></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">登壇準備中のアウトプット</h3>
+<p>ソフトウェアを作りたかった私へ</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/sharply-distinguish-io-from-calculation" rel="noopener noreferrer" target="_blank">入出力と計算を分ける</a></p></li>
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/sharply-distinguish-use-from-creation" rel="noopener noreferrer" target="_blank">作ると使うを分ける</a></p></li>
+</ul>
+</section>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">EOF</h2>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs4/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs4/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs4/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs4/plugin/copycode/copycode.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "history": true, "center": true, "transition": "none", "slideNumber": "c/t", "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealHighlight,RevealNotes,CopyCode,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

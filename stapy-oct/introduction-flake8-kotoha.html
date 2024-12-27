@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<html lang="ja" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>関数の引数の型ヒントをカイゼンするFlake8 pluginを作りました！！</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/dist/reveal.css?v=ba26b9ed" />
+    <link rel="stylesheet" href="../_static/revealjs4/dist/theme/black.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/plugin/highlight/zenburn.css?v=83d5745d" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/common.css?v=c1f4a920" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ftnext">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://ftnext.github.io/2024-slides/stapy-oct/introduction-flake8-kotoha.html">
+    <meta property="og:title" content="関数の引数の型ヒントをカイゼンするFlake8 pluginを作りました！！">
+    <meta property="og:description" content="みんなのPython勉強会#109 LT">
+    <meta property="og:image" content="https://ftnext.github.io/2024-slides/_static/ogps/stapy-oct.png">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section>
+<h1 style="word-break: keep-all; overflow-wrap: break-word;">関数の引数の型ヒントをカイゼンするFlake8 pluginを作りました！！</h1>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">関数の引数の型ヒントをカイゼンするFlake8 pluginを作りました！！</h2>
+<dl class="field-list simple">
+<dt class="field-odd">Event<span class="colon">:</span></dt>
+<dd class="field-odd"><p>みんなのPython勉強会#109 LT</p>
+</dd>
+<dt class="field-even">Presented<span class="colon">:</span></dt>
+<dd class="field-even"><p>2024/10/17 nikkie</p>
+</dd>
+</dl>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">お前、誰よ</h2>
+<ul class="simple">
+<li><p>nikkie ／ <span class="fab fa-github"></span> <a class="reference external" href="https://github.com/ftnext" rel="noopener noreferrer" target="_blank">@ftnext</a> ／ <a class="reference external" href="https://nikkie-ftnext.hatenablog.com/" rel="noopener noreferrer" target="_blank">ブログ</a> 連続 <strong>700</strong> 日達成</p></li>
+<li><p>機械学習エンジニア・自然言語処理（<a class="reference external" href="https://hrmos.co/pages/uzabase/jobs/1829077236709650481" rel="noopener noreferrer" target="_blank">We're hiring!</a>）</p></li>
+<li><p><a class="reference external" href="https://startpython.connpass.com/" rel="noopener noreferrer" target="_blank">みんなのPython勉強会</a> スタッフ・4代目LT王子</p></li>
+</ul>
+<img alt="../_images/uzabase-white-logo.png" src="../_images/uzabase-white-logo.png"/>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">Pythonの型ヒント</h2>
+<p>書いている方🙋‍♂️</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Python <strong>3.5</strong> から型ヒントが書けるように！</h3>
+<div class="literal-block-wrapper docutils container" id="id17">
+<div class="code-block-caption"><span class="caption-text">文字列 name を受け取り、文字列を返す関数 greeting</span></div>
+<pre><code class="python" data-noescape="" data-trim="">def greeting(name: str) -&gt; str:
+    return "Hello " + name
+
+greeting("stapy")  # 'Hello stapy'</code></pre>
+</div>
+<p>🏃‍♂️ <a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/python-type-hints-origin-python35" rel="noopener noreferrer" target="_blank">拙ブログ 型ヒントの出自を調べた記事</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">型ヒントは型チェッカが使う</h3>
+<ul class="simple">
+<li><p>Python処理系が実行するとき、型ヒントは無視</p></li>
+<li><p>型チェッカ（例：mypy）で <strong>型ヒントをチェック</strong> する</p></li>
+</ul>
+<pre data-id="id3"><code class="python" data-noescape="" data-trim=""># error: Argument 1 to "greeting" has ↵
+# incompatible type "int"; expected "str"  [arg-type]
+greeting(42)</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">実行時に無視されても、書くと便利（IMO）</h3>
+<ul class="simple">
+<li><p>処理系で実行する前に <strong>エラーになることに気づける</strong></p></li>
+<li><p>型チェッカではなく <strong>人が読む前提</strong> で型ヒントを書くことで情報量を増やせる</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">この型ヒントは、Python公式ドキュメントで 好ましい？ 好ましくない？ クイズ！！！！</h2>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">要素に1を加える関数の型ヒント</h3>
+<pre data-id="id5"><code class="python" data-noescape="" data-trim="">def plus_one(numbers: list[int]) -&gt; list[int]:
+    return [n + 1 for n in numbers]
+
+plus_one([1, 2, 3])  # [2, 3, 4]</code></pre>
+<p>Python公式ドキュメントで 好ましい？ 好ましくない？</p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">ヒント：引数の型ヒント</h3>
+<pre data-id="id6"><code class="python" data-line-numbers="2" data-noescape="" data-trim="">def plus_one(
+    numbers: list[int]
+) -&gt; list[int]:
+    return [n + 1 for n in numbers]</code></pre>
+<p>Python公式ドキュメントで 好ましい？ 好ましくない？</p>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">答え：好 ま し く <strong>な い</strong> 🙅‍♀️ ！！</h2>
+<blockquote>
+<div><p>Note that to annotate arguments, it is preferred to use an abstract collection type such as Sequence or Iterable rather than to use list or typing.List.</p>
+</div></blockquote>
+<p><a class="reference external" href="https://docs.python.org/ja/3/library/typing.html#typing.List" rel="noopener noreferrer" target="_blank">https://docs.python.org/ja/3/library/typing.html#typing.List</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">意訳</h3>
+<blockquote>
+<div><p>関数の引数を型ヒントするとき、listよりも <strong>SequenceやIterableのような抽象コレクション型</strong> を使うのが好ましい</p>
+</div></blockquote>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">公式ドキュメントを元にした私の考え</h3>
+<pre data-id="id9"><code class="diff" data-noescape="" data-trim="">+from collections.abc import Iterable
+
+def plus_one(
+-    numbers: list[int]
++    numbers: Iterable[int]
+) -&gt; list[int]:
+    return [n + 1 for n in numbers]</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">Iterable</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/ja/3/glossary.html#term-iterable" rel="noopener noreferrer" target="_blank">https://docs.python.org/ja/3/glossary.html#term-iterable</a></p></li>
+<li><p><strong>要素を1度に1つずつ返せる</strong> オブジェクト（だから <code class="docutils literal notranslate"><span class="pre">for</span></code> と使える）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">list</span></code> は（シーケンスであり）イテラブル</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">その引数の型ヒント、本当に <code class="docutils literal notranslate"><span class="pre">list</span></code> ですか？</h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">list</span></code> を渡して関数を呼び出してはいる</p></li>
+<li><p><strong>タプルを渡しても</strong> 動く（<code class="docutils literal notranslate"><span class="pre">range</span></code> やジェネレータでも。これらは皆イテラブル）</p></li>
+<li><p>表したいのは「整数を要素としていて <strong>forで回せる</strong>」なのでは？</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">関数の引数の型ヒントをカイゼンするFlake8 pluginを作りました！！</h2>
+<pre data-id="id10"><code class="shell" data-noescape="" data-trim="">$ pip install flake8-kotoha</code></pre>
+<p><a class="reference external" href="https://pypi.org/project/flake8-kotoha/" rel="noopener noreferrer" target="_blank">https://pypi.org/project/flake8-kotoha/</a></p>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">リンター <a class="reference external" href="https://flake8.pycqa.org/en/stable/" rel="noopener noreferrer" target="_blank">Flake8</a></h3>
+<ul class="simple">
+<li><p>コードを実行せずに解析（＝静的解析）して、スタイルや問題を指摘</p></li>
+<li><p><strong>プラグインを書ける</strong> ので、「その引数の型ヒント、本当に <code class="docutils literal notranslate"><span class="pre">list</span></code> か」問うプラグインをこのたび実装</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">flake8-kotoha「引数の型ヒントをlistにしてはいけません」</h3>
+<pre data-id="flake8-kotohalist"><code class="shell" data-noescape="" data-trim="">$ uv tool install flake8 --with flake8-kotoha
+$ flake8 example.py
+example.py:1:14: KTH101 Type hint with abstract type `collections.abc.Iterable` or `collections.abc.Sequence`, instead of concrete type `list`</code></pre>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">なぜRuffでなくてFlake8？</h3>
+<ul class="simple">
+<li><p>Rust実装の高速なリンター兼フォーマッタ Ruff （<a class="reference external" href="https://gihyo.jp/article/2023/03/monthly-python-2303" rel="noopener noreferrer" target="_blank">Python Monthly Topics</a>）がFlake8・Black・isortなどを置き換えていっているように映る</p></li>
+<li><p><strong>Ruffにplugin機構が現時点でなさそう</strong> だからです（あったらやりたいので情報求ム）</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">まとめ🌯 関数の引数の型ヒントをカイゼンするflake8 pluginを作りました！！</h2>
+<ul class="simple">
+<li><p>関数の引数に <code class="docutils literal notranslate"><span class="pre">list</span></code> を渡していたとしても、<code class="docutils literal notranslate"><span class="pre">list</span></code> を使った型ヒントが好ましいとは <strong>限らない</strong></p></li>
+<li><p>自作した flake8-kotoha 「引数の型ヒントをlistにしてはいけません」</p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">ご清聴ありがとうございました</h3>
+<p>Kaizen Type Hint💪</p>
+<p><span class="fab fa-github"></span> <a class="reference external" href="https://github.com/ftnext/kotoha-python-linter" rel="noopener noreferrer" target="_blank">ftnext/kotoha-python-linter</a></p>
+</section>
+</section>
+<section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">Appendix</h2>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">関連アウトプット</h3>
+<ul class="simple">
+<li><p>『<a class="reference external" href="https://everlastingdiary.booth.pm/items/5734862" rel="noopener noreferrer" target="_blank">引数の型ヒントをlistにしてはいけません</a>』</p></li>
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/thank-you-gishohaku10-python-type-hint-dont-use-list-for-parameters" rel="noopener noreferrer" target="_blank">イベントレポート | #技書博 10で小冊子『引数の型ヒントをlistにしてはいけません』を頒布しました</a></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">関連記事</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/imas-hack-2024-release-flake8-kotoha-0.1.0" rel="noopener noreferrer" target="_blank">琴葉ちゃん「引数の型ヒントをlistにしてはいけません」をflake8のプラグインとして実装しました</a></p></li>
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/how-to-create-ast-based-flake8-plugin" rel="noopener noreferrer" target="_blank">flake8 pluginの作りかた（抽象構文木ベースのpluginを作るまで）</a></p></li>
+</ul>
+</section>
+<section>
+<h3 style="word-break: keep-all; overflow-wrap: break-word;">スライドの秘密 〜お前、誰よ 補足〜</h3>
+<p>attakeiさんの <a class="reference external" href="https://pypi.org/project/sphinx-revealjs/" rel="noopener noreferrer" target="_blank">sphinx-revealjs</a> に以下の <strong>自作拡張</strong> を組み合わせて実現</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://pypi.org/project/sphinx-new-tab-link/" rel="noopener noreferrer" target="_blank">sphinx-new-tab-link</a></p></li>
+<li><p><a class="reference external" href="https://pypi.org/project/sphinx-revealjs-copycode/" rel="noopener noreferrer" target="_blank">sphinx-revealjs-copycode</a></p></li>
+</ul>
+</section>
+</section>
+<section>
+<h2 style="word-break: keep-all; overflow-wrap: break-word;">EOF</h2>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs4/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs4/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs4/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs4/plugin/copycode/copycode.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "history": true, "center": true, "transition": "none", "slideNumber": "c/t", "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealHighlight,RevealNotes,CopyCode,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>
