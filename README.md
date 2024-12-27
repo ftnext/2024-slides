@@ -1,5 +1,6 @@
 # 2024-slides
 
+- [2024年で印象的な学び：SHIROBAKOのあのセリフ](https://ftnext.github.io/2024-slides/engineers-anime/shirobako-speed-and-technique.html#/1) @[アニメから得た学びを発表会 (2024/12)](https://engineers-anime.connpass.com/event/334140/)
 - [櫻木真乃さんかわいいLT](https://ftnext.github.io/2024-slides/engineers-anime/sakuragi-mano-san.html) @[アニメから得た学びを発表会 (2024/11)](https://engineers-anime.connpass.com/event/334139/)
 - [PythonでもGitHub Copilot Extensions作れるもん！](https://ftnext.github.io/2024-slides/stapy-nov/copilot-extensions-with-python.html#/2) @[みんなのPython勉強会#110 (2024/11)](https://startpython.connpass.com/event/334454/)
 - [LLMの知識で使い倒すCopilot](https://ftnext.github.io/2024-slides/vscodejp-nov/copilot-as-large-language-model.html) @[VS Code Meetup #32 - VS Code x Copilot (2024/11)](https://vscode.connpass.com/event/333720/)
