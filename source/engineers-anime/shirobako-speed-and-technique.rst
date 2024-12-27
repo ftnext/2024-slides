@@ -1,3 +1,9 @@
+:ogp_title: 2024年で印象的な学び：SHIROBAKOのあのセリフ
+:ogp_event_name: engineers-anime
+:ogp_slide_name: shirobako-speed-and-technique
+:ogp_description: 2024/12 アニメから得た学びを発表会
+:ogp_image_name: engineers-anime-dec
+
 ======================================================================
 2024年で印象的な学び：SHIROBAKOのあのセリフ
 ======================================================================
