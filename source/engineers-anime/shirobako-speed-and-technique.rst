@@ -267,6 +267,14 @@ Appendix
 
 * 毎日 `ブログ <https://nikkie-ftnext.hatenablog.com/>`__ を書いてます。連続 **770** 日達成
 * 代表作：Sphinx拡張 `sphinx-new-tab-link <https://github.com/ftnext/sphinx-new-tab-link>`__ （この資料でも使ってます）
+* 熱い🔥 https://github.com/ftnext/blackbeard-extension-python
+
+過去のエンジニアニメLT
+--------------------------------------------------
+
+* `『アイの歌声を聴かせて』をきっかけに考え始めた 幸せ <https://ftnext.github.io/2024-slides/engineers-anime/sing-a-bit-of-harmony.html#/1>`__
+* `MILLION R@G <https://ftnext.github.io/2024-slides/engineers-anime/million-live-and-rag.html>`__
+* `櫻木真乃さんかわいいLT <https://ftnext.github.io/2024-slides/engineers-anime/sakuragi-mano-san.html>`__
 
 元になったブログ記事
 --------------------------------------------------
